@@ -1,14 +1,15 @@
 <table border="1">
   <thead></thead>
   <tr>
-    <th>name</th>
-    <th>designation</th>
-    <th>salary</th>
+    <th>Id</th>
+    <th>Mot Français</th>
+    <th>Mot Anglais</th>
+    <th>Mot Trouvé</th>
   </tr>
 
   <tbody>
   <tr *ngFor="let employee of employees">
-    <td>{{employee.id}}</td>
+    <td>{{employee.animauxId}}</td>
     <td>{{employee.motFrancais}}</td>
     <td>{{employee.motAnglais}}</td>
     <td>{{employee.motTrouve}}</td>
