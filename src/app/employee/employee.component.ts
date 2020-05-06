@@ -7,7 +7,6 @@ import { HttpClientService } from '../service/http-client.service';
 })
 export class EmployeeComponent implements OnInit {
   employees: string[];
-  // employees: Quizz[];
 
   constructor(
     private httpClientService: HttpClientService

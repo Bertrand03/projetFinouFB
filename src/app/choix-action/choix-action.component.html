@@ -1,4 +1,9 @@
-<label> Tapez un ID</label>
-<input type="text" formControlName="choixAction">
-<button class="btn-default" (click)="trouveParId()">Cherche par Id</button>
-
+<form [formGroup]="loginForm">
+  <label> Tapez un ID</label>
+  <input type="text" formControlName="choixAction">
+  <button class="btn-default" (click)="trouveParId()">Cherche par Id</button>
+  <p>Lien réponseUser : {{url}}</p>
+  <a [routerLink]="['/choix-action']" class="nav-link"
+     routerLinkActive="active">url <span
+    class="sr-only">(current)</span></a>
+</form>

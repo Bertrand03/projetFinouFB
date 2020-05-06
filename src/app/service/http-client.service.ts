@@ -27,6 +27,9 @@ export class Quizz {
 })
 export class HttpClientService {
 
+  reponseChoix: string;
+  url: string;
+
   constructor(
     private httpClient: HttpClient
   ) {
@@ -39,9 +42,14 @@ export class HttpClientService {
 
   getEmployees() {
     console.log('test call');
-    // console.log(this.httpClient.get('http://localhost:5366/quizzs/?name=Chat'));
+    console.log('url dans getEmployees vaut : ' + this.url);
     // return this.httpClient.get<Quizz>('http://localhost:5366/quizzs/?name=Chien');
     return this.httpClient.get('http://localhost:5366/quizzs/');
     // return this.httpClient.get('http://localhost:5366/quizzs');
+  }
+  getId(url) {
+    console.log('Lancement getId() : ');
+    console.log('url dans Service : ' + url);
+    return this.httpClient.get(this.url);
   }
 }
