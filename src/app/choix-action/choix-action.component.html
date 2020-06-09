@@ -2,8 +2,36 @@
   <label> Tapez un ID</label>
   <input type="text" formControlName="choixAction">
   <button class="btn-default" (click)="trouveParId()">Cherche par Id</button>
-  <p>Lien réponseUser : {{url}}</p>
-  <a [routerLink]="['/choix-action']" class="nav-link"
-     routerLinkActive="active">url <span
-    class="sr-only">(current)</span></a>
+  <!--<p>{{employeesId.animauxId | json}}</p>-->
+  <!--<p>{{employeesId.motFrancais | json}}</p>-->
+  <p>{{employeesId | json}}</p>
+  <!--<p>{{employeesId.motFrancais}}</p>-->
 </form>
+
+<p>Resultat tableau NgFor</p>
+<tr *ngFor="let e of employeesId | keyvalue ">
+  Key: <b>{{e.key}}</b> and Value: <b>{{e.value}}</b>
+  <!--<td>{{employee.animauxId}}</td>-->
+  <!--<td>{{employee.key}}</td>-->
+  <!--<td>{{employee.value}}</td>-->
+  <!--<td>{{employee.motTrouve}}</td>-->
+</tr>
+
+<div [formGroup]="loginForm">
+<p>Entrer votre pseudo</p>
+<input type="text" formControlName="pseudoJoueur">
+<button (click)="validerPseudo()">Valider pseudo</button>
+</div>
+
+<div [formGroup]="loginForm">
+  <p>Nouvel Animal</p>
+  <p>Id Mot</p>
+  <input type="text" formControlName="motId">
+  <p>Mot Anglais</p>
+  <input type="text" formControlName="motAnglais">
+  <p>Mot Francais</p>
+  <input type="text" formControlName="motFrancais">
+  <p>Mot Trouve</p>
+  <input type="text" formControlName="motTrouve">
+  <button (click)="validerAnimal()">Valider nouveau Mot</button>
+</div>

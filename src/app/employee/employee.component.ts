@@ -6,7 +6,7 @@ import { HttpClientService } from '../service/http-client.service';
   styleUrls: ['./employee.component.css']
 })
 export class EmployeeComponent implements OnInit {
-  employees: string[];
+    employees: string[];
 
   constructor(
     private httpClientService: HttpClientService
@@ -17,7 +17,7 @@ export class EmployeeComponent implements OnInit {
     );
   }
   handleSuccessfulResponse(response) {
-    console.log('response : ');
+    console.log('response Quizz: ');
     console.log(response);
     this.employees = response;
   }
