@@ -17,17 +17,15 @@ export class ChoixActionComponent implements OnInit {
 
   loginForm: FormGroup;
   reponseChoix: string;
-  url: string;
+
   choix: string[];
 
   employeesId: Array<any>;
-  monTab: Quizz;
+
   monTabBis: Quizz;
   monTabJoueurs: Joueur;
-  nouvelAnimal: string[];
-  // newAnimal: Quizz;
-  newAnimalBis: Quizz;
-  nouvelAnimalBis: Observable<any>;
+
+  // Mes variables d'input
   pseudoDuJoueurId: number;
   pseudoDuJoueur: string;
   pseudoDuJoueurScore: number;
@@ -35,10 +33,7 @@ export class ChoixActionComponent implements OnInit {
   nouveauMotAnglais: string;
   nouveauMotFrancais: string;
   nouveauMotTrouve: string;
-  // employeesId: Array<Quizz>;
-  // nouvelAnimal2 = Quizz[this.nouveauMotAnglais, this.nouveauMotFrancais, this.nouveauMotTrouve];
 
-  newAnimal = this.httpClientService.objetQuizz;
 
   constructor(private fb: FormBuilder, private httpClient: HttpClient, private httpClientService: HttpClientService) {
   }
@@ -92,18 +87,13 @@ export class ChoixActionComponent implements OnInit {
     );
   }
 
-  // handleSuccessfulResponse(response) {
-  //   console.log('ma reponse vaut : ' );
-  //   console.log(response);
-  //   this.contenuQuizz = response;
-  // }
-
   validerPseudo() {
     this.pseudoDuJoueurId = parseInt(this.loginForm.value.pseudoId, 10);
     this.pseudoDuJoueur = this.loginForm.value.pseudoJoueur;
     this.pseudoDuJoueurScore = parseInt(this.loginForm.value.pseudoScore, 10)
 
-    this.monTabJoueurs = new Joueur(this.pseudoDuJoueurId, this.pseudoDuJoueur, this.pseudoDuJoueurScore);
+    // this.monTabJoueurs = new Joueur(this.pseudoDuJoueurId, this.pseudoDuJoueur, this.pseudoDuJoueurScore);
+    this.monTabJoueurs = new Joueur(0, this.pseudoDuJoueur, 0);
     console.log('this.monTabJoueurs vaut : ');
     console.log(this.monTabJoueurs);
     this.httpClientService.addNickname(this.monTabJoueurs).subscribe(
