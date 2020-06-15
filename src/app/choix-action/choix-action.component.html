@@ -20,6 +20,12 @@
 </div>
 
 <div [formGroup]="loginForm">
+  <p>Supprimer un joueur</p>
+  <input type="text" formControlName="deletePlayer">
+  <button (click)="supprimerJoueur()">Supprimer</button>
+</div>
+
+<div [formGroup]="loginForm">
   <p>Nouvel Animal</p>
   <p>Id Mot</p>
   <input type="text" formControlName="motId">

@@ -19,11 +19,15 @@ export class ChoixActionComponent implements OnInit {
   reponseChoix: string;
 
   choix: string[];
+  allPlayers: Joueur;
 
   employeesId: Array<any>;
 
   monTabBis: Quizz;
   monTabJoueurs: Joueur;
+
+  playertoDelete: string;
+  idPlayerToDelete: number;
 
   // Mes variables d'input
   pseudoDuJoueurId: number;
@@ -49,11 +53,16 @@ export class ChoixActionComponent implements OnInit {
         motFrancais: [],
         motTrouve: [],
         motId: [],
+        deletePlayer: []
 
   });
 
     this.httpClientService.getEmployees().subscribe(
       response => this.handleSuccessfulResponse(response),
+    );
+
+    this.httpClientService.getJoueurs().subscribe(
+      response => this.getAllOfPlayers(response),
     );
   }
 
@@ -103,6 +112,15 @@ export class ChoixActionComponent implements OnInit {
       },
       (e: any) => console.log(e)
       );
+
+
+    this.httpClientService.getJoueurs().subscribe(
+      response => this.getAllOfPlayers(response),
+    );
+  }
+
+  getAllOfPlayers(reponse) {
+    this.allPlayers = reponse;
   }
 
   addAnimalBis(): void {
@@ -122,4 +140,30 @@ export class ChoixActionComponent implements OnInit {
     );
   }
 
+  supprimerJoueur() {
+    this.playertoDelete = this.loginForm.value.deletePlayer;
+    console.log('Joueur a supprimé est : ' + this.playertoDelete);
+    console.log('allplayers vaut :');
+    console.log(this.allPlayers);
+    console.log(typeof (this.allPlayers[0]));
+
+    console.log(this.allPlayers[0].pseudo);
+
+    let stop = 'non';
+    let i = 0;
+
+      for (const ligne in this.allPlayers) {
+        while (stop === 'non') {
+        console.log('allplayers[i] vaut : ');
+        if (this.allPlayers[i].pseudo === this.playertoDelete) {
+          console.log('gagné');
+          stop = 'oui';
+          this.idPlayerToDelete = this.allPlayers[i].id;
+          console.log('idplayer à sup : ' + this.idPlayerToDelete);
+        }
+        i++;
+      }
+    }
+
+  }
 }
