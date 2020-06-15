@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {HttpClient, HttpHeaders} from '@angular/common/http';
-import {Observable} from "rxjs";
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {Observable} from 'rxjs';
 
 
 
@@ -42,6 +42,7 @@ export class HttpClientService {
   recupObjet: Observable<any>;
   tableauFiltre: Observable<any>;
   urlApi = 'http://localhost:5366/quizzs/';
+  urlApiJoueurs = 'http://localhost:5366/joueurs/';
   objetQuizz: Quizz;
 
   constructor(
@@ -61,6 +62,14 @@ export class HttpClientService {
     return this.httpClient.get('http://localhost:5366/quizzs/');
     // return this.httpClient.get('http://localhost:5432/quizzs');
   }
+
+  getJoueurs() {
+    console.log('url dans getJoueursvaut : ' + this.url);
+    // return this.httpClient.get<Quizz>('http://localhost:5366/quizzs/?name=Chien');
+    return this.httpClient.get('http://localhost:5366/joueurs/');
+    // return this.httpClient.get('http://localhost:5432/quizzs');
+  }
+
   getId(url) {
     console.log('Lancement getId() : ');
     console.log('url dans Service : ' + url);
@@ -79,16 +88,39 @@ export class HttpClientService {
       return this.tableauFiltre;
   }
 
-  addNickname(pseudoDuJoueur) {
-    console.log('pseudoDuJoueur dans le service vaut : ' + pseudoDuJoueur);
-  }
-
   addAnimal(nouvelAnimal: object): Observable<object> {
     console.log('nouvelAnimal dans le service vaut : ');
     console.log(nouvelAnimal);
     return this.httpClient.post<Quizz>(this.urlApi, nouvelAnimal);
     // return this.httpClient.post<Quizz>(this.urlApi, 'helloTest');
 
+  }
+
+  private handleError(errorResponse: HttpErrorResponse) {
+    if (errorResponse.error instanceof ErrorEvent) {
+      console.error('Client Side Error: ', errorResponse.error.message);
+    } else {
+        console.error('Client Side Error: ', errorResponse);
+    }
+    return new Error();
+  }
+
+  addNickname(pseudoDuJoueur: Joueur): Observable<Joueur> {
+    console.log('passe dans addNickName');
+    return this.httpClient.post<Joueur>('http://localhost:5366/joueurs/', pseudoDuJoueur, {
+      headers: new HttpHeaders({
+        'Content-type': 'application/json'
+      })
+    });
+  }
+
+  validerAnimalBis(quizz: Quizz): Observable<Quizz> {
+    console.log('passe dans ValiderAnimalBis');
+    return this.httpClient.post<Quizz>('http://localhost:5366/quizzs/', quizz, {
+      headers: new HttpHeaders({
+        'Content-type': 'application/json'
+      })
+    });
   }
 
 }

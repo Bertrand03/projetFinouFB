@@ -7,6 +7,7 @@ import { HttpClientService } from '../service/http-client.service';
 })
 export class EmployeeComponent implements OnInit {
     employees: string[];
+    joueurs: string[];
 
   constructor(
     private httpClientService: HttpClientService
@@ -15,10 +16,20 @@ export class EmployeeComponent implements OnInit {
     this.httpClientService.getEmployees().subscribe(
       response => this.handleSuccessfulResponse(response),
     );
+
+    this.httpClientService.getJoueurs().subscribe(
+      listeJoueurs => this.maMethode(listeJoueurs),
+    );
   }
   handleSuccessfulResponse(response) {
     console.log('response Quizz: ');
     console.log(response);
     this.employees = response;
+  }
+
+  maMethode(listeJoueurs) {
+    console.log('response Joueurs: ');
+    console.log(listeJoueurs);
+    this.joueurs = listeJoueurs;
   }
 }

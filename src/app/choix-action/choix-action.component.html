@@ -18,9 +18,13 @@
 </tr>
 
 <div [formGroup]="loginForm">
-<p>Entrer votre pseudo</p>
-<input type="text" formControlName="pseudoJoueur">
-<button (click)="validerPseudo()">Valider pseudo</button>
+  <p>Entrer id pseudo</p>
+  <input type="text" formControlName="pseudoId">
+  <p>Entrer votre pseudo</p>
+  <input type="text" formControlName="pseudoJoueur">
+  <p>Entrer pseudo Score</p>
+  <input type="text" formControlName="pseudoScore">
+  <button (click)="validerPseudo()">Valider pseudo</button>
 </div>
 
 <div [formGroup]="loginForm">
@@ -33,5 +37,6 @@
   <input type="text" formControlName="motFrancais">
   <p>Mot Trouve</p>
   <input type="text" formControlName="motTrouve">
-  <button (click)="validerAnimal()">Valider nouveau Mot</button>
+  <!--<button (click)="validerAnimal()">Valider nouveau Mot</button>-->
+  <button (click)="addAnimalBis()">Valider nouveau Mot</button>
 </div>

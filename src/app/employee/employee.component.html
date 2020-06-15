@@ -16,3 +16,20 @@
   </tr>
   </tbody>
 </table>
+<br>
+<table border="1">
+  <thead></thead>
+  <tr>
+    <th>Id</th>
+    <th>Pseudo</th>
+    <th>Score</th>
+  </tr>
+
+  <tbody>
+  <tr *ngFor="let joueur of joueurs">
+    <td>{{joueur.id}}</td>
+    <td>{{joueur.pseudo}}</td>
+    <td>{{joueur.score}}</td>
+  </tr>
+  </tbody>
+</table>
