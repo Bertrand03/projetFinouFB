@@ -6,12 +6,14 @@ import { HttpClientService } from '../service/http-client.service';
   styleUrls: ['./employee.component.css']
 })
 export class EmployeeComponent implements OnInit {
+
     employees: string[];
     joueurs: string[];
 
   constructor(
     private httpClientService: HttpClientService
   ) { }
+
   ngOnInit() {
     this.httpClientService.getEmployees().subscribe(
       response => this.handleSuccessfulResponse(response),
@@ -22,7 +24,7 @@ export class EmployeeComponent implements OnInit {
     );
   }
   handleSuccessfulResponse(response) {
-    console.log('response Quizz: ');
+    console.log('response : ');
     console.log(response);
     this.employees = response;
   }

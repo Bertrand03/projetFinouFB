@@ -1,11 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
+
 import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 import {HttpClientService, Joueur, Quizz} from '../service/http-client.service';
-import {Observable} from "rxjs";
-import {catchError} from "rxjs/operators";
-import {error} from "selenium-webdriver";
-// import {ErrorObserver} from 'rxjs/observable/ErrorObservable';
+import {Observable} from 'rxjs';
+
+
+
 
 @Component({
   selector: 'app-choix-action',
@@ -16,10 +17,9 @@ export class ChoixActionComponent implements OnInit {
 
   loginForm: FormGroup;
   reponseChoix: string;
-  contenuQuizz: Array<object>;
   url: string;
   choix: string[];
-  // employeesId: string[];
+
   employeesId: Array<any>;
   monTab: Quizz;
   monTabBis: Quizz;
@@ -40,13 +40,12 @@ export class ChoixActionComponent implements OnInit {
 
   newAnimal = this.httpClientService.objetQuizz;
 
-
-
   constructor(private fb: FormBuilder, private httpClient: HttpClient, private httpClientService: HttpClientService) {
   }
 
   ngOnInit() {
     this.loginForm = this.fb.group({
+
         choixAction: [],
         pseudoId: [],
         pseudoJoueur: [],
@@ -54,19 +53,20 @@ export class ChoixActionComponent implements OnInit {
         motAnglais: [],
         motFrancais: [],
         motTrouve: [],
-        motId: []
+        motId: [],
+
   });
 
-
-    // this.httpClientService.getEmployees().subscribe(
-    //   url => this.handleSuccessfulResponse(url),
-    // );
-    //
-    // this.httpClientService.getEmployees().subscribe(
-    //   response => this.handleSuccessfulResponse(response),
-    // );
+    this.httpClientService.getEmployees().subscribe(
+      response => this.handleSuccessfulResponse(response),
+    );
   }
 
+  handleSuccessfulResponse(response) {
+    console.log('response : ');
+    console.log(response);
+    this.choix = response;
+  }
 
   resultatParId(response, reponseChoix) {
     console.log('Entre dans resultatParId : ');
@@ -84,7 +84,6 @@ export class ChoixActionComponent implements OnInit {
   }
 
   trouveParId() {
-    console.log('entre dans trouveParId : ');
     this.reponseChoix = this.loginForm.value.choixAction;
     console.log('reponseChoix : ' + this.reponseChoix);
 
@@ -93,45 +92,11 @@ export class ChoixActionComponent implements OnInit {
     );
   }
 
-  handleSuccessfulResponse(response) {
-    console.log('ma reponse vaut : ' );
-    console.log(response);
-    this.contenuQuizz = response;
-  }
-
-  validerAnimal() {
-
-    this.httpClientService.getEmployees().subscribe(
-      response => this.handleSuccessfulResponse(response),
-    );
-
-    // this.monTab = this.httpClientService.objetQuizz;
-    // console.log('monTab[0] ' + this.monTab);
-    console.log('contenuQuizz : ');
-    console.log('Typeof contenuQuizz : ' + typeof(this.contenuQuizz));
-    console.log(this.contenuQuizz);
-
-
-
-    this.nouveauMotAnglais = this.loginForm.value.motAnglais;
-    // console.log('nouveauMotAnglais ' + this.nouveauMotAnglais);
-    // this.nouvelAnimal.push(this.nouveauMotAnglais);
-    // console.log('nouvelAnimal apres ' + this.nouvelAnimal);
-    this.nouveauMotFrancais = this.loginForm.value.motFrancais;
-    this.nouveauMotTrouve = this.loginForm.value.motTrouve;
-    this.nouveauMotId = parseInt(this.loginForm.value.motId, 10);
-    // this.nouvelAnimal.push('0', this.nouveauMotAnglais, this.nouveauMotFrancais, this.nouveauMotTrouve);
-
-    // console.log('nouveauMotId ' + this.nouveauMotId);
-
-    this.contenuQuizz.push(
-      {animauxId: this.nouveauMotId, motAnglais: this.nouveauMotAnglais, motFrancais: this.nouveauMotFrancais, motTrouve: this.nouveauMotTrouve});
-
-    console.log('contenuQuizz apres push : ');
-    console.log(this.contenuQuizz);
-    this.httpClientService.addAnimal(this.contenuQuizz);
-
-  }
+  // handleSuccessfulResponse(response) {
+  //   console.log('ma reponse vaut : ' );
+  //   console.log(response);
+  //   this.contenuQuizz = response;
+  // }
 
   validerPseudo() {
     this.pseudoDuJoueurId = parseInt(this.loginForm.value.pseudoId, 10);

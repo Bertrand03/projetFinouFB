@@ -2,29 +2,21 @@
   <label> Tapez un ID</label>
   <input type="text" formControlName="choixAction">
   <button class="btn-default" (click)="trouveParId()">Cherche par Id</button>
-  <!--<p>{{employeesId.animauxId | json}}</p>-->
-  <!--<p>{{employeesId.motFrancais | json}}</p>-->
+
   <p>{{employeesId | json}}</p>
-  <!--<p>{{employeesId.motFrancais}}</p>-->
+
 </form>
 
 <p>Resultat tableau NgFor</p>
 <tr *ngFor="let e of employeesId | keyvalue ">
   Key: <b>{{e.key}}</b> and Value: <b>{{e.value}}</b>
-  <!--<td>{{employee.animauxId}}</td>-->
-  <!--<td>{{employee.key}}</td>-->
-  <!--<td>{{employee.value}}</td>-->
-  <!--<td>{{employee.motTrouve}}</td>-->
+
 </tr>
 
 <div [formGroup]="loginForm">
-  <p>Entrer id pseudo</p>
-  <input type="text" formControlName="pseudoId">
-  <p>Entrer votre pseudo</p>
-  <input type="text" formControlName="pseudoJoueur">
-  <p>Entrer pseudo Score</p>
-  <input type="text" formControlName="pseudoScore">
-  <button (click)="validerPseudo()">Valider pseudo</button>
+<p>Entrer votre pseudo</p>
+<input type="text" formControlName="pseudoJoueur">
+<button (click)="validerPseudo()">Valider pseudo</button>
 </div>
 
 <div [formGroup]="loginForm">

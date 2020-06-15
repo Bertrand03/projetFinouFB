@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
+
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-
 
 
 export class Employee {
@@ -29,7 +29,6 @@ export class Joueur {
     public score: number,
   ) {}
 }
-
 
 
 @Injectable({
@@ -60,7 +59,7 @@ export class HttpClientService {
     console.log('url dans getEmployees vaut : ' + this.url);
     // return this.httpClient.get<Quizz>('http://localhost:5366/quizzs/?name=Chien');
     return this.httpClient.get('http://localhost:5366/quizzs/');
-    // return this.httpClient.get('http://localhost:5432/quizzs');
+    // return this.httpClient.get('http://localhost:5366/quizzs');
   }
 
   getJoueurs() {
@@ -73,10 +72,6 @@ export class HttpClientService {
   getId(url) {
     console.log('Lancement getId() : ');
     console.log('url dans Service : ' + url);
-    console.log('this.httpClient.get(this.url)' + this.httpClient.get(this.url));
-    this.recupObjet = this.httpClient.get(this.url);
-    console.log('recupObjet' + this.recupObjet);
-    console.log('recupObjet[0]' + this.recupObjet[0]);
     return this.httpClient.get(this.url);
   }
 
