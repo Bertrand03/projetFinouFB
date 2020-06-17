@@ -14,6 +14,15 @@
     <td>{{employee.motAnglais}}</td>
     <td>{{employee.motTrouve}}</td>
   </tr>
+  <br>
+  <tr *ngFor="let employee of employees; let indexMotATrouver = index;">
+    <td>{{employee.animauxId}}</td>
+    <td>{{employee.motFrancais}}</td>
+    <div [formGroup] = "loginForm">
+      <input type="text" formControlName="formMotJoueur">
+      <button (click)="onValideMotJoueur(indexMotATrouver)">Valider</button>
+    </div>
+  </tr>
   </tbody>
 </table>
 <br>
