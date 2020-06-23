@@ -7,12 +7,14 @@ import { HttpClientModule } from '@angular/common/http';
 import {ChoixActionComponent} from './choix-action/choix-action.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
+import { AuthentificationComponent } from './authentification/authentification.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EmployeeComponent,
-    ChoixActionComponent
+    ChoixActionComponent,
+    AuthentificationComponent
   ],
   imports: [
     BrowserModule,

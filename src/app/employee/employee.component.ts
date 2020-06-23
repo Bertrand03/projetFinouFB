@@ -65,6 +65,7 @@ export class EmployeeComponent implements OnInit {
   verifSiMotJoueurEstJuste(reponseMotJoueur, motAComparer) {
     if (reponseMotJoueur === motAComparer) {
       console.log('Gagné, mot trouvé');
+
     } else {
       console.log('Perdu, le mot n\'est pas bon');
     }

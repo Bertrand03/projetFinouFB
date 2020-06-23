@@ -43,6 +43,7 @@ export class HttpClientService {
   urlApi = 'http://localhost:5366/quizzs/';
   urlApiJoueurs = 'http://localhost:5366/joueurs/';
   objetQuizz: Quizz;
+  joueur: Joueur;
 
   constructor(
     private httpClient: HttpClient
