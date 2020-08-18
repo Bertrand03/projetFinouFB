@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {catchError} from 'rxjs/operators';
 
 
 export class Employee {
@@ -108,6 +109,22 @@ export class HttpClientService {
         'Content-type': 'application/json'
       })
     });
+  }
+
+  changeMotTrouveByYes(motTrouveRechercheId: Quizz, x: Quizz): Observable<Quizz> {
+    if (motTrouveRechercheId != null) {
+      x.motTrouve = 'oui';
+      console.log('x apres maj vaut : ');
+      console.log(x);
+      console.log('url vaut : ');
+      console.log(this.urlApi + motTrouveRechercheId);
+      // return this.httpClient.put<Quizz>('http://localhost:5366/quizzs/' + motTrouveRechercheId, x, {
+      return this.httpClient.put<Quizz>(this.urlApi, x, {
+        headers: new HttpHeaders({
+          'Content-type': 'application/json'
+        })
+      });
+    }
   }
 
   validerAnimalBis(quizz: Quizz): Observable<Quizz> {

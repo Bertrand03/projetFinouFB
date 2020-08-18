@@ -14,6 +14,11 @@ export class EmployeeComponent implements OnInit {
     reponseMotJoueur: string;
     motRecherche: any;
     motAComparer: string;
+    motTrouveRecherche: string;
+    motTrouveRechercheId: number;
+    motTrouveParJoueur: any;
+    x: any;
+    booleenAChanger: any;
 
   constructor(
     private httpClientService: HttpClientService,
@@ -48,11 +53,22 @@ export class EmployeeComponent implements OnInit {
 
   onValideMotJoueur(indexMotATrouver) {
     this.reponseMotJoueur =  this.loginForm.value.formMotJoueur;
-    console.log('Mot Joueur : ' + this.reponseMotJoueur);
-    console.log('indexMotATrouver : ' + indexMotATrouver);
+    // console.log('Mot Joueur : ' + this.reponseMotJoueur);
+    // console.log('indexMotATrouver : ' + indexMotATrouver);
     this.motAComparer = this.recupMotRecherche(indexMotATrouver);
+    this.motTrouveRecherche = this.employees[indexMotATrouver];
     console.log('motAComparer vaut : ' + this.motAComparer);
-    this.verifSiMotJoueurEstJuste(this.reponseMotJoueur, this.motAComparer);
+    console.log('motTrouveRecherche vaut : ');
+    console.log(this.motTrouveRecherche);
+    this.x = this.motTrouveRecherche;
+    this.motTrouveRecherche = this.x.motTrouve;
+    this.motTrouveRechercheId = this.x.animauxId;
+    console.log('motTrouve vaut : ');
+    console.log(this.motTrouveRecherche);
+    console.log('motTrouveId vaut : ');
+    console.log(this.motTrouveRechercheId);
+    // console.log('indexMotATrouver vaut : ' + indexMotATrouver);
+    this.verifSiMotJoueurEstJuste(this.reponseMotJoueur, this.motAComparer, this.motTrouveRechercheId, this.x);
   }
 
   recupMotRecherche(indexMotATrouver) {
@@ -62,10 +78,14 @@ export class EmployeeComponent implements OnInit {
     return this.motRecherche.motAnglais;
   }
 
-  verifSiMotJoueurEstJuste(reponseMotJoueur, motAComparer) {
-    if (reponseMotJoueur === motAComparer) {
-      console.log('Gagné, mot trouvé');
 
+  verifSiMotJoueurEstJuste(reponseMotJoueur, motAComparer, motTrouveRechercheId, x) {
+    if (reponseMotJoueur === motAComparer) {
+      console.log('indexMotATrouver vaut : ' + motTrouveRechercheId);
+      console.log('x vaut : ' );
+      console.log(x);
+      this.httpClientService.changeMotTrouveByYes(motTrouveRechercheId, x)
+      console.log('Gagné, mot trouvé');
     } else {
       console.log('Perdu, le mot n\'est pas bon');
     }
