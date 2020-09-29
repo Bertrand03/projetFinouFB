@@ -1,11 +1,8 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
+import {HttpClient} from '@angular/common/http';
 import {HttpClientService, Joueur, Quizz} from '../service/http-client.service';
-import {Observable} from 'rxjs';
-
-
 
 
 @Component({
@@ -17,6 +14,9 @@ export class ChoixActionComponent implements OnInit {
 
   loginForm: FormGroup;
   reponseChoix: string;
+  urlApi = 'http://localhost:5366/quizzs/';
+  idToDelete: number;
+
 
   choix: string[];
   allPlayers: Joueur;
@@ -24,6 +24,7 @@ export class ChoixActionComponent implements OnInit {
   employeesId: Array<any>;
 
   monTabBis: Quizz;
+  majAnimal: Quizz;
   monTabJoueurs: Joueur;
 
   playertoDelete: string;
@@ -45,17 +46,17 @@ export class ChoixActionComponent implements OnInit {
   ngOnInit() {
     this.loginForm = this.fb.group({
 
-        choixAction: [],
-        pseudoId: [],
-        pseudoJoueur: [],
-        pseudoScore: [],
-        motAnglais: [],
-        motFrancais: [],
-        motTrouve: [],
-        motId: [],
-        deletePlayer: []
+      choixAction: [],
+      pseudoId: [],
+      pseudoJoueur: [],
+      pseudoScore: [],
+      motAnglais: [],
+      motFrancais: [],
+      motTrouve: [],
+      motId: [],
+      deletePlayer: []
 
-  });
+    });
 
     this.httpClientService.getEmployees().subscribe(
       response => this.handleSuccessfulResponse(response),
@@ -81,11 +82,27 @@ export class ChoixActionComponent implements OnInit {
     // console.log('response[reponseChoix] : ');
     // console.log(response[reponseChoix]);
     // response = response[reponseChoix];
-    console.log('type de response ' + typeof(response));
+    console.log('type de response ' + typeof (response));
     this.employeesId = response;
-    console.log('employeesId ' + typeof(this.employeesId));
+    console.log('employeesId ' + typeof (this.employeesId));
 
   }
+
+  apresMaj(response, reponseChoix) {
+    console.log('Entre dans apresMaj: ');
+    console.log('response Quizz: ');
+    console.log(response);
+    console.log('reponseChoix : ');
+    console.log(reponseChoix);
+    // console.log('response[reponseChoix] : ');
+    // console.log(response[reponseChoix]);
+    // response = response[reponseChoix];
+    console.log('type de response ' + typeof (response));
+    this.employeesId = response;
+    console.log('employeesId ' + typeof (this.employeesId));
+
+  }
+
 
   trouveParId() {
     this.reponseChoix = this.loginForm.value.choixAction;
@@ -96,10 +113,19 @@ export class ChoixActionComponent implements OnInit {
     );
   }
 
+  onUpdateAnimal() {
+    this.reponseChoix = this.loginForm.value.choixAction;
+    console.log('reponseChoix : ' + this.reponseChoix);
+
+    this.httpClientService.putAnimal(this.reponseChoix).subscribe(
+      response => this.apresMaj(response, this.reponseChoix),
+    );
+  }
+
   validerPseudo() {
     this.pseudoDuJoueurId = parseInt(this.loginForm.value.pseudoId, 10);
     this.pseudoDuJoueur = this.loginForm.value.pseudoJoueur;
-    this.pseudoDuJoueurScore = parseInt(this.loginForm.value.pseudoScore, 10)
+    this.pseudoDuJoueurScore = parseInt(this.loginForm.value.pseudoScore, 10);
 
     // this.monTabJoueurs = new Joueur(this.pseudoDuJoueurId, this.pseudoDuJoueur, this.pseudoDuJoueurScore);
     this.monTabJoueurs = new Joueur(0, this.pseudoDuJoueur, 0);
@@ -111,7 +137,7 @@ export class ChoixActionComponent implements OnInit {
         console.log(this.monTabJoueurs);
       },
       (e: any) => console.log(e)
-      );
+    );
 
 
     this.httpClientService.getJoueurs().subscribe(
@@ -140,6 +166,40 @@ export class ChoixActionComponent implements OnInit {
     );
   }
 
+  updateAnimalBis() {
+    this.nouveauMotAnglais = this.loginForm.value.motAnglais;
+    this.nouveauMotFrancais = this.loginForm.value.motFrancais;
+    this.nouveauMotTrouve = this.loginForm.value.motTrouve;
+    this.nouveauMotId = parseInt(this.loginForm.value.motId, 10);
+
+    this.majAnimal = new Quizz(this.nouveauMotId, this.nouveauMotFrancais, this.nouveauMotAnglais, this.nouveauMotTrouve);
+    console.log('majAnimal vaut : ');
+    console.log(this.majAnimal);
+
+    this.httpClientService.majAnimalBisService(this.majAnimal).subscribe(
+      (contenuAnimal: Quizz) => {
+        console.log('contenuAnimal après modif');
+        // console.log(this.majAnimal);
+        console.log(contenuAnimal);
+      },
+      (e: any) => console.log(e)
+    );
+  }
+
+  onDeleteAnimal() {
+    this.idToDelete = parseInt((this.loginForm.value.motId), 10);
+    this.httpClientService.onDeleteAnimalService(this.idToDelete).subscribe();
+  }
+
+
+  // deleteHero(id: number): Observable<{}> {
+  //   const url = `${this.heroesUrl}/${id}`; // DELETE api/heroes/42
+  //   return this.http.delete(url, httpOptions)
+  //     .pipe(
+  //       catchError(this.handleError('deleteHero'))
+  //     );
+  // }
+
   supprimerJoueur() {
     this.playertoDelete = this.loginForm.value.deletePlayer;
     console.log('Joueur a supprimé est : ' + this.playertoDelete);
@@ -152,8 +212,8 @@ export class ChoixActionComponent implements OnInit {
     let stop = 'non';
     let i = 0;
 
-      for (const ligne in this.allPlayers) {
-        while (stop === 'non') {
+    for (const ligne in this.allPlayers) {
+      while (stop === 'non') {
         console.log('allplayers[i] vaut : ');
         if (this.allPlayers[i].pseudo === this.playertoDelete) {
           console.log('gagné');

@@ -1,8 +1,7 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {catchError} from 'rxjs/operators';
 
 
 export class Employee {
@@ -11,16 +10,18 @@ export class Employee {
     public name: string,
     public designation: string,
     public salary: string,
-  ) {}
+  ) {
+  }
 }
 
 export class Quizz {
   constructor(
-    public AnimauxId: number,
+    public animauxId: number,
     public motFrancais: string,
     public motAnglais: string,
     public motTrouve: string,
-  ) {}
+  ) {
+  }
 }
 
 export class Joueur {
@@ -28,23 +29,33 @@ export class Joueur {
     public id: number,
     public pseudo: string,
     public score: number,
-  ) {}
+  ) {
+  }
 }
 
 
 @Injectable({
   providedIn: 'root'
 })
+
+// export class HeroesService {
+//   urlApi = 'http://localhost:5366/quizzs/';
+//
+//   constructor(
+//     private http: HttpClient) {
+//   }
+//   getObjet(): Observable<Quizz[]> {
+//     return this.http.get<Quizz[]>(this.urlApi);
+//   }
+// }
+
+
 export class HttpClientService {
 
-  reponseChoix: string;
   url: string;
-  recupObjet: Observable<any>;
   tableauFiltre: Observable<any>;
-  urlApi = 'http://localhost:5366/quizzs/';
-  urlApiJoueurs = 'http://localhost:5366/joueurs/';
-  objetQuizz: Quizz;
-  joueur: Joueur;
+  urlApi = 'http://localhost:5366/quizzs';
+
 
   constructor(
     private httpClient: HttpClient
@@ -78,11 +89,24 @@ export class HttpClientService {
   }
 
   getIdBis(reponseChoix) {
-      console.log('passe dans getIdBis, reponseChoix vaut : ' + reponseChoix);
-      this.tableauFiltre = this.httpClient.get('http://localhost:5366/quizzs/' + reponseChoix);
-      console.log('tableau filtre : ');
-      console.log(this.tableauFiltre);
-      return this.tableauFiltre;
+    console.log('passe dans getIdBis, reponseChoix vaut : ' + reponseChoix);
+    this.tableauFiltre = this.httpClient.get('http://localhost:5366/quizzs/' + reponseChoix);
+    console.log('tableau filtre : ');
+    console.log(this.tableauFiltre);
+    return this.tableauFiltre;
+  }
+
+  putAnimal(reponseChoix) {
+    console.log('passe dans putAnimal, reponseChoix vaut : ' + reponseChoix);
+    return this.httpClient.put('http://localhost:5366/quizzs/' + reponseChoix, Quizz, {
+      headers: new HttpHeaders({
+        'Content-type': 'application/json'
+      })
+      // this.tableauFiltre = this.httpClient.put('http://localhost:5366/quizzs/' + reponseChoix, Quizz);
+      // console.log('tableau filtre : ');
+      // console.log(this.tableauFiltre);
+      // return this.tableauFiltre;
+    });
   }
 
   addAnimal(nouvelAnimal: object): Observable<object> {
@@ -97,7 +121,7 @@ export class HttpClientService {
     if (errorResponse.error instanceof ErrorEvent) {
       console.error('Client Side Error: ', errorResponse.error.message);
     } else {
-        console.error('Client Side Error: ', errorResponse);
+      console.error('Client Side Error: ', errorResponse);
     }
     return new Error();
   }
@@ -128,12 +152,37 @@ export class HttpClientService {
   }
 
   validerAnimalBis(quizz: Quizz): Observable<Quizz> {
-    console.log('passe dans ValiderAnimalBis');
+    console.log('passe dans ValiderAnimalBis dans mon Service');
     return this.httpClient.post<Quizz>('http://localhost:5366/quizzs/', quizz, {
       headers: new HttpHeaders({
         'Content-type': 'application/json'
       })
     });
+  }
+
+  majAnimalBisService(quizz: Quizz): Observable<Quizz> {
+    console.log('passe dans majAnimalBisService');
+    const url = `${this.urlApi}/update/${quizz.animauxId}`;
+    console.log('quizz.Animaux vaut : ', quizz.animauxId);
+    return this.httpClient.put<Quizz>(url, quizz, {
+      headers: new HttpHeaders({
+        'Content-type': 'application/json'
+      })
+    });
+  }
+
+  onDeleteAnimalService(id: number): Observable<any> {
+    const url = `${this.urlApi}${id}`;
+    console.log('url vaut : ', url);
+    console.log('Id à supprimer : ' + id);
+    return this.httpClient.delete(url);
+  }
+
+  onUpdateAnimalService(id: number): Observable<any> {
+    const url = `${this.urlApi}${id}`;
+    console.log('url vaut : ', url);
+    console.log('Id à mettre à jour : ' + id);
+    return this.httpClient.post(url, Quizz);
   }
 
 }
