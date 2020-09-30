@@ -8,13 +8,19 @@ import {ChoixActionComponent} from './choix-action/choix-action.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
 import { AuthentificationComponent } from './authentification/authentification.component';
+import { NavBarComponent } from './nav-bar/nav-bar.component';
+import { TrouveAnglaisComponent } from './trouve-anglais/trouve-anglais.component';
+import { TrouveFrancaisComponent } from './trouve-francais/trouve-francais.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     EmployeeComponent,
     ChoixActionComponent,
-    AuthentificationComponent
+    AuthentificationComponent,
+    NavBarComponent,
+    TrouveAnglaisComponent,
+    TrouveFrancaisComponent
   ],
   imports: [
     BrowserModule,

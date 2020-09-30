@@ -1,34 +1,25 @@
-<div class="container">
-  <div class="row">
-    <div class="col-sm-9 col-md-7 col-lg-5 mx-auto">
-      <div class="card card-signin my-5">
-        <div class="card-body">
-
-          <h5 class="card-title text-center">Connexion</h5>
-
-          <div *ngIf="errorMsg" class="text-center text-danger m-1">{{errorMsg}}</div>
-
-          <form [formGroup]="loginForm" class="form-signin">
-
-            <input formControlName="pseudoForm" placeholder="Pseudo"
-                   name="pseudo" [(ngModel)]="pseudo">
-            <br>
-            <button class="btn btn-lg btn-dark btn-block text-uppercase"
-                    (click)="onSignIn()">
-              Me connecter
-            </button>
-
-          </form>
-
-        </div>
-      </div>
-    </div>
-  </div>
+<div class="container-fluid">
+  <button class="btn-success" (click)="onDebloqueConnexion()" *ngIf="!deblocageBouton">Se Connecter</button>
+  <button class="btn-danger" (click)="onDebloqueEnregistrement()" *ngIf="!deblocageBouton">S'enregistrer</button>
 </div>
 
-<div>
-  <p>Input pour mon test</p>
-  <input type="text" [(ngModel)]="pseudo">
-  <button (click)="onVerifTest()"
-          (click)="onSignIn()">Verif variable test</button>
+<div [formGroup]="loginForm" *ngIf="deblocageConnexion">
+  <h4>Cliquez pour vous connecter</h4>
+  <label>Pseudo</label>
+  <input type="text" formControlName="pseudo">
+  <label>Mot de passe</label>
+  <input type="text" formControlName="motDePasse">
+  <button *ngIf="!isAuth" (click)="onConnexionUser()">Se connecter</button>
 </div>
+<!--<p>{{messageAuth}}</p>-->
+
+<div [formGroup]="loginForm" class="container-fluid" *ngIf="deblocageEnregistrement">
+  <h4>Création de votre compte</h4>
+  <label>Pseudo</label>
+  <input type="text" formControlName="pseudoCreation">
+  <label>Mot de passe</label>
+  <input type="text" formControlName="motDePasseCreation">
+  <button (click)="onSaveUser()">Enregister User</button>
+  <p *ngIf="loginCree">Bienvenue {{pseudoUserCree}} !</p>
+</div>
+

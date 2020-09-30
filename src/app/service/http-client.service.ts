@@ -82,6 +82,11 @@ export class HttpClientService {
     // return this.httpClient.get('http://localhost:5432/quizzs');
   }
 
+  getAllEnglishQuizzService() {
+    console.log('Entre dans getAllEnglishQuizzService');
+    return this.httpClient.get('http://localhost:5366/quizzs/');
+  }
+
   getId(url) {
     console.log('Lancement getId() : ');
     console.log('url dans Service : ' + url);

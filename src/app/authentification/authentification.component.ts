@@ -29,12 +29,12 @@ export class AuthentificationComponent implements OnInit {
   }
 
   onSignIn() {
-    // this.pseudo = this.loginForm.value.pseudoForm;
-    console.log('this.pseudo vaut : ');
+    this.pseudo = this.loginForm.value.pseudoForm;
+    console.log('le pseudo rentré vaut : ');
     console.log(this.pseudo);
     this.authService.checkAuth(this.pseudo)
       .then(() => {
-        this.router.navigate(['employee']);
+        this.router.navigate(['app-choix-action']);
       }, (err) => {
         this.errorMsg = err;
       });

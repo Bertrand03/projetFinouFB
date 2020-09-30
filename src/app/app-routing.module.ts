@@ -3,11 +3,19 @@ import { Routes, RouterModule } from '@angular/router';
 import { EmployeeComponent } from './employee/employee.component';
 import {ChoixActionComponent} from './choix-action/choix-action.component';
 import {AuthentificationComponent} from './authentification/authentification.component';
+import {TrouveAnglaisComponent} from './trouve-anglais/trouve-anglais.component';
+import {TrouveFrancaisComponent} from './trouve-francais/trouve-francais.component';
 
 const routes: Routes = [
   { path: 'employee', component: EmployeeComponent},
   { path: 'choix-action', component: ChoixActionComponent},
-  { path: 'authentification', component: AuthentificationComponent}
+  { path: 'authentification', component: AuthentificationComponent},
+  { path: 'trouve-anglais', component: TrouveAnglaisComponent},
+  { path: 'trouve-francais', component: TrouveFrancaisComponent},
+    {
+    path: '**',
+    redirectTo: 'authentification'
+  }  // Si aucun lien trouvé ci-dessus alors redirection vers l'accueil.
 ];
 
 // export const routes: Routes = [

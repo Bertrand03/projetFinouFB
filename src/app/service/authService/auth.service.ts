@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import {HttpClientService, Joueur} from '../http-client.service';
+import {ActivatedRoute, Router} from '@angular/router';
 
 @Injectable({
   providedIn: 'root'
@@ -7,37 +8,22 @@ import {HttpClientService, Joueur} from '../http-client.service';
 export class AuthService {
   isAuth: boolean;
   joueurs: Joueur;
+  // listeJoueurs: any[];
 
-  constructor(private httpClientService: HttpClientService) {
+  constructor(private httpClientService: HttpClientService,
+              private router: Router,
+              private activatedRoute: ActivatedRoute) {
   }
 
   checkAuth(pseudo) {
-
+    console.log('On entre dans authService.checkAuth()');
     this.httpClientService.getJoueurs().subscribe(
       listeJoueurs => this.maMethode(listeJoueurs),
     );
     console.log('pseudo vaut : ');
     console.log(pseudo);
-    // console.log('this.joueurs.pseudo) vaut : ');
-    // console.log(this.joueurs.pseudo);
 
-    return new Promise(
-      (res, rej) => {
-        setTimeout(
-          () => {
-            // If credentials not equel reject the promise
-            if (this.joueurs.pseudo !== pseudo) {
-              rej('Ce pseudo n\'existe pas');
-            }
-
-            // Else just call the signIn function
-            console.log('Authentification OK');
-            this.signIn(res);
-          }, 1000
-        );
-      }
-    );
-
+    return this.router.navigate(['app-choix-action']);
   }
 
   /**
@@ -57,7 +43,8 @@ export class AuthService {
   }
 
   maMethode(listeJoueurs) {
-    console.log('response Joueurs: ');
+    console.log('Entre dans ma méthode() : ');
+    console.log('listeJoueurs: ');
     console.log(listeJoueurs);
     this.joueurs = listeJoueurs;
   }
