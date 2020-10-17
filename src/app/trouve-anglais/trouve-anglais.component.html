@@ -1,4 +1,7 @@
 <ul class="list-group">
-  <li class="list-group-item" *ngFor="let theme of listEnglishQuizz;">
-    <button (click)="onValiderChoix(theme.id)">Quizz : {{theme.motAnglais}}</button></li>
+  <li class="list-group-item" *ngFor="let theme of listCategoriesQuizz;">
+    <button (click)="onValiderChoix(theme.categorieId)">Quizz : {{theme.nomCategorie}}</button></li>
+  <!--<p>Menu trouve anglais</p>-->
+  <!--<p>theme.categorieID vaut {{theme.categorieId}}</p>-->
+  <!--<p>listeCategorieQuizz vaut {{listCategoriesQuizz}}</p>-->
 </ul>

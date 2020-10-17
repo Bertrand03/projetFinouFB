@@ -33,6 +33,14 @@ export class Joueur {
   }
 }
 
+export class CategorieQuizz {
+  constructor(
+    public categorieId: number,
+    public nomCategorie: string,
+  ) {
+  }
+}
+
 
 @Injectable({
   providedIn: 'root'
@@ -85,6 +93,11 @@ export class HttpClientService {
   getAllEnglishQuizzService() {
     console.log('Entre dans getAllEnglishQuizzService');
     return this.httpClient.get('http://localhost:5366/quizzs/');
+  }
+
+  getAllCategorieQuizzService() {
+    console.log('Front-end - getAllCategorieQuizzService()');
+    return this.httpClient.get('http://localhost:5366/trouve-anglais/');
   }
 
   getId(url) {
