@@ -17,6 +17,7 @@ export class Employee {
 export class Quizz {
   constructor(
     public animauxId: number,
+    public categorieId: number,
     public motFrancais: string,
     public motAnglais: string,
     public motTrouve: string,
@@ -46,23 +47,13 @@ export class CategorieQuizz {
   providedIn: 'root'
 })
 
-// export class HeroesService {
-//   urlApi = 'http://localhost:5366/quizzs/';
-//
-//   constructor(
-//     private http: HttpClient) {
-//   }
-//   getObjet(): Observable<Quizz[]> {
-//     return this.http.get<Quizz[]>(this.urlApi);
-//   }
-// }
-
 
 export class HttpClientService {
 
   url: string;
   tableauFiltre: Observable<any>;
-  urlApi = 'http://localhost:5366/quizzs';
+  contenuCategorieQuizz: Observable<any>;
+  urlApi = 'http://localhost:5366/quizzs/';
 
 
   constructor(
@@ -70,26 +61,15 @@ export class HttpClientService {
   ) {
   }
 
-  // getEmployees() {
-  //   console.log('test call');
-  //   return this.httpClient.get<Employee[]>('http://localhost:8080/employees');
-  // }
-
   getEmployees() {
-    console.log('test call');
-    console.log('url dans getEmployees vaut : ' + this.url);
-    // return this.httpClient.get<Quizz>('http://localhost:5366/quizzs/?name=Chien');
-    return this.httpClient.get('http://localhost:5366/quizzs/');
-    // return this.httpClient.get('http://localhost:5366/quizzs');
+    console.log('passe dans getEmployees()');
+    return this.httpClient.get(this.urlApi);
   }
 
   getJoueurs() {
-    console.log('url dans getJoueursvaut : ' + this.url);
-    // return this.httpClient.get<Quizz>('http://localhost:5366/quizzs/?name=Chien');
     return this.httpClient.get('http://localhost:5366/joueurs/');
-    // return this.httpClient.get('http://localhost:5432/quizzs');
   }
-
+  
   getAllEnglishQuizzService() {
     console.log('Entre dans getAllEnglishQuizzService');
     return this.httpClient.get('http://localhost:5366/quizzs/');
@@ -106,6 +86,15 @@ export class HttpClientService {
     return this.httpClient.get(this.url);
   }
 
+  getContenuCategorieQuizz(categorieId) {
+    console.log('Front-end - getContenuCategorieQuizz()');
+    console.log('categorieId vaut : ' + categorieId);
+    this.contenuCategorieQuizz = this.httpClient.get('http://localhost:5366/quizzs/categorie/' + categorieId);
+    // console.log('contenuCategorieQuizz vaut : ');
+    // console.log(this.contenuCategorieQuizz);
+    return this.contenuCategorieQuizz;
+  }
+
   getIdBis(reponseChoix) {
     console.log('passe dans getIdBis, reponseChoix vaut : ' + reponseChoix);
     this.tableauFiltre = this.httpClient.get('http://localhost:5366/quizzs/' + reponseChoix);
@@ -120,10 +109,6 @@ export class HttpClientService {
       headers: new HttpHeaders({
         'Content-type': 'application/json'
       })
-      // this.tableauFiltre = this.httpClient.put('http://localhost:5366/quizzs/' + reponseChoix, Quizz);
-      // console.log('tableau filtre : ');
-      // console.log(this.tableauFiltre);
-      // return this.tableauFiltre;
     });
   }
 
@@ -180,8 +165,28 @@ export class HttpClientService {
 
   majAnimalBisService(quizz: Quizz): Observable<Quizz> {
     console.log('passe dans majAnimalBisService');
+    console.log('animal mis à jour vaut :');
+    console.log(quizz);
+
     const url = `${this.urlApi}/update/${quizz.animauxId}`;
-    console.log('quizz.Animaux vaut : ', quizz.animauxId);
+    console.log('quizz.animauxId vaut : ', quizz.animauxId);
+    console.log('url : ');
+    console.log(this.url);
+    return this.httpClient.put<Quizz>(url, quizz, {
+      headers: new HttpHeaders({
+        'Content-type': 'application/json'
+      })
+    });
+  }
+
+  resetAllMotTrouveService(quizz: Quizz): Observable<Quizz> {
+    console.log('passe dans resetAllMotTrouveService');
+    console.log('animal mis à jour vaut :');
+    console.log(quizz);
+
+    const url = `${this.urlApi}/update/reset`;
+    console.log('url : ');
+    console.log(this.url);
     return this.httpClient.put<Quizz>(url, quizz, {
       headers: new HttpHeaders({
         'Content-type': 'application/json'

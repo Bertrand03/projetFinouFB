@@ -5,6 +5,7 @@ import {ChoixActionComponent} from './choix-action/choix-action.component';
 import {AuthentificationComponent} from './authentification/authentification.component';
 import {TrouveAnglaisComponent} from './trouve-anglais/trouve-anglais.component';
 import {TrouveFrancaisComponent} from './trouve-francais/trouve-francais.component';
+import {ToolsboxComponent} from './toolsbox/toolsbox.component';
 
 const routes: Routes = [
   { path: 'employee', component: EmployeeComponent},
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'authentification', component: AuthentificationComponent},
   { path: 'trouve-anglais', component: TrouveAnglaisComponent},
   { path: 'trouve-francais', component: TrouveFrancaisComponent},
+  { path: 'toolsbox', component: ToolsboxComponent},
     {
     path: '**',
     redirectTo: 'authentification'

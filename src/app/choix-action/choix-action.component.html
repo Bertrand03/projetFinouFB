@@ -1,72 +1,74 @@
-<div [formGroup]="loginForm">
-  <p><b>Ajout</b> d'un nouvel Animal.</p>
-  <p>Id Mot</p>
-  <input type="text" formControlName="motId">
-  <p>Mot Anglais</p>
-  <input type="text" formControlName="motAnglais">
-  <p>Mot Francais</p>
-  <input type="text" formControlName="motFrancais">
-  <p>Mot Trouve</p>
-  <input type="text" formControlName="motTrouve">
-  <br>
-  <button (click)="addAnimalBis()">Valider nouvel Animal</button>
-</div>
-<br>
-<br>
+<!--<div [formGroup]="loginForm">-->
+  <!--<p><b>Ajout</b> d'un nouvel Animal.</p>-->
+  <!--<p>Id Mot</p>-->
+  <!--<input type="text" formControlName="motId">-->
+  <!--<p>Mot Anglais</p>-->
+  <!--<input type="text" formControlName="motAnglais">-->
+  <!--<p>Mot Francais</p>-->
+  <!--<input type="text" formControlName="motFrancais">-->
+  <!--<p>Mot Trouve</p>-->
+  <!--<input type="text" formControlName="motTrouve">-->
+  <!--<br>-->
+  <!--<button (click)="addAnimalBis()">Valider nouvel Animal</button>-->
+<!--</div>-->
+<!--<br>-->
+<!--<br>-->
 
-<div [formGroup]="loginForm">
-  <p><b>Suppression</b> d'un Animal</p>
-  <p>Numero Id à supprimer</p>
-  <input type="text" formControlName="motId">
-  <br>
-  <button (click)="onDeleteAnimal()">Supprimer un Animal</button>
-</div>
-<br>
-<br>
+<!--<div [formGroup]="loginForm">-->
+  <!--<p><b>Suppression</b> d'un Animal</p>-->
+  <!--<p>Numero Id à supprimer</p>-->
+  <!--<input type="text" formControlName="motId">-->
+  <!--<br>-->
+  <!--<button (click)="onDeleteAnimal()">Supprimer un Animal</button>-->
+<!--</div>-->
+<!--<br>-->
+<!--<br>-->
 
-<div [formGroup]="loginForm">
-  <p><b>Modification</b> d'un mot</p>
-  <p>Numero Id à modifier</p>
-  <br>
-  <p>{{employeesId | json}}</p>
-</div>
-<br>
-<br>
-<form [formGroup]="loginForm">
-  <label> Tapez un ID</label>
-  <input type="text" formControlName="choixAction">
-  <button class="btn-default" (click)="trouveParId()">Cherche par Id</button>
+<!--<div [formGroup]="loginForm">-->
+  <!--<p><b>Modification</b> d'un mot</p>-->
+  <!--<p>Numero Id à modifier</p>-->
+  <!--<br>-->
+  <!--<p>{{employeesId | json}}</p>-->
+<!--</div>-->
+<!--<br>-->
+<!--<br>-->
+<!--<form [formGroup]="loginForm">-->
+  <!--<label> Tapez un ID</label>-->
+  <!--<input type="text" formControlName="choixAction">-->
+  <!--<button class="btn-default" (click)="trouveParId()">Cherche par Id</button>-->
 
-  <p>{{employeesId | json}}</p>
-  <p>Nouvel ID</p>
-  <input type="text" formControlName="motId">
-  <p>Nouveau mot Anglais</p>
-  <input type="text" formControlName="motAnglais">
-  <p>Nouveau mot Francais</p>
-  <input type="text" formControlName="motFrancais">
-  <p>Nouveau mot Trouve</p>
-  <input type="text" formControlName="motTrouve">
-  <button (click)="updateAnimalBis()">Mettre à jour un Animal BIS</button>
+  <!--<p>{{employeesId | json}}</p>-->
+  <!--<p>Nouvel ID</p>-->
+  <!--<input type="number" formControlName="motId">-->
+  <!--<p>Nouvelle categorie Id</p>-->
+  <!--<input type="number" formControlName="motCategorieId">-->
+  <!--<p>Nouveau mot Anglais</p>-->
+  <!--<input type="text" formControlName="motAnglais">-->
+  <!--<p>Nouveau mot Francais</p>-->
+  <!--<input type="text" formControlName="motFrancais">-->
+  <!--<p>Nouveau mot Trouve</p>-->
+  <!--<input type="text" formControlName="motTrouve">-->
+  <!--<button (click)="updateAnimalBis()">Mettre à jour un Animal BIS</button>-->
 
-</form>
+<!--</form>-->
 
-<p>Resultat tableau NgFor</p>
-<tr *ngFor="let e of employeesId | keyvalue ">
-  Key: <b>{{e.key}}</b> and Value: <b>{{e.value}}</b>
+<!--<p>Resultat tableau NgFor</p>-->
+<!--<tr *ngFor="let e of employeesId | keyvalue ">-->
+  <!--Key: <b>{{e.key}}</b> and Value: <b>{{e.value}}</b>-->
 
-</tr>
+<!--</tr>-->
 
-<div [formGroup]="loginForm">
-<p>Entrer votre pseudo</p>
-<input type="text" formControlName="pseudoJoueur">
-<button (click)="validerPseudo()">Valider pseudo</button>
-</div>
+<!--<div [formGroup]="loginForm">-->
+<!--<p>Entrer votre pseudo</p>-->
+<!--<input type="text" formControlName="pseudoJoueur">-->
+<!--<button (click)="validerPseudo()">Valider pseudo</button>-->
+<!--</div>-->
 
-<div [formGroup]="loginForm">
-  <p>Supprimer un joueur</p>
-  <input type="text" formControlName="deletePlayer">
-  <button (click)="supprimerJoueur()">Supprimer</button>
-</div>
+<!--<div [formGroup]="loginForm">-->
+  <!--<p>Supprimer un joueur</p>-->
+  <!--<input type="text" formControlName="deletePlayer">-->
+  <!--<button (click)="supprimerJoueur()">Supprimer</button>-->
+<!--</div>-->
 
 
 

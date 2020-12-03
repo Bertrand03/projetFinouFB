@@ -1,7 +1,17 @@
-<ul class="list-group">
-  <li class="list-group-item" *ngFor="let theme of listCategoriesQuizz;">
-    <button (click)="onValiderChoix(theme.categorieId)">Quizz : {{theme.nomCategorie}}</button></li>
-  <!--<p>Menu trouve anglais</p>-->
-  <!--<p>theme.categorieID vaut {{theme.categorieId}}</p>-->
-  <!--<p>listeCategorieQuizz vaut {{listCategoriesQuizz}}</p>-->
-</ul>
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let theme of listCategoriesQuizz;">
+      <button (click)="onValiderChoix(theme.categorieId)">Quizz : {{theme.nomCategorie}}</button>
+    </li>
+  </ul>
+
+  <form [formGroup]="loginForm">
+    <ul class="list-group">
+      <li class="list-group-item" *ngFor="let ligne of quizz;">
+        {{ligne.motFrancais}} - {{ligne.motTrouve}}
+        <br>
+        <input type="text" formControlName="motAnglaisJoueur">
+        <button (click)="onControlFrenchWord(ligne)">Valider</button>
+      </li>
+      <button (click)="onResetAllCategorieMotTrouve()">RESET MOTS {{categorieChoisie}}</button>
+    </ul>
+  </form>

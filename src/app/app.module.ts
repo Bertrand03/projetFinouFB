@@ -11,6 +11,7 @@ import { AuthentificationComponent } from './authentification/authentification.c
 import { NavBarComponent } from './nav-bar/nav-bar.component';
 import { TrouveAnglaisComponent } from './trouve-anglais/trouve-anglais.component';
 import { TrouveFrancaisComponent } from './trouve-francais/trouve-francais.component';
+import { ToolsboxComponent } from './toolsbox/toolsbox.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { TrouveFrancaisComponent } from './trouve-francais/trouve-francais.compo
     AuthentificationComponent,
     NavBarComponent,
     TrouveAnglaisComponent,
-    TrouveFrancaisComponent
+    TrouveFrancaisComponent,
+    ToolsboxComponent
   ],
   imports: [
     BrowserModule,
