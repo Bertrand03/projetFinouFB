@@ -23,6 +23,7 @@ export class ToolsboxComponent implements OnInit, DoCheck {
   score: Score;
 
   employeesId: Array<any>;
+  quizzSelParId: Quizz;
 
   monTabBis: Quizz;
   majAnimal: Quizz;
@@ -45,7 +46,7 @@ export class ToolsboxComponent implements OnInit, DoCheck {
   nouveauMotTrouve: string;
 
   afficheAnimalCree: boolean;
-  CategorieDuMotCreee: Observable <CategorieQuizz>;
+  motASupprimer: Observable <any>;
   nomCategorieDuMotCreee: string;
 
   joueurSelectionne: Joueur;
@@ -73,6 +74,7 @@ export class ToolsboxComponent implements OnInit, DoCheck {
       motAnglais: [],
       motFrancais: [],
       motTrouve: [],
+      idMotASupprimer: [],
       motId: [],
       motCategorieId: [],
       deletePlayer: []
@@ -90,17 +92,6 @@ export class ToolsboxComponent implements OnInit, DoCheck {
     this.httpClientService.getScore().subscribe(
       response => this.resultatGetScore(response),
     );
-  }
-
-  getScoreJoueurCategorie() {
-    this.httpClientService.getScoreParJoueurEtCategorieQuizz(this.joueurSelectionne.id, 2).subscribe(
-      resultat => this.resultatGetScoreParJoueurEtCategorieQuizz(resultat)
-    );
-  }
-
-  resultatGetScoreParJoueurEtCategorieQuizz(resultat) {
-    this.scoreParJoueurEtParCategorie = resultat;
-    this.scoreCateg = resultat.score;
   }
 
   resultatGetScore(response) {
@@ -122,26 +113,9 @@ export class ToolsboxComponent implements OnInit, DoCheck {
     console.log('reponseChoix : ');
     console.log(reponseChoix);
     console.log('type de response ' + typeof (response));
-    this.employeesId = response;
-    console.log('employeesId ' + typeof (this.employeesId));
+    this.quizzSelParId = response;
 
   }
-
-  apresMaj(response, reponseChoix) {
-    console.log('Entre dans apresMaj: ');
-    console.log('response Quizz: ');
-    console.log(response);
-    console.log('reponseChoix : ');
-    console.log(reponseChoix);
-    // console.log('response[reponseChoix] : ');
-    // console.log(response[reponseChoix]);
-    // response = response[reponseChoix];
-    console.log('type de response ' + typeof (response));
-    this.employeesId = response;
-    console.log('employeesId ' + typeof (this.employeesId));
-
-  }
-
 
   trouveParId() {
     this.reponseChoix = this.loginForm.value.choixAction;
@@ -152,22 +126,12 @@ export class ToolsboxComponent implements OnInit, DoCheck {
     );
   }
 
-  // onUpdateAnimal() {
-  //   this.reponseChoix = this.loginForm.value.choixAction;
-  //   console.log('reponseChoix : ' + this.reponseChoix);
-  //
-  //   this.httpClientService.putAnimal(this.reponseChoix).subscribe(
-  //     response => this.apresMaj(response, this.reponseChoix),
-  //   );
-  // }
-
   validerPseudo() {
     this.pseudoDuJoueurId = parseInt(this.loginForm.value.pseudoId, 10);
     this.pseudoDuJoueur = this.loginForm.value.pseudoJoueur;
     this.motDePasse = this.loginForm.value.motDePasse;
     this.pseudoDuJoueurScore = parseInt(this.loginForm.value.pseudoScore, 10);
 
-    // this.monTabJoueurs = new Joueur(this.pseudoDuJoueurId, this.pseudoDuJoueur, this.pseudoDuJoueurScore);
     this.monTabJoueurs = new Joueur(0, this.pseudoDuJoueur, this.motDePasse, 0);
     console.log('this.monTabJoueurs vaut : ');
     console.log(this.monTabJoueurs);
@@ -252,36 +216,20 @@ export class ToolsboxComponent implements OnInit, DoCheck {
   }
 
   onDeleteAnimal() {
-    this.idToDelete = parseInt((this.loginForm.value.motId), 10);
-    this.httpClientService.onDeleteAnimalService(this.idToDelete).subscribe();
-  }
+    this.idToDelete = parseInt((this.loginForm.value.idMotASupprimer), 10);
+    this.httpClientService.getIdBis(this.idToDelete).subscribe(
+      (response: Quizz) => {
+        console.log('response onDeleteAnimal()');
+        console.log(response);
+      },
+      (e: any) => console.log(e)
+    );
 
 
-  supprimerJoueur() {
-    this.playertoDelete = this.loginForm.value.deletePlayer;
-    console.log('Joueur a supprimé est : ' + this.playertoDelete);
-    console.log('allplayers vaut :');
-    console.log(this.allPlayers);
-    console.log(typeof (this.allPlayers[0]));
-
-    console.log(this.allPlayers[0].pseudo);
-
-    let stop = 'non';
-    let i = 0;
-
-    for (const ligne in this.allPlayers) {
-      while (stop === 'non') {
-        console.log('allplayers[i] vaut : ');
-        if (this.allPlayers[i].pseudo === this.playertoDelete) {
-          console.log('gagné');
-          stop = 'oui';
-          this.idPlayerToDelete = this.allPlayers[i].id;
-          console.log('idplayer à sup : ' + this.idPlayerToDelete);
-        }
-        i++;
-      }
-    }
-
+    console.log('this.motASupprimer vaut : ');
+    console.log(this.motASupprimer);
+    console.log('id du mot à supprimer vaut : ' + this.idToDelete);
+    this.httpClientService.deleteMotQuizz(this.idToDelete).subscribe();
   }
 }
 

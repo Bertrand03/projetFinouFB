@@ -21,18 +21,9 @@
 <div [formGroup]="loginForm">
   <p><b>Suppression</b> d'un Animal</p>
   <p>Numero Id à supprimer</p>
-  <input type="text" formControlName="motId">
+  <input type="text" formControlName="idMotASupprimer">
   <br>
   <button (click)="onDeleteAnimal()">Supprimer un Animal</button>
-</div>
-<br>
-<br>
-
-<div [formGroup]="loginForm">
-  <p><b>Modification</b> d'un mot</p>
-  <p>Numero Id à modifier</p>
-  <br>
-  <p>{{employeesId | json}}</p>
 </div>
 <br>
 <br>
@@ -41,7 +32,17 @@
   <input type="text" formControlName="choixAction">
   <button class="btn-default" (click)="trouveParId()">Cherche par Id</button>
 
-  <p>{{employeesId | json}}</p>
+  <!--<p>{{employeesId | json}}</p>-->
+    <div *ngIf = "reponseChoix != null">
+    <p> Mot Quizz Choisi est : </p>
+    <p> Animaux Id : {{quizzSelParId.animauxId}}</p>
+    <p> Categorie Id : {{quizzSelParId.categorieId}}</p>
+    <p> Mot Francais : {{quizzSelParId.motFrancais}}</p>
+    <p> Mot Anglais : {{quizzSelParId.motAnglais}}</p>
+    <p> Mot Trouve : {{quizzSelParId.motTrouve}}</p>
+    </div>
+  <br>
+  <p><b>Modification</b> d'un Animal</p>
   <p>Nouvel ID</p>
   <input type="number" formControlName="motId">
   <p>Nouvelle categorie Id</p>
@@ -74,24 +75,3 @@
   <input type="text" formControlName="deletePlayer">
   <button (click)="supprimerJoueur()">Supprimer</button>
 </div>
-
-<div>
-  <p>Affichage des scores</p>
-  <div *ngFor="let ligne of score">
-  <p>Score id : {{ligne.scoreId}}</p>
-  <p>Joueur id : {{ligne.joueurId}} </p>
-  <p>Categorie id :{{ligne.categorieId}} </p>
-  <p>Score Global : {{ligne.scoreGlobal}} </p>
-  <p>Score catégorie : {{ligne.scoreCategorie}} </p>
-  <p>Nombre de tentatives : {{ligne.nbTentatives}} </p>
-  </div>
-</div>
-
-<div>
-  <p>Score par joueur et par catégorie</p>
-  <p>scoreParJoueurEtParCategorie vaut {{scoreParJoueurEtParCategorie}}</p>
-  <button (click)="getScoreJoueurCategorie()">donne score par Id et Categorie</button>
-</div>
-
-
-

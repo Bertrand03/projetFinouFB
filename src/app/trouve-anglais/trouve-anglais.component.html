@@ -19,9 +19,6 @@
           <br>
           <input *ngIf = "ligne.motTrouve === 'non'" type="text" formControlName="motAnglaisJoueur" placeholder="" #mot name="mot">
           <p *ngIf = "ligne.motTrouve === 'oui'" style="color: green;">{{ligne.motAnglais}}</p>
-          <!--<button class="button" type="submit"-->
-                  <!--(click)="onControlFrenchWord(ligne)"-->
-                  <!--(click) = "mot.value = ''">Valider </button>-->
           <button *ngIf ="ligne.motTrouve === 'non'"
                   class="button" type="submit"
                   (click)="onControlFrenchWord(ligne)">VALIDER</button>

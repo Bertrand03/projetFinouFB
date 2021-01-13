@@ -22,7 +22,6 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   categorieId: number;
   retourMenuQuizz = false;
   nbTentatives: number;
-  quiJoue: Joueur;
   motAEteDecouvert: boolean;
 
   joueurSelectionne: Joueur;
@@ -67,10 +66,6 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     this.scoreCateg =  resultat.scoreCategorie;
   }
 
-  clearLoginForm() {
-      this.loginForm.value.motAnglaisJoueur.clear();
-  }
-
   onControlFrenchWord(ligne) {
     console.log('On entre dans onControlFrenchWord');
     console.log('ma ligne vaut :');
@@ -112,7 +107,6 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       this.scoreUpdated = scoreParJoueurEtParCategorie.scoreCategorie + 1;
 
       this.s = scoreParJoueurEtParCategorie;
-      // this.scoreCategorieAUpdate = new Score(this.s.scoreId, this.s.joueurId, this.s.categorieId, this.s.scoreGlobal, this.scoreUpdated, this.s.nbTentatives);
       this.scoreCategorieAUpdate = new Score(
         scoreParJoueurEtParCategorie.scoreId,
         scoreParJoueurEtParCategorie.joueurId,
