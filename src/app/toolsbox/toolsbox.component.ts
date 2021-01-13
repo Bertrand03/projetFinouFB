@@ -1,14 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, DoCheck, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {HttpClientService, Joueur, Quizz} from "../service/http-client.service";
+import {CategorieQuizz, HttpClientService, Joueur, Quizz, Score} from "../service/http-client.service";
 import {HttpClient} from "@angular/common/http";
+import {Observable} from "rxjs";
+import {AuthService} from "../service/authService/auth.service";
 
 @Component({
   selector: 'app-toolsbox',
   templateUrl: './toolsbox.component.html',
   styleUrls: ['./toolsbox.component.scss']
 })
-export class ToolsboxComponent implements OnInit {
+export class ToolsboxComponent implements OnInit, DoCheck {
 
   loginForm: FormGroup;
   reponseChoix: string;
@@ -18,6 +20,7 @@ export class ToolsboxComponent implements OnInit {
 
   choix: string[];
   allPlayers: Joueur;
+  score: Score;
 
   employeesId: Array<any>;
 
@@ -27,10 +30,12 @@ export class ToolsboxComponent implements OnInit {
 
   playertoDelete: string;
   idPlayerToDelete: number;
+  scoreParJoueurEtParCategorie: number;
 
   // Mes variables d'input
   pseudoDuJoueurId: number;
   pseudoDuJoueur: string;
+  motDePasse: string;
   pseudoDuJoueurScore: number;
 
   nouveauMotId: number;
@@ -39,8 +44,22 @@ export class ToolsboxComponent implements OnInit {
   nouveauMotFrancais: string;
   nouveauMotTrouve: string;
 
+  afficheAnimalCree: boolean;
+  CategorieDuMotCreee: Observable <CategorieQuizz>;
+  nomCategorieDuMotCreee: string;
 
-  constructor(private fb: FormBuilder, private httpClient: HttpClient, private httpClientService: HttpClientService) {
+  joueurSelectionne: Joueur;
+  scoreCateg: number;
+
+
+  constructor(private fb: FormBuilder,
+              private httpClient: HttpClient,
+              private httpClientService: HttpClientService,
+              private authService: AuthService) {
+  }
+
+  ngDoCheck() {
+    this.joueurSelectionne = this.authService.retourneJoueurQuiJoue();
   }
 
   ngOnInit() {
@@ -49,6 +68,7 @@ export class ToolsboxComponent implements OnInit {
       choixAction: [],
       pseudoId: [],
       pseudoJoueur: [],
+      motDePasse: [],
       pseudoScore: [],
       motAnglais: [],
       motFrancais: [],
@@ -66,6 +86,27 @@ export class ToolsboxComponent implements OnInit {
     this.httpClientService.getJoueurs().subscribe(
       response => this.getAllOfPlayers(response),
     );
+
+    this.httpClientService.getScore().subscribe(
+      response => this.resultatGetScore(response),
+    );
+  }
+
+  getScoreJoueurCategorie() {
+    this.httpClientService.getScoreParJoueurEtCategorieQuizz(this.joueurSelectionne.id, 2).subscribe(
+      resultat => this.resultatGetScoreParJoueurEtCategorieQuizz(resultat)
+    );
+  }
+
+  resultatGetScoreParJoueurEtCategorieQuizz(resultat) {
+    this.scoreParJoueurEtParCategorie = resultat;
+    this.scoreCateg = resultat.score;
+  }
+
+  resultatGetScore(response) {
+    console.log('response : ');
+    console.log(response);
+    this.score = response;
   }
 
   handleSuccessfulResponse(response) {
@@ -123,10 +164,11 @@ export class ToolsboxComponent implements OnInit {
   validerPseudo() {
     this.pseudoDuJoueurId = parseInt(this.loginForm.value.pseudoId, 10);
     this.pseudoDuJoueur = this.loginForm.value.pseudoJoueur;
+    this.motDePasse = this.loginForm.value.motDePasse;
     this.pseudoDuJoueurScore = parseInt(this.loginForm.value.pseudoScore, 10);
 
     // this.monTabJoueurs = new Joueur(this.pseudoDuJoueurId, this.pseudoDuJoueur, this.pseudoDuJoueurScore);
-    this.monTabJoueurs = new Joueur(0, this.pseudoDuJoueur, 0);
+    this.monTabJoueurs = new Joueur(0, this.pseudoDuJoueur, this.motDePasse, 0);
     console.log('this.monTabJoueurs vaut : ');
     console.log(this.monTabJoueurs);
     this.httpClientService.addNickname(this.monTabJoueurs).subscribe(
@@ -148,21 +190,43 @@ export class ToolsboxComponent implements OnInit {
   }
 
   addAnimalBis(): void {
+    this.afficheAnimalCree = false;
     this.nouveauMotAnglais = this.loginForm.value.motAnglais;
     this.nouveauMotFrancais = this.loginForm.value.motFrancais;
-    this.nouveauMotTrouve = this.loginForm.value.motTrouve;
-    this.nouveauMotId = parseInt(this.loginForm.value.motId, 10);
+    this.nouveauMotTrouve = 'non';
+    // this.nouveauMotId = parseInt(this.loginForm.value.motId, 10);
+    this.nouveauMotId = 0;
+    this.nouveauCategorieMotId = parseInt(this.loginForm.value.motCategorieId, 10);
 
-    this.monTabBis = new Quizz(this.nouveauMotId, this.nouveauCategorieMotId, this.nouveauMotFrancais, this.nouveauMotAnglais, this.nouveauMotTrouve);
-
-    this.httpClientService.validerAnimalBis(this.monTabBis).subscribe(
-      (contenuQuizz: Quizz) => {
-        console.log('monTabBis avec AnimalBis');
-        console.log(this.monTabBis);
-      },
-      (e: any) => console.log(e)
+    this.httpClientService.getContenuCategorieQuizz(this.nouveauCategorieMotId).subscribe(
+      (contenuCategorie: CategorieQuizz) => {
+        this.nomCategorieDuMotCreee = contenuCategorie.nomCategorie;
+        console.log('nomCategorieDuMotCreee vaut : ' + this.nomCategorieDuMotCreee);
+      }
     );
+
+    console.log('valueOf ');
+    console.log('categMotId' + typeof this.nouveauCategorieMotId);
+    console.log('anglais' + typeof this.nouveauMotAnglais);
+    console.log('francais' + typeof this.nouveauMotFrancais);
+
+    if (this.nouveauMotAnglais !== null && this.nouveauMotFrancais !== null && this.nouveauCategorieMotId !== null) {
+      this.monTabBis = new Quizz(this.nouveauMotId, this.nouveauCategorieMotId, this.nouveauMotFrancais, this.nouveauMotAnglais, this.nouveauMotTrouve);
+
+      this.httpClientService.validerAnimalBis(this.monTabBis).subscribe(
+        (contenuQuizz: Quizz) => {
+          console.log('monTabBis avec AnimalBis');
+          console.log(this.monTabBis);
+          this.afficheAnimalCree = true;
+
+        },
+        (e: any) => console.log(e)
+      );
+    } else {
+      alert('Tous les champs doivent être remplis');
+    }
   }
+
 
   // *********** MISE A JOUR D'UN ANIMAL *************
 

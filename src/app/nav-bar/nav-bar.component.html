@@ -5,6 +5,7 @@
       <li><a routerLink="trouve-anglais">Trouve le mot en Anglais</a></li>
       <li><a routerLink="trouve-francais">Trouve le mot en Français</a></li>
       <li><a routerLink="toolsbox">Boite à outils</a></li>
+      <li><a *ngIf="joueurSelectionne != null" style="color: blue;"> &nbsp; &nbsp; &nbsp;Joueur : {{joueurSelectionne.pseudo}}  &nbsp; &nbsp;  Score : {{joueurSelectionne.score}}</a></li>
     </ul>
   </div>
 </nav>
@@ -14,8 +15,3 @@
     <router-outlet></router-outlet>
   </div>
 </div>
-
-<!--<app-authentification></app-authentification>-->
-
-<!--<app-choix-action></app-choix-action>-->
-<!--<app-employee></app-employee>-->

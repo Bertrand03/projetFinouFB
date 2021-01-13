@@ -1,15 +1,19 @@
-<div [formGroup]="loginForm">
+<div class="form-group w-50" [formGroup]="loginForm">
   <p><b>Ajout</b> d'un nouvel Animal.</p>
-  <p>Id Mot</p>
-  <input type="text" formControlName="motId">
+  <p>Categorie Mot</p>
+  <input class="form-control" type="text" formControlName="motCategorieId">
   <p>Mot Anglais</p>
-  <input type="text" formControlName="motAnglais">
+  <input class="form-control" type="text" formControlName="motAnglais">
   <p>Mot Francais</p>
-  <input type="text" formControlName="motFrancais">
-  <p>Mot Trouve</p>
-  <input type="text" formControlName="motTrouve">
+  <input class="form-control"type="text" formControlName="motFrancais">
+  <!--<p>Mot Trouve</p>-->
+  <!--<input class="form-control" type="text" formControlName="motTrouve">-->
   <br>
-  <button (click)="addAnimalBis()">Valider nouvel Animal</button>
+  <button class="btn btn-primary" (click)="addAnimalBis()">Valider nouvel Animal</button>
+  <br>
+  <div *ngIf = "afficheAnimalCree === true">
+    <p> Animal créée : {{monTabBis.motAnglais}} - {{monTabBis.motFrancais}} dans la Catégorie {{nomCategorieDuMotCreee}}</p>
+  </div>
 </div>
 <br>
 <br>
@@ -61,6 +65,7 @@
 <div [formGroup]="loginForm">
   <p>Entrer votre pseudo</p>
   <input type="text" formControlName="pseudoJoueur">
+  <input type="text" formControlName="motDePasse">
   <button (click)="validerPseudo()">Valider pseudo</button>
 </div>
 
@@ -68,6 +73,24 @@
   <p>Supprimer un joueur</p>
   <input type="text" formControlName="deletePlayer">
   <button (click)="supprimerJoueur()">Supprimer</button>
+</div>
+
+<div>
+  <p>Affichage des scores</p>
+  <div *ngFor="let ligne of score">
+  <p>Score id : {{ligne.scoreId}}</p>
+  <p>Joueur id : {{ligne.joueurId}} </p>
+  <p>Categorie id :{{ligne.categorieId}} </p>
+  <p>Score Global : {{ligne.scoreGlobal}} </p>
+  <p>Score catégorie : {{ligne.scoreCategorie}} </p>
+  <p>Nombre de tentatives : {{ligne.nbTentatives}} </p>
+  </div>
+</div>
+
+<div>
+  <p>Score par joueur et par catégorie</p>
+  <p>scoreParJoueurEtParCategorie vaut {{scoreParJoueurEtParCategorie}}</p>
+  <button (click)="getScoreJoueurCategorie()">donne score par Id et Categorie</button>
 </div>
 
 

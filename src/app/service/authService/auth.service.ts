@@ -7,24 +7,26 @@ import {ActivatedRoute, Router} from '@angular/router';
 })
 export class AuthService {
   isAuth: boolean;
-  joueurs: Joueur;
-  // listeJoueurs: any[];
+  pseudo: string;
+  joueur: Joueur;
 
   constructor(private httpClientService: HttpClientService,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
   }
 
-  checkAuth(pseudo) {
-    console.log('On entre dans authService.checkAuth()');
-    this.httpClientService.getJoueurs().subscribe(
-      listeJoueurs => this.maMethode(listeJoueurs),
-    );
-    console.log('pseudo vaut : ');
-    console.log(pseudo);
-
-    return this.router.navigate(['app-choix-action']);
+  joueurQuiJoue(joueur) {
+    // console.log('joueur qui joue : ');
+    // console.log(joueur);
+    this.joueur = joueur;
   }
+
+  retourneJoueurQuiJoue() {
+    // console.log('retourneJoueurQuiJoue : ');
+    // console.log(this.joueur);
+    return this.joueur;
+  }
+
 
   /**
    * Method for sign in a user
@@ -42,10 +44,5 @@ export class AuthService {
     this.isAuth = false;
   }
 
-  maMethode(listeJoueurs) {
-    console.log('Entre dans ma méthode() : ');
-    console.log('listeJoueurs: ');
-    console.log(listeJoueurs);
-    this.joueurs = listeJoueurs;
-  }
+
 }

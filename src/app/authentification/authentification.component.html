@@ -1,25 +1,59 @@
-<div class="container-fluid">
-  <button class="btn-success">Se Connecter</button>
-  <button class="btn-danger">S'enregistrer</button>
+<!--<div class="container-fluid">-->
+  <!--<div [formGroup]="loginForm">-->
+    <!--<h4>Cliquez pour vous connecter</h4>-->
+    <!--<label>Pseudo</label>-->
+    <!--<input type="text" formControlName="pseudo">-->
+    <!--<label>Mot de passe</label>-->
+    <!--<input type="text" formControlName="motDePasse">-->
+    <!--<button class="btn-success">Se Connecter</button>-->
+  <!--</div>-->
+<!--</div>-->
+
+<form [formGroup]="loginForm">
+  <div class="mb-3">
+    <label for="Pseudo" class="form-label">Pseudo</label>
+    <input type="text" formControlName="pseudoForm" class="form-control" id="Pseudo">
+  </div>
+  <br>
+  <div class="mb-3">
+    <label for="Mot_de_passe" class="form-label">Mot de passe</label>
+    <input type="password" formControlName="mdpForm" class="form-control" id="Mot_de_passe">
+  </div>
+  <br>
+    <button type="submit" class="btn btn-success" (click)="onSignIn()">Valider</button>
+</form>
+
+<div>
+  <p>Liste des joueurs déjà présents</p>
+  <div *ngFor="let joueur of listeJoueurs">
+    <p>{{joueur.pseudo}} - {{joueur.motDePasse}}</p>
+  </div>
 </div>
 
-<div [formGroup]="loginForm">
-  <h4>Cliquez pour vous connecter</h4>
-  <label>Pseudo</label>
-  <input type="text" formControlName="pseudo">
-  <label>Mot de passe</label>
-  <input type="text" formControlName="motDePasse">
-  <button>Se connecter</button>
-</div>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 <!--<p>{{messageAuth}}</p>-->
 
-<div [formGroup]="loginForm" class="container-fluid">
-  <h4>Création de votre compte</h4>
-  <label>Pseudo</label>
-  <input type="text">
-  <label>Mot de passe</label>
-  <input type="text">
-  <button >Enregister User</button>
-  <p>Bienvenue nomUser !</p>
-</div>
+<!--<div [formGroup]="loginForm" class="container-fluid">-->
+  <!--<h4>Création de votre compte</h4>-->
+  <!--<label>Pseudo</label>-->
+  <!--<input type="text">-->
+  <!--<label>Mot de passe</label>-->
+  <!--<input type="text">-->
+<!--<button class="btn-danger">S'enregistrer</button>-->
+  <!--<p>Bienvenue nomUser !</p>-->
+<!--</div>-->
 
