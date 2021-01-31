@@ -3,6 +3,8 @@ import {CategorieQuizz, HttpClientService, Joueur, Quizz, Score} from '../servic
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {AuthService} from '../service/authService/auth.service';
+import {ToolsBoxService} from "../service/toolsBoxService/tools-box-service";
+import {Observable, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-trouve-anglais',
@@ -23,6 +25,11 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   retourMenuQuizz = false;
   nbTentatives: number;
   motAEteDecouvert: boolean;
+  // scoreTotalParJoueur: Score;
+  scoreTotalParJoueur: number;
+  scoreTotalParJoueurId: number;
+  testValeur: Subscription;
+
 
   joueurSelectionne: Joueur;
   scoreParJoueurEtParCategorie: Score;
@@ -30,10 +37,14 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   scoreCategorieAUpdate: Score;
   scoreCateg: number;
   scoreUpdated: number;
+  lastScoreBeforeStart: number;
+
+  majScore: boolean;
 
   constructor(private httpClientService: HttpClientService,
               private authService: AuthService,
-              private  httpClient: HttpClient,
+              private toolsBoxService: ToolsBoxService,
+              private httpClient: HttpClient,
               private formBuilder: FormBuilder) {
   }
 
@@ -49,16 +60,50 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
     this.motAEteDecouvert = false;
     console.log('motAEteDecouvert vaut : ' + this.motAEteDecouvert);
+
+    this.joueurSelectionne = this.authService.retourneJoueurQuiJoue();
+    console.log('lance getScoreTotalParJoueur() dans le Init');
+    // this.getScoreTotalParJoueur();
+
+    this.getScoreJoueurCategorie(this.categorieId);
+
+    this.lastScoreBeforeStart = this.scoreUpdated;
+    console.log('lastScoreBeforeStart vaut : ' + this.lastScoreBeforeStart);
   }
 
   ngDoCheck() {
     this.joueurSelectionne = this.authService.retourneJoueurQuiJoue();
+    // this.getScoreTotalParJoueur();
   }
 
   getScoreJoueurCategorie(categorieId) {
     this.httpClientService.getScoreParJoueurEtCategorieQuizz(this.joueurSelectionne.id, categorieId).subscribe(
       resultat => this.resultatGetScoreParJoueurEtCategorieQuizz(resultat)
     );
+  }
+
+  // getScoreTotalParJoueur() {
+  //   console.log('On recupere le score global');
+  //   this.httpClientService.getScoreTotalByJoueur(this.joueurSelectionne.id).subscribe(
+  //     scoreTotalJoueur => this.resultatScoreTotalParJoueur(scoreTotalJoueur)
+  //   );
+  // }
+
+  getScoreTotalParJoueur() {
+    console.log('On recupere le score global');
+    this.httpClientService.getScoreTotalByJoueur(this.joueurSelectionne.id).subscribe(
+      (scoreTotal => this.resultatScoreTotalParJoueur(scoreTotal)
+      )
+    );
+  }
+
+
+  resultatScoreTotalParJoueur(scoreTotal) {
+    console.log('on stocke le score global');
+    this.scoreTotalParJoueur = scoreTotal;
+    // this.scoreTotalParJoueurId = this.scoreTotalParJoueur.scoreGlobal;
+    // console.log('this.scoreTotalParJoueur vaut ' + this.scoreTotalParJoueur);
+    // console.log('scoreTotal vaut ' + scoreTotal);
   }
 
   resultatGetScoreParJoueurEtCategorieQuizz(resultat) {
@@ -68,17 +113,22 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
   onControlFrenchWord(ligne) {
     console.log('On entre dans onControlFrenchWord');
-    console.log('ma ligne vaut :');
-    console.log(ligne);
+    // console.log('ma ligne vaut :');
+    // console.log(ligne);
     this.motAEteDecouvert = false;
     this.motAnglaisSaisi = this.loginForm.value.motAnglaisJoueur;
+    // console.log('this.motAnglaisSaisi avant uppercase : ' + this.motAnglaisSaisi);
+
+    this.motAnglaisSaisi = this.toolsBoxService.upcaseFirstLetterOfSentence(this.motAnglaisSaisi);
+    // console.log('this.motAnglaisSaisi après uppercase : ' + this.motAnglaisSaisi);
+
 
     if (this.motAnglaisSaisi === ligne.motAnglais) {
-      console.log('mot trouvé');
+      // console.log('mot trouvé');
       ligne.motTrouve = 'oui';
       this.motAEteDecouvert = true;
+      // this.getScoreTotalParJoueur();
       this.updateScoreByCategory(ligne);
-      this.updateCategoryScore(this.scoreParJoueurEtParCategorie);
       this.updateAnimalBis(ligne);
     } else {
       console.log('mauvais mot');
@@ -89,20 +139,20 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     compteurTentatives() {
       this.nbTentatives ++;
       this.monOutput.emit(this.nbTentatives);
-      console.log('nbTentatives vaut : ' + this.nbTentatives);
+      // console.log('nbTentatives vaut : ' + this.nbTentatives);
     }
 
     updateScoreByCategory(ligne) {
-      console.log('lance updateScoreByCategory');
-      console.log('ligne.categorieId vaut : ' + ligne.categorieId);
+      console.log('On recupere le score par categorie Id');
+      // console.log('ligne.categorieId vaut : ' + ligne.categorieId);
       this.httpClientService.getScoreByCategorieId(ligne.categorieId).subscribe(
         resultat => this.updateCategoryScore(resultat)
       );
     }
 
     updateCategoryScore(scoreParJoueurEtParCategorie) {
-      console.log('mon scoreParJoueurEtParCategorie avant Maj vaut : ');
-      console.log(scoreParJoueurEtParCategorie);
+      console.log('lance updateCategoryScore');
+      // console.log(scoreParJoueurEtParCategorie);
 
       this.scoreUpdated = scoreParJoueurEtParCategorie.scoreCategorie + 1;
 
@@ -114,19 +164,18 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
         scoreParJoueurEtParCategorie.scoreGlobal,
         this.scoreUpdated,
         scoreParJoueurEtParCategorie.nbTentatives);
-      console.log('this.scoreCategorieAUpdate vaut : ');
-      console.log(this.scoreCategorieAUpdate);
+      // console.log('this.scoreCategorieAUpdate vaut : ');
+      // console.log(this.scoreCategorieAUpdate);
       this.scoreUpdated = this.scoreCategorieAUpdate.scoreCategorie;
-      console.log(this.scoreUpdated);
+      // console.log(this.scoreUpdated);
       this.updateScoreCategory(this.scoreCategorieAUpdate);
-
+      // this.test();
     }
 
   updateScoreCategory(scoreToUpdate) {
     this.httpClientService.majScoreCategoryService(scoreToUpdate).subscribe(
-      (response: Score) => {
-        console.log('Lance majScoreCategoryService');
-        // console.log(contenuAnimal);
+      () => {
+        console.log('On met à jour le score categorie');
       },
       (e: any) => console.log(e)
     );
@@ -136,8 +185,8 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
   updateAnimalBis(ligne) {
     console.log('Lance updateAnimalBis()');
-    console.log('ligne vaut : ');
-    console.log(ligne);
+    // console.log('ligne vaut : ');
+    // console.log(ligne);
 
     this.httpClientService.majAnimalBisService(ligne).subscribe(
       (contenuAnimal: Quizz) => {
@@ -181,28 +230,23 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   }
 
   onValiderChoix(categorieId) {
-    console.log('Lancement onValiderChoix()');
+    // console.log('Lancement onValiderChoix()');
     this.categorieId = categorieId;
 
     this.getScoreJoueurCategorie(categorieId);
     this.retourneLeContenuDeMaCategorie();
     this.retourneToutesLesCategories();
-    console.log(this.categorieChoisie = this.listCategoriesQuizz[this.categorieId].nomCategorie);
+    // console.log(this.categorieChoisie = this.listCategoriesQuizz[this.categorieId].nomCategorie);
     this.retourMenuQuizz = true;
     this.nbTentatives = 0;
-
-    if (this.loginForm.value.motAnglaisJoueur != null) {
-      console.log('lance le clear loginForm');
-      this.loginForm.value.clear();
-    }
   }
 
   returnContenuQuizz(response, categorieId) {
-    console.log('Entre dans returnContenuQuizz : ');
-    console.log('response Quizz : ');
-    console.log(response);
-    console.log('categorieId : ');
-    console.log(categorieId);
+    // console.log('Entre dans returnContenuQuizz : ');
+    // console.log('response Quizz : ');
+    // console.log(response);
+    // console.log('categorieId : ');
+    // console.log(categorieId);
     this.quizz = response;
   }
 
@@ -213,7 +257,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     // console.log(this.quizz);
     for (const ligne of this.quizz) {
       ligne.motTrouve = 'non';
-      console.log(ligne);
+      // console.log(ligne);
       this.httpClientService.majAnimalBisService(ligne).subscribe(
         (contenuAnimal: Quizz) => {
           // console.log('contenuAnimal après modif');
@@ -225,8 +269,14 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   }
 
   retourChoixQuizz() {
-    console.log('retourChoixQuizz');
+    // console.log('retourChoixQuizz');
     this.retourMenuQuizz = false;
     return this.retourMenuQuizz;
+  }
+
+  test() {
+    this.joueurSelectionne = this.authService.retourneJoueurQuiJoue();
+    console.log('lance test()');
+    this.getScoreTotalParJoueur();
   }
 }

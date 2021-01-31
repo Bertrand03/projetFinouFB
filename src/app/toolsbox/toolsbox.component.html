@@ -1,46 +1,85 @@
-<div class="form-group w-50" [formGroup]="loginForm">
-  <p><b>Ajout</b> d'un nouvel Animal.</p>
-  <p>Categorie Mot</p>
-  <input class="form-control" type="text" formControlName="motCategorieId">
-  <p>Mot Anglais</p>
-  <input class="form-control" type="text" formControlName="motAnglais">
-  <p>Mot Francais</p>
-  <input class="form-control"type="text" formControlName="motFrancais">
-  <!--<p>Mot Trouve</p>-->
-  <!--<input class="form-control" type="text" formControlName="motTrouve">-->
-  <br>
-  <button class="btn btn-primary" (click)="addAnimalBis()">Valider nouvel Animal</button>
-  <br>
-  <div *ngIf = "afficheAnimalCree === true">
-    <p> Animal créée : {{monTabBis.motAnglais}} - {{monTabBis.motFrancais}} dans la Catégorie {{nomCategorieDuMotCreee}}</p>
+
+<div class="container">
+  <div class="form-group w-50" class="dropdown" [formGroup]="loginForm">
+    <p><b>Ajout</b> d'un nouvel Animal.</p>
+    <!--<p>Categorie Mot</p>-->
+    <!--<input class="form-control" type="text" formControlName="motCategorieId">-->
+    <ul id="menu-accordeon">
+      <li>Catégorie Quizz
+        <!--<p>Catégorie Quizz</p>-->
+        <ul *ngFor="let ligne of listCategoriesQuizz">
+          <li (nomCategorieSelectionnee) = ligne.nomCategorie><button
+            (click)="getCategorieIdWithNomCategorie(ligne.categorieId)"
+            (click)="getNomCategorieSelectionnee(ligne.nomCategorie)">{{ligne.nomCategorie}}</button></li>
+        </ul>
+      </li>
+    </ul>
+    <p *ngIf = "categorieId != null"> Catégorie sélectionnée vaut {{nomCategorieSelectionnee}}</p>
+    <p>Mot Anglais</p>
+    <input class="form-control" type="text" formControlName="motAnglais">
+    <p>Mot Francais</p>
+    <input class="form-control"type="text" formControlName="motFrancais">
+    <br>
+    <button class="btn btn-primary" (click)="addAnimalBis()">Valider le nouveau mot</button>
+    <br>
+    <div *ngIf = "afficheAnimalCree === true">
+      <p> Animal créée : {{monTabBis.motAnglais}} - {{monTabBis.motFrancais}} dans la Catégorie : {{nomCategorieSelectionnee}}</p>
+    </div>
   </div>
 </div>
+
+
+<!--<p>Menu déroulant 2</p>-->
+<!--<ul id="menu-accordeon">-->
+  <!--<li><a href="#">Lien menu 1</a>-->
+    <!--<ul *ngFor="let ligne of listCategoriesQuizz">-->
+      <!--<li><button (click)="getCategorieIdWithNomCategorie(ligne.categorieId)">{{ligne.nomCategorie}}</button></li>-->
+    <!--</ul>-->
+  <!--</li>-->
+<!--</ul>-->
+
+
 <br>
 <br>
 
+<!--<div [formGroup]="loginForm">-->
+  <!--<p><b>Suppression</b> d'un Mot avec Id</p>-->
+  <!--<p>Numero Id à supprimer</p>-->
+  <!--<input type="text" formControlName="idMotASupprimer">-->
+  <!--<br>-->
+  <!--<button (click)="onDeleteAnimal()">Supprimer un mot Quizz</button>-->
+<!--</div>-->
+<!--<br>-->
+<!--<br>-->
 <div [formGroup]="loginForm">
-  <p><b>Suppression</b> d'un Animal</p>
-  <p>Numero Id à supprimer</p>
-  <input type="text" formControlName="idMotASupprimer">
+  <p><b>Suppression</b> d'un Mot avec son nom</p>
+  <p>Nom du mot à supprimer</p>
+  <!--<p>{{quizzRetourne.motAnglais}} / {{quizzRetourne.motFrancais}}</p>-->
+  <input type="text" formControlName="nomMotASupprimer">
   <br>
-  <button (click)="onDeleteAnimal()">Supprimer un Animal</button>
+  <br>
+  <button class="btn btn-primary" (click)="getQuizzByMot('supprime')">Supprimer un mot Quizz</button>
 </div>
 <br>
 <br>
 <form [formGroup]="loginForm">
-  <label> Tapez un ID</label>
-  <input type="text" formControlName="choixAction">
-  <button class="btn-default" (click)="trouveParId()">Cherche par Id</button>
+  <label> <b>Recherchez</b> un mot</label>
+  <br>
+  <input type="text" formControlName="rechercheMot">
+  <br>
+  <br>
+  <button class="btn btn-primary" (click)="getQuizzByMot('cherche')">Cherche par mot</button>
 
   <!--<p>{{employeesId | json}}</p>-->
-    <div *ngIf = "reponseChoix != null">
+    <div *ngIf = "quizzRetourne != null">
     <p> Mot Quizz Choisi est : </p>
-    <p> Animaux Id : {{quizzSelParId.animauxId}}</p>
-    <p> Categorie Id : {{quizzSelParId.categorieId}}</p>
-    <p> Mot Francais : {{quizzSelParId.motFrancais}}</p>
-    <p> Mot Anglais : {{quizzSelParId.motAnglais}}</p>
-    <p> Mot Trouve : {{quizzSelParId.motTrouve}}</p>
+    <p> Animaux Id : {{quizzRetourne.animauxId}}</p>
+    <p> Categorie Id : {{quizzRetourne.categorieId}}</p>
+    <p> Mot Francais : {{quizzRetourne.motFrancais}}</p>
+    <p> Mot Anglais : {{quizzRetourne.motAnglais}}</p>
+    <p> Mot Trouve : {{quizzRetourne.motTrouve}}</p>
     </div>
+  <br>
   <br>
   <p><b>Modification</b> d'un Animal</p>
   <p>Nouvel ID</p>
@@ -53,25 +92,36 @@
   <input type="text" formControlName="motFrancais">
   <p>Nouveau mot Trouve</p>
   <input type="text" formControlName="motTrouve">
-  <button (click)="updateAnimalBis()">Mettre à jour un Animal BIS</button>
+  <br>
+  <br>
+  <button class="btn btn-primary" (click)="updateAnimalBis()">Mettre à jour le mot</button>
+  <br>
+  <br>
 
 </form>
 
-<p>Resultat tableau NgFor</p>
-<tr *ngFor="let e of employeesId | keyvalue ">
-  Key: <b>{{e.key}}</b> and Value: <b>{{e.value}}</b>
+<!--<p>Resultat tableau NgFor</p>-->
+<!--<tr *ngFor="let e of employeesId | keyvalue ">-->
+  <!--Key: <b>{{e.key}}</b> and Value: <b>{{e.value}}</b>-->
 
-</tr>
+<!--</tr>-->
 
 <div [formGroup]="loginForm">
-  <p>Entrer votre pseudo</p>
+  <p><b>Créer</b> un nouveau Joueur</p>
+  <label> Pseudo du Joueur</label>
   <input type="text" formControlName="pseudoJoueur">
+  <br>
+  <label> Mot de passe du Joueur</label>
   <input type="text" formControlName="motDePasse">
-  <button (click)="validerPseudo()">Valider pseudo</button>
+  <br>
+  <br>
+  <button class="btn btn-primary" (click)="validerPseudo()">Valider pseudo</button>
 </div>
 
 <div [formGroup]="loginForm">
   <p>Supprimer un joueur</p>
   <input type="text" formControlName="deletePlayer">
-  <button (click)="supprimerJoueur()">Supprimer</button>
 </div>
+<br>
+<br>
+<br>

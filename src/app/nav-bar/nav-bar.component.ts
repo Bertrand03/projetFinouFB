@@ -1,6 +1,6 @@
-import {Component, DoCheck, OnChanges, OnInit} from '@angular/core';
+import {Component, DoCheck, OnInit} from '@angular/core';
 import {AuthService} from '../service/authService/auth.service';
-import {HttpClientService, Joueur} from '../service/http-client.service';
+import {HttpClientService, Joueur, Score} from '../service/http-client.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -11,6 +11,7 @@ export class NavBarComponent implements OnInit, DoCheck {
 
   joueurSelectionne: Joueur;
   scoreParJoueurEtParCategorie: number;
+  scoreTotalParJoueur: Score;
 
   constructor(private authService: AuthService,
               private httpClientService: HttpClientService) {
@@ -20,6 +21,10 @@ export class NavBarComponent implements OnInit, DoCheck {
     // this.httpClientService.getScoreParJoueurEtCategorieQuizz(this.joueurSelectionne.id, 1).subscribe(
     //   resultat => this.resultatGetScoreParJoueurEtCategorieQuizz(resultat)
     // );
+
+      this.httpClientService.getScoreTotalByJoueur(this.joueurSelectionne).subscribe(
+        scoreTotalJoueur => this.resultatScoreTotalParJoueur(scoreTotalJoueur)
+      );
   }
 
   ngDoCheck() {
@@ -30,8 +35,8 @@ export class NavBarComponent implements OnInit, DoCheck {
     // );
   }
 
-  // resultatGetScoreParJoueurEtCategorieQuizz(resultat) {
-  //   this.scoreParJoueurEtParCategorie = resultat;
-  // }
+  resultatScoreTotalParJoueur(scoreTotal) {
+    this.scoreTotalParJoueur = scoreTotal;
+  }
 
 }

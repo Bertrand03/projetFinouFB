@@ -8,9 +8,9 @@ import {TrouveFrancaisComponent} from './trouve-francais/trouve-francais.compone
 import {ToolsboxComponent} from './toolsbox/toolsbox.component';
 
 const routes: Routes = [
+  { path: 'authentification', component: AuthentificationComponent},
   { path: 'employee', component: EmployeeComponent},
   { path: 'choix-action', component: ChoixActionComponent},
-  { path: 'authentification', component: AuthentificationComponent},
   { path: 'trouve-anglais', component: TrouveAnglaisComponent},
   { path: 'trouve-francais', component: TrouveFrancaisComponent},
   { path: 'toolsbox', component: ToolsboxComponent},

@@ -82,8 +82,8 @@ export class HttpClientService {
   }
 
   getScoreByCategorieId(categorieId) {
-    console.log('passe dans getScoreByCategorieId()');
-    console.log('url vaut : http://localhost:5366/score/' + categorieId);
+    // console.log('passe dans getScoreByCategorieId()');
+    // console.log('url vaut : http://localhost:5366/score/' + categorieId);
     return this.httpClient.get('http://localhost:5366/score/scoreByCategorieId/' + categorieId);
   }
 
@@ -114,18 +114,41 @@ export class HttpClientService {
     return this.tableauFiltre;
   }
 
+  getAllCategoriesQuizzs() {
+    console.log('passe dans getAllCategoriesQuizzs()');
+    return this.httpClient.get('http://localhost:5366/quizzs/categories-quizzs');
+  }
+
+  getCategorieQuizzbyId(categorieId) {
+    console.log('passe dans getCategorieQuizzbyId()');
+    return this.httpClient.get('http://localhost:5366/trouve-anglais/categorie-quizz/' + categorieId);
+  }
+
+  getScoreTotalByJoueur(joueurId) {
+    // console.log('passe dans getScoreTotalByJoueur()');
+    // console.log('joueurId vaut ' + joueurId);
+    return this.httpClient.get(this.urlScore + '/scoreTotal/' + joueurId);
+  }
+
+  getQuizzbyMotService(motARetrouver) {
+    console.log('passe dans getQuizzbyMotService()');
+    console.log('url getQuizzbyMotService vaut : ');
+    console.log(this.urlApi + 'motARetrouver/' + motARetrouver);
+    return this.httpClient.get(this.urlApi + '/motARetrouver/' + motARetrouver);
+  }
+
   // *** METHODE PUT ***//
 
   majScoreCategoryService(score: Score): Observable<Score> {
-    console.log('passe dans majScoreCategoryService');
-    console.log('scoreCategorie mis à jour vaut :');
-    console.log(score);
+    // console.log('passe dans majScoreCategoryService');
+    // console.log('scoreCategorie mis à jour vaut :');
+    // console.log(score);
 
     const url = `${this.urlScore}/updateScore/${score.joueurId}/${score.categorieId}`;
-    console.log('score.joueurId vaut : ', score.joueurId);
-    console.log('score.categorieId vaut : ', score.categorieId);
-    console.log('url : ');
-    console.log(url);
+    // console.log('score.joueurId vaut : ', score.joueurId);
+    // console.log('score.categorieId vaut : ', score.categorieId);
+    // console.log('url : ');
+    // console.log(url);
     return this.httpClient.put<Score>(url, score, {
       headers: new HttpHeaders({
         'Content-type': 'application/json'
@@ -134,14 +157,14 @@ export class HttpClientService {
   }
 
   majAnimalBisService(quizz: Quizz): Observable<Quizz> {
-    console.log('passe dans majAnimalBisService');
-    console.log('animal mis à jour vaut :');
-    console.log(quizz);
+    // console.log('passe dans majAnimalBisService');
+    // console.log('animal mis à jour vaut :');
+    // console.log(quizz);
 
     const url = `${this.urlApi}/update/${quizz.animauxId}`;
-    console.log('quizz.animauxId vaut : ', quizz.animauxId);
-    console.log('url : ');
-    console.log(url);
+    // console.log('quizz.animauxId vaut : ', quizz.animauxId);
+    // console.log('url : ');
+    // console.log(url);
     return this.httpClient.put<Quizz>(url, quizz, {
       headers: new HttpHeaders({
         'Content-type': 'application/json'
