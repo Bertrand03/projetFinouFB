@@ -31,6 +31,8 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   scoreCategorieAUpdate: Score;
   scoreCateg: number;
 
+  help: string;
+
   constructor(private httpClientService: HttpClientService,
               private authService: AuthService,
               private toolsBoxService: ToolsBoxService,
@@ -253,9 +255,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     return this.retourMenuQuizz;
   }
 
-  test() {
-    this.joueurSelectionne = this.authService.retourneJoueurQuiJoue();
-    console.log('lance test()');
-    this.getScoreTotalParJoueur();
+  onAide(englishWordToFind) {
+    this.help = englishWordToFind.substring(0, 1);
   }
 }

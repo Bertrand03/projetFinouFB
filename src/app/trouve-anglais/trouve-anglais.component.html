@@ -22,6 +22,8 @@
           <button *ngIf ="ligne.motTrouve === 'non'"
                   class="button" type="submit"
                   (click)="onControlFrenchWord(ligne)">VALIDER</button>
+          <button (click)="onAide(ligne.motAnglais)">Aide</button>
+          <p>Aide : {{help}}</p>
         </li>
       </ul>
     </form>

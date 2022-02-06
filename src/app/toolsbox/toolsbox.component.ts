@@ -14,16 +14,10 @@ import {ToolsBoxService} from "../service/toolsBoxService/tools-box-service";
 export class ToolsboxComponent implements OnInit, DoCheck {
 
   loginForm: FormGroup;
-  reponseChoix: string;
-  urlApi = 'http://localhost:5366/quizzs/';
-  idToDelete: number;
-
-
   choix: string[];
   allPlayers: Joueur;
   score: Score;
 
-  employeesId: Array<any>;
   quizzSelParId: Quizz;
 
   monTabBis: Quizz;
@@ -43,10 +37,6 @@ export class ToolsboxComponent implements OnInit, DoCheck {
   nouveauMotTrouve: string;
 
   afficheAnimalCree: boolean;
-  motASupprimer: Observable <any>;
-  nomCategorieDuMotCreee: string;
-  motASupBis: string;
-  motARechercher: string;
 
   joueurSelectionne: Joueur;
   listCategoriesQuizz: any;
@@ -61,8 +51,7 @@ export class ToolsboxComponent implements OnInit, DoCheck {
   constructor(private fb: FormBuilder,
               private httpClient: HttpClient,
               private httpClientService: HttpClientService,
-              private authService: AuthService,
-              private toolsBoxService: ToolsBoxService) {
+              private authService: AuthService) {
   }
 
   ngDoCheck() {

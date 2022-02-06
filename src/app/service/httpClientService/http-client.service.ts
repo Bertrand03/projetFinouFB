@@ -53,7 +53,6 @@ export class Score {
 
 export class HttpClientService {
 
-  tableauFiltre: Observable<any>;
   contenuCategorieQuizz: Observable<any>;
   urlApi = 'http://localhost:5366/quizzs/';
   urlScore = 'http://localhost:5366/score';

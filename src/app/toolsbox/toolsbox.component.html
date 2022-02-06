@@ -54,11 +54,9 @@
 <div [formGroup]="loginForm">
   <p><b>Suppression</b> d'un Mot avec son nom</p>
   <p>Nom du mot à supprimer</p>
-  <!--<p>{{quizzRetourne.motAnglais}} / {{quizzRetourne.motFrancais}}</p>-->
   <input type="text" formControlName="nomMotASupprimer">
   <br>
   <br>
-  <!--<button class="btn btn-primary" (click)="getQuizzByMot('supprime')">Supprimer un mot Quizz</button>-->
 </div>
 <br>
 <br>
@@ -68,9 +66,7 @@
   <input type="text" formControlName="rechercheMot">
   <br>
   <br>
-  <!--<button class="btn btn-primary" (click)="getQuizzByMot('cherche')">Cherche par mot</button>-->
 
-  <!--<p>{{employeesId | json}}</p>-->
     <div *ngIf = "quizzRetourne != null">
     <p> Mot Quizz Choisi est : </p>
     <p> Animaux Id : {{quizzRetourne.animauxId}}</p>
@@ -99,10 +95,6 @@
   <br>
 
 </form>
-
-<!--<p>Resultat tableau NgFor</p>-->
-<!--<tr *ngFor="let e of employeesId | keyvalue ">-->
-  <!--Key: <b>{{e.key}}</b> and Value: <b>{{e.value}}</b>-->
 
 <!--</tr>-->
 
