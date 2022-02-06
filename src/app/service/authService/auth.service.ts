@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {HttpClientService, Joueur} from '../http-client.service';
+import {HttpClientService, Joueur} from '../httpClientService/http-client.service';
 import {ActivatedRoute, Router} from '@angular/router';
 
 @Injectable({
@@ -10,6 +10,8 @@ export class AuthService {
   pseudo: string;
   joueur: Joueur;
 
+  scoreJoueur: number;
+
   constructor(private httpClientService: HttpClientService,
               private router: Router,
               private activatedRoute: ActivatedRoute) {
@@ -19,12 +21,29 @@ export class AuthService {
     // console.log('joueur qui joue : ');
     // console.log(joueur);
     this.joueur = joueur;
+    console.log('lance getScoreTotalByJoueur() avant le routing');
+    if (this.joueur != null) {
+      this.httpClientService.getScoreTotalByJoueur(this.joueur.id).subscribe(
+        value => this.retourneScoreJoueurQuiJoue(value)
+      );
+    }
+  }
+
+  getScoreTotalByJoueur(joueurId) {
+    this.httpClientService.getScoreTotalByJoueur(joueurId).subscribe(
+      value => this.retourneScoreJoueurQuiJoue(value)
+    );
   }
 
   retourneJoueurQuiJoue() {
     // console.log('retourneJoueurQuiJoue : ');
     // console.log(this.joueur);
     return this.joueur;
+  }
+
+  retourneScoreJoueurQuiJoue(value) {
+    this.scoreJoueur = value;
+    return this.scoreJoueur;
   }
 
 

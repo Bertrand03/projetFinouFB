@@ -81,11 +81,9 @@ export class HttpClientService {
     return this.httpClient.get('http://localhost:5366/score/');
   }
 
-  getScoreByCategorieId(categorieId) {
-    // console.log('passe dans getScoreByCategorieId()');
-    // console.log('url vaut : http://localhost:5366/score/' + categorieId);
-    return this.httpClient.get('http://localhost:5366/score/scoreByCategorieId/' + categorieId);
-  }
+  // getScoreByCategorieIdAndJoueurId(categorieId, joueurId) {
+  //   return this.httpClient.get('http://localhost:5366/score/scoreByCategorieId/' + categorieId + '/' + joueurId);
+  // }
 
   getScoreParJoueurEtCategorieQuizz(joueurId, categorieId) {
     console.log('passe dans getScoreParJoueurEtCategorieQuizz()');
@@ -108,47 +106,20 @@ export class HttpClientService {
 
   getIdBis(reponseChoix) {
     console.log('passe dans getIdBis, reponseChoix vaut : ' + reponseChoix);
-    this.tableauFiltre = this.httpClient.get('http://localhost:5366/quizzs/' + reponseChoix);
-    console.log('tableau filtre : ');
-    console.log(this.tableauFiltre);
-    return this.tableauFiltre;
-  }
-
-  getAllCategoriesQuizzs() {
-    console.log('passe dans getAllCategoriesQuizzs()');
-    return this.httpClient.get('http://localhost:5366/quizzs/categories-quizzs');
-  }
-
-  getCategorieQuizzbyId(categorieId) {
-    console.log('passe dans getCategorieQuizzbyId()');
-    return this.httpClient.get('http://localhost:5366/trouve-anglais/categorie-quizz/' + categorieId);
   }
 
   getScoreTotalByJoueur(joueurId) {
-    // console.log('passe dans getScoreTotalByJoueur()');
-    // console.log('joueurId vaut ' + joueurId);
-    return this.httpClient.get(this.urlScore + '/scoreTotal/' + joueurId);
-  }
-
-  getQuizzbyMotService(motARetrouver) {
-    console.log('passe dans getQuizzbyMotService()');
-    console.log('url getQuizzbyMotService vaut : ');
-    console.log(this.urlApi + 'motARetrouver/' + motARetrouver);
-    return this.httpClient.get(this.urlApi + '/motARetrouver/' + motARetrouver);
+    console.log('Front-end - getScoreTotalByJoueur()');
+    console.log('joueurId vaut : ' + joueurId);
+    return this.httpClient.get('http://localhost:5366/score/scoreTotal/' + joueurId);
   }
 
   // *** METHODE PUT ***//
 
   majScoreCategoryService(score: Score): Observable<Score> {
-    // console.log('passe dans majScoreCategoryService');
-    // console.log('scoreCategorie mis à jour vaut :');
-    // console.log(score);
 
     const url = `${this.urlScore}/updateScore/${score.joueurId}/${score.categorieId}`;
-    // console.log('score.joueurId vaut : ', score.joueurId);
-    // console.log('score.categorieId vaut : ', score.categorieId);
-    // console.log('url : ');
-    // console.log(url);
+    console.log('DANS majScoreCategoryService joueurId vaut : ' + score.joueurId + ' et categorieId vaut ' + score.categorieId);
     return this.httpClient.put<Score>(url, score, {
       headers: new HttpHeaders({
         'Content-type': 'application/json'

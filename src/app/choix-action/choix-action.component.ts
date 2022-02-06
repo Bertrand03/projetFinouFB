@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 
 import {HttpClient} from '@angular/common/http';
-import {HttpClientService, Joueur, Quizz} from '../service/http-client.service';
+import {HttpClientService, Joueur, Quizz} from '../service/httpClientService/http-client.service';
 
 
 @Component({

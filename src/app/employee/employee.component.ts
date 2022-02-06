@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import {HttpClientService, Quizz} from '../service/http-client.service';
+import {HttpClientService, Quizz} from '../service/httpClientService/http-client.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
 @Component({
   selector: 'app-employee',

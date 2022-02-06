@@ -1,6 +1,7 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, DoCheck, Input, OnInit} from '@angular/core';
 import {AuthService} from '../service/authService/auth.service';
-import {HttpClientService, Joueur, Score} from '../service/http-client.service';
+import {HttpClientService, Joueur, Score} from '../service/httpClientService/http-client.service';
+import {ScoreService} from '../service/scoreService/score.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,34 +10,39 @@ import {HttpClientService, Joueur, Score} from '../service/http-client.service';
 })
 export class NavBarComponent implements OnInit, DoCheck {
 
+  @Input() ligneJoueur: Joueur;
+  @Input() hello: string;
+
   joueurSelectionne: Joueur;
-  scoreParJoueurEtParCategorie: number;
-  scoreTotalParJoueur: Score;
+  scoreTotalParJoueur: number;
+
 
   constructor(private authService: AuthService,
-              private httpClientService: HttpClientService) {
+              private httpClientService: HttpClientService,
+              private scoreService: ScoreService) {
 }
 
   ngOnInit() {
-    // this.httpClientService.getScoreParJoueurEtCategorieQuizz(this.joueurSelectionne.id, 1).subscribe(
-    //   resultat => this.resultatGetScoreParJoueurEtCategorieQuizz(resultat)
-    // );
+      console.log('lance le init navBar');
+      this.scoreTotalParJoueur = this.scoreService.totalScoreByPlayer;
+      console.log('DANS INIT NAV BAR scoreTotalParJoueur vaut : ' + this.scoreTotalParJoueur);
+  }
 
-      this.httpClientService.getScoreTotalByJoueur(this.joueurSelectionne).subscribe(
-        scoreTotalJoueur => this.resultatScoreTotalParJoueur(scoreTotalJoueur)
-      );
+  test() {
+    this.httpClientService.getScoreTotalByJoueur(this.joueurSelectionne.id).subscribe(
+      scoreTotalJoueur => this.resultatScoreTotalParJoueur(scoreTotalJoueur)
+    );
   }
 
   ngDoCheck() {
     this.joueurSelectionne = this.authService.retourneJoueurQuiJoue();
-
-    // this.httpClientService.getScoreParJoueurEtCategorieQuizz(this.joueurSelectionne.id, 1).subscribe(
-    //   resultat => this.resultatGetScoreParJoueurEtCategorieQuizz(resultat)
-    // );
+    this.scoreTotalParJoueur = this.scoreService.totalScoreByPlayer;
+    console.log('DANS DO CHECK NAV BAR scoreTotalParJoueur vaut : ' + this.scoreTotalParJoueur);
   }
 
   resultatScoreTotalParJoueur(scoreTotal) {
     this.scoreTotalParJoueur = scoreTotal;
+    console.log('mon resultatScoreTotalParJoueur vaut : ' + this.scoreTotalParJoueur);
   }
 
 }

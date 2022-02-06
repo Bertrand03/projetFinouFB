@@ -26,13 +26,9 @@
       </ul>
     </form>
     <div>
-      <p>Score par joueur pour la catégorie init {{categorieChoisie}} : {{lastScoreBeforeStart}}</p>
-      <p>Score par joueur pour la catégorie {{categorieChoisie}} : {{scoreUpdated}}</p>
-      <!--<p *ngIf = "scoreTotalParJoueur.scoreGlobal != null">Score par joueur pour toutes les catégories {{scoreTotalParJoueur.scoreGlobal}}</p>-->
-      <p>Score par joueur pour toutes les catégories {{scoreTotalParJoueur}}</p>
+      <p>Score categ {{categorieChoisie}} : {{scoreCateg}}</p>
     </div>
     <button (click)="onResetAllCategorieMotTrouve()">RESET MOTS {{categorieChoisie}}</button>
-    <button (click)="test()">Maj score global </button>
     <p>Nombre de tentatives : {{nbTentatives}}</p>
   </div>
 

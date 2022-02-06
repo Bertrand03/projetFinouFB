@@ -1,6 +1,6 @@
 import {Component, DoCheck, OnInit} from '@angular/core';
 import {FormBuilder, FormGroup} from "@angular/forms";
-import {CategorieQuizz, HttpClientService, Joueur, Quizz, Score} from "../service/http-client.service";
+import {CategorieQuizz, HttpClientService, Joueur, Quizz, Score} from "../service/httpClientService/http-client.service";
 import {HttpClient} from "@angular/common/http";
 import {Observable} from "rxjs";
 import {AuthService} from "../service/authService/auth.service";
@@ -147,14 +147,14 @@ export class ToolsboxComponent implements OnInit, DoCheck {
 
   }
 
-  trouveParId() {
-    this.reponseChoix = this.loginForm.value.choixAction;
-    console.log('reponseChoix : ' + this.reponseChoix);
-
-    this.httpClientService.getIdBis(this.reponseChoix).subscribe(
-      response => this.resultatParId(response, this.reponseChoix),
-    );
-  }
+  // trouveParId() {
+  //   this.reponseChoix = this.loginForm.value.choixAction;
+  //   console.log('reponseChoix : ' + this.reponseChoix);
+  //
+  //   this.httpClientService.getIdBis(this.reponseChoix).subscribe(
+  //     response => this.resultatParId(response, this.reponseChoix),
+  //   );
+  // }
 
   validerPseudo() {
     this.pseudoDuJoueurId = parseInt(this.loginForm.value.pseudoId, 10);
@@ -183,40 +183,40 @@ export class ToolsboxComponent implements OnInit, DoCheck {
     this.allPlayers = reponse;
   }
 
-  addAnimalBis(): void {
-    console.log('passe dans addAnimalBis()');
-    this.afficheAnimalCree = false;
-    this.nouveauMotAnglais = this.loginForm.value.motAnglais;
-    this.nouveauMotFrancais = this.loginForm.value.motFrancais;
-    this.nouveauMotTrouve = 'non';
-    this.nouveauMotId = 0;
-
-    // this.nouveauCategorieMotId = parseInt(this.loginForm.value.motCategorieId, 10);
-    this.nouveauCategorieMotId = this.categorieId;
-    console.log('this.nouveauCategorieMotId avant subscribe vaut : ' + this.nouveauCategorieMotId);
-
-    this.httpClientService.getCategorieQuizzbyId(this.nouveauCategorieMotId).subscribe(
-        categorieQuizz => this.getNomCategorieByCategorieId(categorieQuizz)
-    );
-
-    if (this.nouveauMotAnglais !== null && this.nouveauMotFrancais !== null && this.nouveauCategorieMotId !== null) {
-      this.nouveauMotAnglais = this.toolsBoxService.upcaseFirstLetterOfSentence(this.nouveauMotAnglais);
-      this.nouveauMotFrancais = this.toolsBoxService.upcaseFirstLetterOfSentence(this.nouveauMotFrancais);
-      this.monTabBis = new Quizz(this.nouveauMotId, this.nouveauCategorieMotId, this.nouveauMotFrancais, this.nouveauMotAnglais, this.nouveauMotTrouve);
-
-      this.httpClientService.validerAnimalBis(this.monTabBis).subscribe(
-        (contenuQuizz: Quizz) => {
-          console.log('monTabBis avec AnimalBis');
-          console.log(this.monTabBis);
-          this.afficheAnimalCree = true;
-
-        },
-        (e: any) => console.log(e)
-      );
-    } else {
-      alert('Tous les champs doivent être remplis');
-    }
-  }
+  // addAnimalBis(): void {
+  //   console.log('passe dans addAnimalBis()');
+  //   this.afficheAnimalCree = false;
+  //   this.nouveauMotAnglais = this.loginForm.value.motAnglais;
+  //   this.nouveauMotFrancais = this.loginForm.value.motFrancais;
+  //   this.nouveauMotTrouve = 'non';
+  //   this.nouveauMotId = 0;
+  //
+  //   // this.nouveauCategorieMotId = parseInt(this.loginForm.value.motCategorieId, 10);
+  //   this.nouveauCategorieMotId = this.categorieId;
+  //   console.log('this.nouveauCategorieMotId avant subscribe vaut : ' + this.nouveauCategorieMotId);
+  //
+  //   this.httpClientService.getCategorieQuizzbyId(this.nouveauCategorieMotId).subscribe(
+  //       categorieQuizz => this.getNomCategorieByCategorieId(categorieQuizz)
+  //   );
+  //
+  //   if (this.nouveauMotAnglais !== null && this.nouveauMotFrancais !== null && this.nouveauCategorieMotId !== null) {
+  //     this.nouveauMotAnglais = this.toolsBoxService.upcaseFirstLetterOfSentence(this.nouveauMotAnglais);
+  //     this.nouveauMotFrancais = this.toolsBoxService.upcaseFirstLetterOfSentence(this.nouveauMotFrancais);
+  //     this.monTabBis = new Quizz(this.nouveauMotId, this.nouveauCategorieMotId, this.nouveauMotFrancais, this.nouveauMotAnglais, this.nouveauMotTrouve);
+  //
+  //     this.httpClientService.validerAnimalBis(this.monTabBis).subscribe(
+  //       (contenuQuizz: Quizz) => {
+  //         console.log('monTabBis avec AnimalBis');
+  //         console.log(this.monTabBis);
+  //         this.afficheAnimalCree = true;
+  //
+  //       },
+  //       (e: any) => console.log(e)
+  //     );
+  //   } else {
+  //     alert('Tous les champs doivent être remplis');
+  //   }
+  // }
 
   getNomCategorieByCategorieId(categorieQuizz) {
     console.log('Lance getNomCategorieByCategorieId : ');
@@ -249,54 +249,54 @@ export class ToolsboxComponent implements OnInit, DoCheck {
     );
   }
 
-  onDeleteAnimal() {
-    this.idToDelete = parseInt((this.loginForm.value.idMotASupprimer), 10);
-    this.httpClientService.getIdBis(this.idToDelete).subscribe(
-      (response: Quizz) => {
-        console.log('response onDeleteAnimal()');
-        console.log(response);
-      },
-      (e: any) => console.log(e)
-    );
+  // onDeleteAnimal() {
+  //   this.idToDelete = parseInt((this.loginForm.value.idMotASupprimer), 10);
+  //   this.httpClientService.getIdBis(this.idToDelete).subscribe(
+  //     (response: Quizz) => {
+  //       console.log('response onDeleteAnimal()');
+  //       console.log(response);
+  //     },
+  //     (e: any) => console.log(e)
+  //   );
+  //
+  //
+  //   console.log('this.motASupprimer vaut : ');
+  //   console.log(this.motASupprimer);
+  //   console.log('id du mot à supprimer vaut : ' + this.idToDelete);
+  //   this.httpClientService.deleteMotQuizz(this.idToDelete).subscribe();
+  // }
 
+  // onDeleteMotQuizz(idMotASupprimer) {
+  //   this.httpClientService.getIdBis(idMotASupprimer).subscribe(
+  //     (response: Quizz) => {
+  //       console.log('response onDeleteMotQuizz()');
+  //       console.log(response);
+  //     },
+  //     (e: any) => console.log(e)
+  //   );
+  //
+  //
+  //   console.log('this.idMotASupprimer vaut : ');
+  //   console.log(idMotASupprimer);
+  //   this.httpClientService.deleteMotQuizz(idMotASupprimer).subscribe();
+  // }
 
-    console.log('this.motASupprimer vaut : ');
-    console.log(this.motASupprimer);
-    console.log('id du mot à supprimer vaut : ' + this.idToDelete);
-    this.httpClientService.deleteMotQuizz(this.idToDelete).subscribe();
-  }
-
-  onDeleteMotQuizz(idMotASupprimer) {
-    this.httpClientService.getIdBis(idMotASupprimer).subscribe(
-      (response: Quizz) => {
-        console.log('response onDeleteMotQuizz()');
-        console.log(response);
-      },
-      (e: any) => console.log(e)
-    );
-
-
-    console.log('this.idMotASupprimer vaut : ');
-    console.log(idMotASupprimer);
-    this.httpClientService.deleteMotQuizz(idMotASupprimer).subscribe();
-  }
-
-  getQuizzByMot(choix) {
-    if (choix === 'supprime') {
-      console.log('dans getQuizzByMot(), choix vaut supprime')
-      this.motARechercher = this.loginForm.value.nomMotASupprimer;
-    }
-    this.motARechercher = this.loginForm.value.rechercheMot;
-    this.httpClientService.getQuizzbyMotService(this.motARechercher).subscribe(
-      (quizzretourne: Quizz) => {
-        this.quizzRetourne = quizzretourne;
-        console.log('this.quizzRetourne vaut ');
-        console.log(this.quizzRetourne);
-        if (choix === 'supprime') {
-          this.onDeleteMotQuizz(this.quizzRetourne.animauxId);
-        }
-      }
-    );
-  }
+  // getQuizzByMot(choix) {
+  //   if (choix === 'supprime') {
+  //     console.log('dans getQuizzByMot(), choix vaut supprime')
+  //     this.motARechercher = this.loginForm.value.nomMotASupprimer;
+  //   }
+  //   this.motARechercher = this.loginForm.value.rechercheMot;
+  //   this.httpClientService.getQuizzbyMotService(this.motARechercher).subscribe(
+  //     (quizzretourne: Quizz) => {
+  //       this.quizzRetourne = quizzretourne;
+  //       console.log('this.quizzRetourne vaut ');
+  //       console.log(this.quizzRetourne);
+  //       if (choix === 'supprime') {
+  //         this.onDeleteMotQuizz(this.quizzRetourne.animauxId);
+  //       }
+  //     }
+  //   );
+  // }
 }
 

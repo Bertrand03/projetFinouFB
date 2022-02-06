@@ -20,7 +20,7 @@
     <p>Mot Francais</p>
     <input class="form-control"type="text" formControlName="motFrancais">
     <br>
-    <button class="btn btn-primary" (click)="addAnimalBis()">Valider le nouveau mot</button>
+    <!--<button class="btn btn-primary" (click)="addAnimalBis()">Valider le nouveau mot</button>-->
     <br>
     <div *ngIf = "afficheAnimalCree === true">
       <p> Animal créée : {{monTabBis.motAnglais}} - {{monTabBis.motFrancais}} dans la Catégorie : {{nomCategorieSelectionnee}}</p>
@@ -58,7 +58,7 @@
   <input type="text" formControlName="nomMotASupprimer">
   <br>
   <br>
-  <button class="btn btn-primary" (click)="getQuizzByMot('supprime')">Supprimer un mot Quizz</button>
+  <!--<button class="btn btn-primary" (click)="getQuizzByMot('supprime')">Supprimer un mot Quizz</button>-->
 </div>
 <br>
 <br>
@@ -68,7 +68,7 @@
   <input type="text" formControlName="rechercheMot">
   <br>
   <br>
-  <button class="btn btn-primary" (click)="getQuizzByMot('cherche')">Cherche par mot</button>
+  <!--<button class="btn btn-primary" (click)="getQuizzByMot('cherche')">Cherche par mot</button>-->
 
   <!--<p>{{employeesId | json}}</p>-->
     <div *ngIf = "quizzRetourne != null">

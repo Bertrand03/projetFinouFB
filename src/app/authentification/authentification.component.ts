@@ -1,8 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import {AuthService} from '../service/authService/auth.service';
 import {Router} from '@angular/router';
-import {HttpClientService, Joueur} from '../service/http-client.service';
+import {HttpClientService, Joueur} from '../service/httpClientService/http-client.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
+import {ScoreService} from '../service/scoreService/score.service';
 
 @Component({
   selector: 'app-authentification',
@@ -16,14 +17,17 @@ export class AuthentificationComponent implements OnInit {
   listeJoueurs: Joueur [];
   ldap: Joueur [];
   loginForm: FormGroup;
-  trouve: boolean;
+  trouve = false;
 
   ligneJoueur: Joueur;
   pseudoEnBase: string;
   mdpEnBase: string;
 
+  testValue: number;
+
   constructor(private authService: AuthService,
               private httpClientService: HttpClientService,
+              private scoreService: ScoreService,
               private router: Router,
               private formBuilder: FormBuilder) { }
 
@@ -37,27 +41,27 @@ export class AuthentificationComponent implements OnInit {
       listeJoueurs => this.getListeJoueurs(listeJoueurs)
     );
 
-  }
+    console.log('lance le init authentification');
+    console.log('this.trouve = ' + this.trouve);
 
-  // onSignIn() {
-  //   this.pseudo = this.loginForm.value.pseudoForm;
-  //   console.log('le pseudo rentré vaut : ');
-  //   console.log(this.pseudo);
-  //   this.authService.checkAuth(this.pseudo)
-  //     .then(() => {
-  //       // this.router.navigate(['app-choix-action']);
-  //       this.verifLdap();
-  //     }, (err) => {
-  //       this.errorMsg = err;
-  //     });
-  // }
+    if (this.authService.joueur != null) {
+      this.trouve = true;
+      console.log('this.trouve a pris la valeur de true = ' + this.trouve);
+    }
+
+  }
 
   onSignIn() {
     this.pseudo = this.loginForm.value.pseudoForm;
-    console.log('le pseudo rentré vaut : ');
-    console.log(this.pseudo);
-    // this.authService.checkAuth(this.pseudo);
     this.verifLdap();
+
+  }
+
+  onSignOut() {
+    this.pseudo = null;
+    this.mdp = null;
+    this.trouve = false;
+    this.authService.joueurQuiJoue(null);
   }
 
   verifLdap() {
@@ -75,18 +79,16 @@ export class AuthentificationComponent implements OnInit {
         if ((this.ligneJoueur.pseudo === this.pseudo) && (this.ligneJoueur.motDePasse === this.mdp)) {
           this.trouve = true;
           this.authService.joueurQuiJoue(this.ldap[i]);
+
+          this.scoreService.getTotalScoreByPlayerService(this.ligneJoueur.id).subscribe(
+            value => this.setTotalScoreInScoreService(value)
+          );
+
           this.router.navigate(['trouve-anglais']);
-          console.log('navigate mot anglais');
         } else {
-          console.log('ldap faux');
           if ((this.pseudoEnBase !== this.pseudo) && (this.mdpEnBase === this.mdp)) {
-            console.log('pseudoEnBase vaut : ' + this.pseudoEnBase);
-            console.log('pseudo vaut : ' + this.pseudo);
-            alert('Le pseudo n\' est pas bon.');
           }
           if ((this.mdpEnBase !== this.mdp) && (this.pseudoEnBase === this.pseudo)) {
-            console.log('mdpEnBase vaut : ' + this.mdpEnBase);
-            console.log('mdp vaut : ' + this.mdp);
             alert('Le mot de passe n\' est pas bon.');
           }
         }
@@ -96,6 +98,13 @@ export class AuthentificationComponent implements OnInit {
 
   getListeJoueurs(listeJoueurs) {
     return this.listeJoueurs = listeJoueurs;
+  }
+
+  setTotalScoreInScoreService(value) {
+    this.testValue = value;
+    console.log('testValue vaut ' + this.testValue);
+    this.scoreService.setTotalScoreByPlayer(this.testValue);
+
   }
 
 }

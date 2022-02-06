@@ -10,17 +10,24 @@
 <!--</div>-->
 
 <form [formGroup]="loginForm">
-  <div class="mb-3">
-    <label for="Pseudo" class="form-label">Pseudo</label>
-    <input type="text" formControlName="pseudoForm" class="form-control" id="Pseudo">
+  <div class="container">
+    <div class="row">
+      <div class="mb-3 col-xs-3">
+        <label for="Pseudo" class="form-label">Pseudo</label>
+        <input type="text" formControlName="pseudoForm" class="form-control" id="Pseudo">
+      </div>
+    </div>
+    <br>
+    <div class="row">
+      <div class="mb-3 col-xs-3">
+        <label for="Mot_de_passe" class="form-label">Mot de passe</label>
+        <input type="password" formControlName="mdpForm" class="form-control" id="Mot_de_passe">
+      </div>
+    </div>
+    <br>
+      <button *ngIf="trouve == false" type="submit" class="btn btn-success" (click)="onSignIn()">Se connecter</button>
+      <button *ngIf="trouve == true" type="submit" class="btn btn-danger" (click)="onSignOut()">Déconnexion</button>
   </div>
-  <br>
-  <div class="mb-3">
-    <label for="Mot_de_passe" class="form-label">Mot de passe</label>
-    <input type="password" formControlName="mdpForm" class="form-control" id="Mot_de_passe">
-  </div>
-  <br>
-    <button type="submit" class="btn btn-success" (click)="onSignIn()">Valider</button>
 </form>
 
 <div>
@@ -29,19 +36,6 @@
     <p>{{joueur.pseudo}} - {{joueur.motDePasse}}</p>
   </div>
 </div>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

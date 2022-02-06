@@ -1,10 +1,10 @@
 import {Component, DoCheck, EventEmitter, OnInit, Output} from '@angular/core';
-import {CategorieQuizz, HttpClientService, Joueur, Quizz, Score} from '../service/http-client.service';
+import {CategorieQuizz, HttpClientService, Joueur, Quizz, Score} from '../service/httpClientService/http-client.service';
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {AuthService} from '../service/authService/auth.service';
-import {ToolsBoxService} from "../service/toolsBoxService/tools-box-service";
-import {Observable, Subscription} from "rxjs";
+import {ToolsBoxService} from '../service/toolsBoxService/tools-box-service';
+import {ScoreService} from '../service/scoreService/score.service';
 
 @Component({
   selector: 'app-trouve-anglais',
@@ -25,25 +25,16 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   retourMenuQuizz = false;
   nbTentatives: number;
   motAEteDecouvert: boolean;
-  // scoreTotalParJoueur: Score;
-  scoreTotalParJoueur: number;
-  scoreTotalParJoueurId: number;
-  testValeur: Subscription;
-
 
   joueurSelectionne: Joueur;
   scoreParJoueurEtParCategorie: Score;
-  s: Score;
   scoreCategorieAUpdate: Score;
   scoreCateg: number;
-  scoreUpdated: number;
-  lastScoreBeforeStart: number;
-
-  majScore: boolean;
 
   constructor(private httpClientService: HttpClientService,
               private authService: AuthService,
               private toolsBoxService: ToolsBoxService,
+              private scoreService: ScoreService,
               private httpClient: HttpClient,
               private formBuilder: FormBuilder) {
   }
@@ -57,37 +48,21 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
         motAnglaisJoueur: [],
       }
     );
-
-    this.motAEteDecouvert = false;
-    console.log('motAEteDecouvert vaut : ' + this.motAEteDecouvert);
-
     this.joueurSelectionne = this.authService.retourneJoueurQuiJoue();
-    console.log('lance getScoreTotalParJoueur() dans le Init');
-    // this.getScoreTotalParJoueur();
-
-    this.getScoreJoueurCategorie(this.categorieId);
-
-    this.lastScoreBeforeStart = this.scoreUpdated;
-    console.log('lastScoreBeforeStart vaut : ' + this.lastScoreBeforeStart);
+    this.motAEteDecouvert = false;
   }
 
   ngDoCheck() {
-    this.joueurSelectionne = this.authService.retourneJoueurQuiJoue();
-    // this.getScoreTotalParJoueur();
+    //
   }
 
-  getScoreJoueurCategorie(categorieId) {
-    this.httpClientService.getScoreParJoueurEtCategorieQuizz(this.joueurSelectionne.id, categorieId).subscribe(
-      resultat => this.resultatGetScoreParJoueurEtCategorieQuizz(resultat)
+  updateGlobalScore() {
+    console.log('lance updateGlobalScore()');
+    // this.httpClientService.getScoreTotalByJoueur(this.joueurSelectionne.id).subscribe(
+    this.scoreService.getTotalScoreByPlayerService(this.joueurSelectionne.id).subscribe(
+      scoreTotalJoueur => this.resultatScoreTotalParJoueur(scoreTotalJoueur)
     );
   }
-
-  // getScoreTotalParJoueur() {
-  //   console.log('On recupere le score global');
-  //   this.httpClientService.getScoreTotalByJoueur(this.joueurSelectionne.id).subscribe(
-  //     scoreTotalJoueur => this.resultatScoreTotalParJoueur(scoreTotalJoueur)
-  //   );
-  // }
 
   getScoreTotalParJoueur() {
     console.log('On recupere le score global');
@@ -97,43 +72,42 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     );
   }
 
-
   resultatScoreTotalParJoueur(scoreTotal) {
     console.log('on stocke le score global');
-    this.scoreTotalParJoueur = scoreTotal;
+    this.scoreService.totalScoreByPlayer = scoreTotal;
     // this.scoreTotalParJoueurId = this.scoreTotalParJoueur.scoreGlobal;
-    // console.log('this.scoreTotalParJoueur vaut ' + this.scoreTotalParJoueur);
+    console.log('this.scoreService.totalScoreByPlayer vaut ' + this.scoreService.totalScoreByPlayer);
     // console.log('scoreTotal vaut ' + scoreTotal);
   }
 
   resultatGetScoreParJoueurEtCategorieQuizz(resultat) {
+    console.log('LANCE resultatGetScoreParJoueurEtCategorieQuizz');
     this.scoreParJoueurEtParCategorie = resultat;
+    console.log('resultat vaut : ' + resultat);
     this.scoreCateg =  resultat.scoreCategorie;
+    console.log('scoreCateg vaut : ' + this.scoreCateg);
+
   }
 
   onControlFrenchWord(ligne) {
     console.log('On entre dans onControlFrenchWord');
-    // console.log('ma ligne vaut :');
-    // console.log(ligne);
     this.motAEteDecouvert = false;
     this.motAnglaisSaisi = this.loginForm.value.motAnglaisJoueur;
-    // console.log('this.motAnglaisSaisi avant uppercase : ' + this.motAnglaisSaisi);
 
+    // Premiere lettre en majuscule
     this.motAnglaisSaisi = this.toolsBoxService.upcaseFirstLetterOfSentence(this.motAnglaisSaisi);
-    // console.log('this.motAnglaisSaisi après uppercase : ' + this.motAnglaisSaisi);
 
-
+    // Si mot a été trouvé
     if (this.motAnglaisSaisi === ligne.motAnglais) {
-      // console.log('mot trouvé');
       ligne.motTrouve = 'oui';
       this.motAEteDecouvert = true;
-      // this.getScoreTotalParJoueur();
       this.updateScoreByCategory(ligne);
       this.updateAnimalBis(ligne);
-    } else {
+    } else { // Si mot n'a pas été trouvé
       console.log('mauvais mot');
     }
     this.compteurTentatives();
+    // this.updateGlobalScore();
   }
 
     compteurTentatives() {
@@ -142,40 +116,36 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       // console.log('nbTentatives vaut : ' + this.nbTentatives);
     }
 
+
     updateScoreByCategory(ligne) {
-      console.log('On recupere le score par categorie Id');
-      // console.log('ligne.categorieId vaut : ' + ligne.categorieId);
-      this.httpClientService.getScoreByCategorieId(ligne.categorieId).subscribe(
-        resultat => this.updateCategoryScore(resultat)
+      this.scoreService.getScoreByCategoryAndPlayerService(ligne.categorieId, this.joueurSelectionne.id).subscribe(
+        resultat => this.incrementOnePointCategoryScore(resultat)
       );
+
     }
 
-    updateCategoryScore(scoreParJoueurEtParCategorie) {
+    incrementOnePointCategoryScore(scoreParJoueurEtParCategorie) {
       console.log('lance updateCategoryScore');
-      // console.log(scoreParJoueurEtParCategorie);
-
-      this.scoreUpdated = scoreParJoueurEtParCategorie.scoreCategorie + 1;
-
-      this.s = scoreParJoueurEtParCategorie;
       this.scoreCategorieAUpdate = new Score(
         scoreParJoueurEtParCategorie.scoreId,
         scoreParJoueurEtParCategorie.joueurId,
         scoreParJoueurEtParCategorie.categorieId,
         scoreParJoueurEtParCategorie.scoreGlobal,
-        this.scoreUpdated,
+        this.scoreCateg + 1,
         scoreParJoueurEtParCategorie.nbTentatives);
-      // console.log('this.scoreCategorieAUpdate vaut : ');
-      // console.log(this.scoreCategorieAUpdate);
-      this.scoreUpdated = this.scoreCategorieAUpdate.scoreCategorie;
-      // console.log(this.scoreUpdated);
       this.updateScoreCategory(this.scoreCategorieAUpdate);
-      // this.test();
     }
 
   updateScoreCategory(scoreToUpdate) {
-    this.httpClientService.majScoreCategoryService(scoreToUpdate).subscribe(
+    this.scoreService.updateScoreByCategoryAndPlayer(scoreToUpdate).subscribe(
       () => {
         console.log('On met à jour le score categorie');
+        console.log('scoreToUpdate : ');
+        console.log(scoreToUpdate);
+        console.log('this.scoreCateg : ' + this.scoreCateg);
+        this.scoreCateg = scoreToUpdate.scoreCategorie;
+        console.log('this.scoreCateg : ' + this.scoreCateg);
+        this.updateGlobalScore();
       },
       (e: any) => console.log(e)
     );
@@ -230,15 +200,24 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   }
 
   onValiderChoix(categorieId) {
-    // console.log('Lancement onValiderChoix()');
+    console.log('Lancement onValiderChoix()');
     this.categorieId = categorieId;
 
-    this.getScoreJoueurCategorie(categorieId);
+    // this.getScoreJoueurCategorie(categorieId);
     this.retourneLeContenuDeMaCategorie();
     this.retourneToutesLesCategories();
+
+    this.joueurSelectionne = this.authService.retourneJoueurQuiJoue();
     // console.log(this.categorieChoisie = this.listCategoriesQuizz[this.categorieId].nomCategorie);
     this.retourMenuQuizz = true;
     this.nbTentatives = 0;
+    console.log('AVANT REQUETE');
+    if (this.categorieId != null && this.joueurSelectionne.id != null) {
+      console.log('if this.categorieId != null && this.joueurSelectionne.id != null');
+      this.scoreService.getScoreByCategoryAndPlayerService(this.categorieId, this.joueurSelectionne.id).subscribe(
+        resultat => this.resultatGetScoreParJoueurEtCategorieQuizz(resultat)
+      );
+    }
   }
 
   returnContenuQuizz(response, categorieId) {
