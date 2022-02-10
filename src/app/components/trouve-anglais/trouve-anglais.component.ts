@@ -1,10 +1,16 @@
 import {Component, DoCheck, EventEmitter, OnInit, Output} from '@angular/core';
-import {CategorieQuizz, HttpClientService, Joueur, Quizz, Score} from '../service/httpClientService/http-client.service';
+import {HttpClientService} from '../../service/httpClientService/http-client.service';
 import {HttpClient} from '@angular/common/http';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {AuthService} from '../service/authService/auth.service';
-import {ToolsBoxService} from '../service/toolsBoxService/tools-box-service';
-import {ScoreService} from '../service/scoreService/score.service';
+import {AuthService} from '../../service/authService/auth.service';
+import {ToolsBoxService} from '../../service/toolsBoxService/tools-box-service';
+import {ScoreService} from '../../service/scoreService/score.service';
+import {Quizz} from '../../models/quizz.model';
+import {Score} from '../../models/score.model';
+import {CategorieQuizz} from '../../models/categorieQuizz.model';
+import {Joueur} from '../../models/joueur.model';
+import {QuizzService} from "../../service/quizzService/quizz.service";
+import {Observable} from "rxjs";
 
 @Component({
   selector: 'app-trouve-anglais',
@@ -31,12 +37,17 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   scoreCategorieAUpdate: Score;
   scoreCateg: number;
 
-  help: string;
+  help: number;
+  indexHelp = 0;
+  motQuizz: any;
+
+  goReset: boolean = false;
 
   constructor(private httpClientService: HttpClientService,
               private authService: AuthService,
               private toolsBoxService: ToolsBoxService,
               private scoreService: ScoreService,
+              private quizzService: QuizzService,
               private httpClient: HttpClient,
               private formBuilder: FormBuilder) {
   }
@@ -75,6 +86,8 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   }
 
   resultatScoreTotalParJoueur(scoreTotal) {
+    console.log('scoreTotal');
+    console.log(scoreTotal);
     console.log('on stocke le score global');
     this.scoreService.totalScoreByPlayer = scoreTotal;
     // this.scoreTotalParJoueurId = this.scoreTotalParJoueur.scoreGlobal;
@@ -128,6 +141,8 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
     incrementOnePointCategoryScore(scoreParJoueurEtParCategorie) {
       console.log('lance updateCategoryScore');
+      console.log('scoreParJoueurEtParCategorie vaut ');
+      console.log(scoreParJoueurEtParCategorie);
       this.scoreCategorieAUpdate = new Score(
         scoreParJoueurEtParCategorie.scoreId,
         scoreParJoueurEtParCategorie.joueurId,
@@ -232,6 +247,11 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   }
 
   onResetAllCategorieMotTrouve() {
+    if (this.goReset) {
+      this.goReset = false;
+    } else {
+      this.goReset = true;
+    }
     this.returnContenuQuizz(this.quizz, this.categorieIdChoisie);
     this.motAEteDecouvert = false;
     // console.log('Quizz triés par categorieId vaut : ');
@@ -255,7 +275,28 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     return this.retourMenuQuizz;
   }
 
-  onAide(englishWordToFind) {
-    this.help = englishWordToFind.substring(0, 1);
+  getQuizzWord(wordId) {
+    this.quizzService.getQuizzWord(wordId).subscribe(value => this.motQuizz = value);
   }
+
+
+  onAide(englishWordToFind) {
+    // this.help = englishWordToFind.substring(0, indiceAide);
+    // this.indexHelp = indiceAide;
+    // console.log('englishWordToFind : ' + englishWordToFind);
+    // console.log('indiceAide : ' + indiceAide);
+    // console.log('this.help : ' + this.help);
+    // return this.quizzService.getQuizzWord(wordId).subscribe( value => this.retrieveWord(value));
+  }
+
+  retrieveWord(word) {
+    // this.help = word.aide;
+    // this.help = help
+    // console.log('this.help : ' + this.help);
+    // console.log('word.aide : ' + word.aide);
+    // this.quizzService.updateQuizzWord(word).subscribe();
+
+  }
+
+
 }

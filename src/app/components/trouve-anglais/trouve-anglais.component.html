@@ -22,15 +22,17 @@
           <button *ngIf ="ligne.motTrouve === 'non'"
                   class="button" type="submit"
                   (click)="onControlFrenchWord(ligne)">VALIDER</button>
-          <button (click)="onAide(ligne.motAnglais)">Aide</button>
-          <p>Aide : {{help}}</p>
+          <app-aide
+            [englishWord] = "ligne.motAnglais"
+            [resetHelpAndPenalty] = "goReset"
+          ></app-aide>
         </li>
       </ul>
     </form>
     <div>
-      <p>Score categ {{categorieChoisie}} : {{scoreCateg}}</p>
+      <p> Score categ : {{scoreCateg}}</p>
     </div>
-    <button (click)="onResetAllCategorieMotTrouve()">RESET MOTS {{categorieChoisie}}</button>
+    <button (click)="onResetAllCategorieMotTrouve()">RESET MOTS </button>
     <p>Nombre de tentatives : {{nbTentatives}}</p>
   </div>
 

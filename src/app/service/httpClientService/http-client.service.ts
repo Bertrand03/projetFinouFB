@@ -1,49 +1,52 @@
 import {Injectable} from '@angular/core';
-
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
+import {Quizz} from '../../models/quizz.model';
+import {Score} from '../../models/score.model';
+import {Joueur} from '../../models/joueur.model';
 
 
-export class Quizz {
-  constructor(
-    public animauxId: number,
-    public categorieId: number,
-    public motFrancais: string,
-    public motAnglais: string,
-    public motTrouve: string,
-  ) {
-  }
-}
 
-export class Joueur {
-  constructor(
-    public id: number,
-    public pseudo: string,
-    public motDePasse: string,
-    public score: number,
-  ) {
-  }
-}
+// export class Quizz {
+//   constructor(
+//     public animauxId: number,
+//     public categorieId: number,
+//     public motFrancais: string,
+//     public motAnglais: string,
+//     public motTrouve: string,
+//   ) {
+//   }
+// }
+//
+// export class Joueur {
+//   constructor(
+//     public id: number,
+//     public pseudo: string,
+//     public motDePasse: string,
+//     public score: number,
+//   ) {
+//   }
+// }
 
-export class CategorieQuizz {
-  constructor(
-    public categorieId: number,
-    public nomCategorie: string,
-  ) {
-  }
-}
+// export class CategorieQuizz {
+//   constructor(
+//     public categorieId: number,
+//     public nomCategorie: string,
+//   ) {
+//   }
+// }
 
-export class Score {
-  constructor(
-    public scoreId: number,
-    public joueurId: number,
-    public categorieId: number,
-    public scoreGlobal: number,
-    public scoreCategorie: number,
-    public nbTentatives: number,
-  ) {
-  }
-}
+// export class Score {
+//   constructor(
+//     public scoreId: number,
+//     public joueurId: number,
+//     public categorieId: number,
+//     public scoreGlobal: number,
+//     public scoreCategorie: number,
+//     public nbTentatives: number,
+//   ) {
+//   }
+// }
 
 
 @Injectable({

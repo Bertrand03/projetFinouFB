@@ -3,14 +3,15 @@ import { NgModule } from '@angular/core';
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { HttpClientModule } from '@angular/common/http';
-import {ChoixActionComponent} from './choix-action/choix-action.component';
+import {ChoixActionComponent} from './components/choix-action/choix-action.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {BrowserAnimationsModule} from '@angular/platform-browser/animations';
-import { AuthentificationComponent } from './authentification/authentification.component';
-import { NavBarComponent } from './nav-bar/nav-bar.component';
-import { TrouveAnglaisComponent } from './trouve-anglais/trouve-anglais.component';
-import { TrouveFrancaisComponent } from './trouve-francais/trouve-francais.component';
-import { ToolsboxComponent } from './toolsbox/toolsbox.component';
+import { AuthentificationComponent } from './components/authentification/authentification.component';
+import { NavBarComponent } from './components/nav-bar/nav-bar.component';
+import { TrouveAnglaisComponent } from './components/trouve-anglais/trouve-anglais.component';
+import { TrouveFrancaisComponent } from './components/trouve-francais/trouve-francais.component';
+import { ToolsboxComponent } from './components/toolsbox/toolsbox.component';
+import { AideComponent } from './components/aide/aide.component';
 
 @NgModule({
   declarations: [
@@ -20,7 +21,8 @@ import { ToolsboxComponent } from './toolsbox/toolsbox.component';
     NavBarComponent,
     TrouveAnglaisComponent,
     TrouveFrancaisComponent,
-    ToolsboxComponent
+    ToolsboxComponent,
+    AideComponent
   ],
   imports: [
     BrowserModule,

@@ -1,10 +1,11 @@
 import {Component, DoCheck, OnInit} from '@angular/core';
-import {FormBuilder, FormGroup} from "@angular/forms";
-import {CategorieQuizz, HttpClientService, Joueur, Quizz, Score} from "../service/httpClientService/http-client.service";
-import {HttpClient} from "@angular/common/http";
-import {Observable} from "rxjs";
-import {AuthService} from "../service/authService/auth.service";
-import {ToolsBoxService} from "../service/toolsBoxService/tools-box-service";
+import {FormBuilder, FormGroup} from '@angular/forms';
+import {HttpClientService} from '../../service/httpClientService/http-client.service';
+import {HttpClient} from '@angular/common/http';
+import {AuthService} from '../../service/authService/auth.service';
+import {Quizz} from '../../models/quizz.model';
+import {Score} from "../../models/score.model";
+import {Joueur} from "../../models/joueur.model";
 
 @Component({
   selector: 'app-toolsbox',
@@ -146,12 +147,13 @@ export class ToolsboxComponent implements OnInit, DoCheck {
   // }
 
   validerPseudo() {
+    console.log('passe dans validerPseudo !!! ');
     this.pseudoDuJoueurId = parseInt(this.loginForm.value.pseudoId, 10);
     this.pseudoDuJoueur = this.loginForm.value.pseudoJoueur;
     this.motDePasse = this.loginForm.value.motDePasse;
     this.pseudoDuJoueurScore = parseInt(this.loginForm.value.pseudoScore, 10);
 
-    this.monTabJoueurs = new Joueur(0, this.pseudoDuJoueur, this.motDePasse, 0);
+    this.monTabJoueurs = new Joueur(0, this.pseudoDuJoueur, this.motDePasse);
     console.log('this.monTabJoueurs vaut : ');
     console.log(this.monTabJoueurs);
     this.httpClientService.addNickname(this.monTabJoueurs).subscribe(
@@ -224,7 +226,7 @@ export class ToolsboxComponent implements OnInit, DoCheck {
     this.nouveauMotId = parseInt(this.loginForm.value.motId, 10);
     this.nouveauCategorieMotId = parseInt(this.loginForm.value.motCategorieId, 10);
 
-    this.majAnimal = new Quizz(this.nouveauMotId, this.nouveauCategorieMotId, this.nouveauMotFrancais, this.nouveauMotAnglais, this.nouveauMotTrouve);
+    this.majAnimal = new Quizz(this.nouveauMotId, this.nouveauCategorieMotId, this.nouveauMotFrancais, this.nouveauMotAnglais, this.nouveauMotTrouve, '');
     console.log('majAnimal vaut : ');
     console.log(this.majAnimal);
 

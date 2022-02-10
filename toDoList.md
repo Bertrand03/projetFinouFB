@@ -6,3 +6,4 @@
   Première caractère saisie en majuscule - OK
   Bouton aide avec pénalités
   Mettre en place les Validators (revoir vidéos cours)
+  Retirer le champ score de la table Joueur

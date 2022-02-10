@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import {HttpClientService, Joueur} from '../httpClientService/http-client.service';
+import {HttpClientService} from '../httpClientService/http-client.service';
 import {ActivatedRoute, Router} from '@angular/router';
+import {Joueur} from '../../models/joueur.model';
 
 @Injectable({
   providedIn: 'root'

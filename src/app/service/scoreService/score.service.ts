@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs';
-import {Score} from '../httpClientService/http-client.service';
+import {Score} from '../../models/score.model';
 
 @Injectable({
   providedIn: 'root'
@@ -16,6 +16,7 @@ export class ScoreService {
 
   // GET
   getTotalScoreByPlayerService(playerId) {
+    console.log('Entre dans getTotalScoreByPlayerService');
     return this.httpClient.get('http://localhost:5366/score/scoreTotal/' + playerId);
   }
 
@@ -28,6 +29,8 @@ export class ScoreService {
   updateScoreByCategoryAndPlayer(score: Score): Observable<Score> {
     const url = `${this.urlScore}/updateScore/${score.joueurId}/${score.categorieId}`;
     console.log('DANS updateScoreByCategoryAndPlayer joueurId vaut : ' + score.joueurId + ' et categorieId vaut ' + score.categorieId);
+    console.log('DANS updateScoreByCategoryAndPlayer score vaut : ');
+    console.log(score);
     return this.httpClient.put<Score>(url, score, {
       headers: new HttpHeaders({
         'Content-type': 'application/json'

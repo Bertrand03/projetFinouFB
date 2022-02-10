@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import {AuthService} from '../service/authService/auth.service';
+import {AuthService} from '../../service/authService/auth.service';
 import {Router} from '@angular/router';
-import {HttpClientService, Joueur} from '../service/httpClientService/http-client.service';
+import {HttpClientService} from '../../service/httpClientService/http-client.service';
 import {FormBuilder, FormGroup} from '@angular/forms';
-import {ScoreService} from '../service/scoreService/score.service';
+import {ScoreService} from '../../service/scoreService/score.service';
+import {Joueur} from '../../models/joueur.model';
 
 @Component({
   selector: 'app-authentification',
@@ -32,6 +33,7 @@ export class AuthentificationComponent implements OnInit {
               private formBuilder: FormBuilder) { }
 
   ngOnInit() {
+    console.log('init auth');
     this.loginForm = this.formBuilder.group({
       pseudoForm: [],
       mdpForm: []
@@ -41,12 +43,8 @@ export class AuthentificationComponent implements OnInit {
       listeJoueurs => this.getListeJoueurs(listeJoueurs)
     );
 
-    console.log('lance le init authentification');
-    console.log('this.trouve = ' + this.trouve);
-
     if (this.authService.joueur != null) {
       this.trouve = true;
-      console.log('this.trouve a pris la valeur de true = ' + this.trouve);
     }
 
   }
@@ -79,7 +77,6 @@ export class AuthentificationComponent implements OnInit {
         if ((this.ligneJoueur.pseudo === this.pseudo) && (this.ligneJoueur.motDePasse === this.mdp)) {
           this.trouve = true;
           this.authService.joueurQuiJoue(this.ldap[i]);
-
           this.scoreService.getTotalScoreByPlayerService(this.ligneJoueur.id).subscribe(
             value => this.setTotalScoreInScoreService(value)
           );
