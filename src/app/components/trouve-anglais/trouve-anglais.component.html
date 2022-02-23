@@ -1,7 +1,7 @@
   <div class="form-group" *ngIf = "retourMenuQuizz == false">
     <ul class="list-group">
       <li class="list-group-item" *ngFor="let theme of listCategoriesQuizz;">
-        <button (click)="onValiderChoix(theme.categorieId)">Quizz : {{theme.nomCategorie}}</button>
+        <button (click)="onValiderChoix(theme.categorieId, theme)">Quizz : {{theme.nomCategorie}}</button>
       </li>
     </ul>
   </div>
@@ -9,7 +9,7 @@
 
   <div class="form-group" *ngIf = "retourMenuQuizz == true">
     <button (click)="retourChoixQuizz()">Retour choix Quizz</button>
-    <h3>Bienvenue dans le Quizz : {{categorieChoisie}}</h3>
+    <h3>Bienvenue dans le Quizz : {{categoryChoosed}}</h3>
     <form [formGroup]="loginForm" *ngFor="let ligne of quizz;">
       <ul class="list-group">
         <li [ngClass]="{'list-group-item' : true,

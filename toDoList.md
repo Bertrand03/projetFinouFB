@@ -7,3 +7,5 @@
   Bouton aide avec pénalités
   Mettre en place les Validators (revoir vidéos cours)
   Retirer le champ score de la table Joueur
+  Gérer les erreurs de l'utilisateur sur les accents. Par exemple si "piece" au lieu de "pièce". On ciblera en gras
+  la lettre en erreur

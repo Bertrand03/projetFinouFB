@@ -24,7 +24,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   listCategoriesQuizz: CategorieQuizz[];
   quizz: Quizz[];
   categorieIdChoisie: number;
-  categorieChoisie: string;
+  categoryChoosed: string;
   loginForm: FormGroup;
   motAnglaisSaisi: string;
   categorieId: number;
@@ -37,8 +37,6 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   scoreCategorieAUpdate: Score;
   scoreCateg: number;
 
-  help: number;
-  indexHelp = 0;
   motQuizz: any;
 
   goReset: boolean = false;
@@ -216,9 +214,10 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     );
   }
 
-  onValiderChoix(categorieId) {
+  onValiderChoix(categorieId, categorieQuizz) {
     console.log('Lancement onValiderChoix()');
-    this.categorieId = categorieId;
+    this.categorieId = categorieQuizz.categorieId;
+    this.categoryChoosed = categorieQuizz.nomCategorie;
 
     // this.getScoreJoueurCategorie(categorieId);
     this.retourneLeContenuDeMaCategorie();

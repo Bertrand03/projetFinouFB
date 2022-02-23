@@ -1,4 +1,4 @@
-import {Component, DoCheck, OnInit} from '@angular/core';
+import {Component, DoCheck, OnChanges, OnInit, SimpleChanges} from '@angular/core';
 import {FormBuilder, FormGroup} from '@angular/forms';
 import {HttpClientService} from '../../service/httpClientService/http-client.service';
 import {HttpClient} from '@angular/common/http';
@@ -6,13 +6,15 @@ import {AuthService} from '../../service/authService/auth.service';
 import {Quizz} from '../../models/quizz.model';
 import {Score} from "../../models/score.model";
 import {Joueur} from "../../models/joueur.model";
+import {QuizzService} from "../../service/quizzService/quizz.service";
+import {ToolsBoxService} from "../../service/toolsBoxService/tools-box-service";
 
 @Component({
   selector: 'app-toolsbox',
   templateUrl: './toolsbox.component.html',
   styleUrls: ['./toolsbox.component.scss']
 })
-export class ToolsboxComponent implements OnInit, DoCheck {
+export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
 
   loginForm: FormGroup;
   choix: string[];
@@ -33,8 +35,10 @@ export class ToolsboxComponent implements OnInit, DoCheck {
 
   nouveauMotId: number;
   nouveauCategorieMotId: number;
-  nouveauMotAnglais: string;
-  nouveauMotFrancais: string;
+  newEnglishWord: string;
+  newFrenchWord: string;
+  wordToAddInDataBase: Quizz;
+
   nouveauMotTrouve: string;
 
   afficheAnimalCree: boolean;
@@ -48,15 +52,30 @@ export class ToolsboxComponent implements OnInit, DoCheck {
   nomCategorieSelectionnee: string;
   quizzRetourne: Quizz;
 
+  displayWordCreated = false;
+  previousCategorySelected: string =  null;
+
+  nameWordToDelete: string;
+  wordToDelete: Quizz;
+  listOfWords: Quizz[];
+
 
   constructor(private fb: FormBuilder,
               private httpClient: HttpClient,
               private httpClientService: HttpClientService,
+              private toolsBoxService: ToolsBoxService,
+              private quizzService: QuizzService,
               private authService: AuthService) {
   }
 
   ngDoCheck() {
     this.joueurSelectionne = this.authService.retourneJoueurQuiJoue();
+  }
+
+  ngOnChanges(changes: SimpleChanges): void {
+    if (changes.categorieId) {
+      console.log('NgOnChanges Toolbox');
+    }
   }
 
   ngOnInit() {
@@ -74,7 +93,9 @@ export class ToolsboxComponent implements OnInit, DoCheck {
       nomMotASupprimer: [],
       motId: [],
       motCategorieId: [],
-      deletePlayer: []
+      deletePlayer: [],
+      formDeleteWord: [],
+      formButtonRadio: []
 
     });
 
@@ -93,6 +114,9 @@ export class ToolsboxComponent implements OnInit, DoCheck {
     this.httpClientService.getAllCategorieQuizzService().subscribe(
       categorieQuizz => this.returnListAllCategorieQuizz(categorieQuizz)
     );
+
+    this.categorieId = null;
+    console.log('categorieId vaut ' + this.categorieId);
   }
 
 
@@ -112,6 +136,15 @@ export class ToolsboxComponent implements OnInit, DoCheck {
 
   getNomCategorieSelectionnee(nomCategorie) {
     this.nomCategorieSelectionnee = nomCategorie;
+    // if (this.previousCategorySelected === null) {
+    //  this.previousCategorySelected = this.nomCategorieSelectionnee;
+    // } else {
+    //   if (this.previousCategorySelected === this.nomCategorieSelectionnee) {
+    //     // On ne fait rien
+    //   } else {
+    //     this.previousCategorySelected = this.nomCategorieSelectionnee;
+    //   }
+    // }
   }
 
   resultatGetScore(response) {
@@ -209,24 +242,16 @@ export class ToolsboxComponent implements OnInit, DoCheck {
   //   }
   // }
 
-  getNomCategorieByCategorieId(categorieQuizz) {
-    console.log('Lance getNomCategorieByCategorieId : ');
-    console.log('categorieId vaut : ');
-    console.log(categorieQuizz);
-    this.categorieQuizz = categorieQuizz;
-  }
-
-
   // *********** MISE A JOUR D'UN ANIMAL *************
 
   updateAnimalBis() {
-    this.nouveauMotAnglais = this.loginForm.value.motAnglais;
-    this.nouveauMotFrancais = this.loginForm.value.motFrancais;
+    this.newEnglishWord = this.loginForm.value.motAnglais;
+    this.newFrenchWord = this.loginForm.value.motFrancais;
     this.nouveauMotTrouve = this.loginForm.value.motTrouve;
     this.nouveauMotId = parseInt(this.loginForm.value.motId, 10);
     this.nouveauCategorieMotId = parseInt(this.loginForm.value.motCategorieId, 10);
 
-    this.majAnimal = new Quizz(this.nouveauMotId, this.nouveauCategorieMotId, this.nouveauMotFrancais, this.nouveauMotAnglais, this.nouveauMotTrouve, '');
+    this.majAnimal = new Quizz(this.nouveauMotId, this.nouveauCategorieMotId, this.newFrenchWord, this.newEnglishWord, this.nouveauMotTrouve, '');
     console.log('majAnimal vaut : ');
     console.log(this.majAnimal);
 
@@ -238,6 +263,21 @@ export class ToolsboxComponent implements OnInit, DoCheck {
       },
       (e: any) => console.log(e)
     );
+  }
+
+  onDeleteWord() {
+
+    this.nameWordToDelete = this.loginForm.value.formDeleteWord;
+    // this.quizzService.getWordsByName(this.nameWordToDelete).subscribe( value => this.retrieveWordIdByName(value));
+    this.quizzService.getWordsByName(this.nameWordToDelete).subscribe((listOfWords: Quizz[]) =>
+    this.listOfWords = listOfWords);
+    console.log('this.listOfWords : ');
+    console.log(this.listOfWords);
+    let wordToDelete = this.listOfWords[this.loginForm.value.formButtonRadio];
+    console.log('wordToDelete vaut : ' + wordToDelete.motAnglais + ' ' + wordToDelete.animauxId);
+    this.quizzService.deleteQuizzWord(wordToDelete).subscribe(() =>
+      console.log('mot supprimé : '),
+      error => console.log('error : ' + error));
   }
 
   // onDeleteAnimal() {
@@ -289,5 +329,40 @@ export class ToolsboxComponent implements OnInit, DoCheck {
   //     }
   //   );
   // }
+
+  retrieveCategorieId(categorieId) {
+    this.categorieId = categorieId;
+    console.log('categorieId vaut ' + this.categorieId);
+  }
+
+  addWordQuizz() {
+    // TODO Contrôler avec des Regex et mettre le premier caractère en majuscule
+    this.newEnglishWord = this.loginForm.value.motAnglais;
+    this.newFrenchWord = this.loginForm.value.motFrancais;
+
+    // Première lettre de chaque mot passe en majuscule
+    this.newEnglishWord = this.toolsBoxService.upcaseFirstLetterOfSentence(this.newEnglishWord);
+    this.newFrenchWord = this.toolsBoxService.upcaseFirstLetterOfSentence(this.newFrenchWord);
+
+    this.wordToAddInDataBase = new Quizz(0, this.categorieId, this.newFrenchWord, this.newEnglishWord, 'non', null);
+    this.quizzService.addNewWord(this.wordToAddInDataBase).subscribe(
+      () => {
+        console.log('addWordQuizz');
+        this.displayWordCreated = true;
+        if (this.previousCategorySelected === null) {
+          this.previousCategorySelected = this.nomCategorieSelectionnee;
+        } else {
+          if (this.previousCategorySelected === this.nomCategorieSelectionnee) {
+            // On ne fait rien
+          } else {
+            this.previousCategorySelected = this.nomCategorieSelectionnee;
+          }
+        }
+      },
+      (e: any) => console.log(e)
+    );
+  }
+
+
 }
 
