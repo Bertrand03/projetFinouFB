@@ -8,6 +8,7 @@ import {Score} from "../../models/score.model";
 import {Joueur} from "../../models/joueur.model";
 import {QuizzService} from "../../service/quizzService/quizz.service";
 import {ToolsBoxService} from "../../service/toolsBoxService/tools-box-service";
+import {error} from "selenium-webdriver";
 
 @Component({
   selector: 'app-toolsbox',
@@ -59,6 +60,8 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
   wordToDelete: Quizz;
   listOfWords: Quizz[];
 
+  displaySearchedWord: Quizz[];
+
 
   constructor(private fb: FormBuilder,
               private httpClient: HttpClient,
@@ -81,7 +84,7 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
   ngOnInit() {
     this.loginForm = this.fb.group({
 
-      rechercheMot: [],
+      searchWord: [],
       pseudoId: [],
       pseudoJoueur: [],
       motDePasse: [],
@@ -278,6 +281,18 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
     this.quizzService.deleteQuizzWord(wordToDelete).subscribe(() =>
       console.log('mot supprimé : '),
       error => console.log('error : ' + error));
+  }
+
+  searchWord() {
+    let wordToSearch = this.loginForm.value.searchWord;
+    console.log('avant nettoyage mot vaut : ' + wordToSearch);
+    console.log('length : ' + wordToSearch.length);
+    wordToSearch = this.toolsBoxService.trimAndClean(wordToSearch);
+    console.log('après nettoyage mot vaut : ' + wordToSearch);
+    console.log('length : ' + wordToSearch.length);
+    this.quizzService.getWordsByName(wordToSearch).subscribe((value: Quizz[]) => {
+      this.displaySearchedWord = value;
+    });
   }
 
   // onDeleteAnimal() {

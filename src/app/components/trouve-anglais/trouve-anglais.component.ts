@@ -215,6 +215,8 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   }
 
   onValiderChoix(categorieId, categorieQuizz) {
+    // Suppression des valeurs dans les placeholders
+    this.loginForm.reset();
     console.log('Lancement onValiderChoix()');
     this.categorieId = categorieQuizz.categorieId;
     this.categoryChoosed = categorieQuizz.nomCategorie;
@@ -246,6 +248,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   }
 
   onResetAllCategorieMotTrouve() {
+    this.loginForm.reset();
     if (this.goReset) {
       this.goReset = false;
     } else {

@@ -30,43 +30,18 @@
 <br>
 <br>
 
-<!--<div [formGroup]="loginForm">-->
-  <!--<p><b>Suppression</b> d'un Mot avec Id</p>-->
-  <!--<p>Numero Id à supprimer</p>-->
-  <!--<input type="text" formControlName="idMotASupprimer">-->
-  <!--<br>-->
-  <!--<button (click)="onDeleteAnimal()">Supprimer un mot Quizz</button>-->
-<!--</div>-->
-<!--<br>-->
-<!--<br>-->
-
-<!--ORIGINAL-->
-<!--<div [formGroup]="loginForm">-->
-  <!--<p><b>Suppression</b> d'un Mot avec son nom</p>-->
-  <!--<p>Nom du mot à supprimer</p>-->
-  <!--<input type="text" formControlName="formDeleteWord">-->
-  <!--<p>Liste de mots qui correspondent au mot à supprimer : </p>-->
-  <!--<div *ngIf="listOfWords != null">-->
-    <!--<ul *ngFor="let quizz of listOfWords">-->
-      <!--<li>Mot Anglais : {{quizz.motAnglais}}</li>-->
-      <!--<li>Mot Français : {{quizz.motFrancais}}</li>-->
-    <!--</ul>-->
-  <!--</div>-->
-  <!--<button (click)="onDeleteWord()">Supprimer un mot Quizz</button>-->
-  <!--<br>-->
-  <!--<br>-->
-<!--</div>-->
-
 <div [formGroup]="loginForm">
   <p><b>Suppression</b> d'un Mot avec son nom</p>
   <p>Nom du mot à supprimer</p>
-  <input type="text" formControlName="formDeleteWord">
+  <div class="input-group mb-3">
+    <input type="text" class="form-control" formControlName="formDeleteWord" aria-label="Recipient's username" aria-describedby="basic-addon2">
+  </div>
   <p>Liste de mots qui correspondent au mot à supprimer : </p>
   <div class="form-check" [formGroup]="loginForm" *ngIf="listOfWords != null" >
     <div *ngFor="let quizz of listOfWords; let index = index;" >
       <input class="form-check-input" type="radio" formControlName="formButtonRadio" value="{{index}}" name="formButtonRadio" id="{{index}}">
       <label class="form-check-label" for={{index}}>
-        Mot Anglais : {{quizz.motAnglais}} - Mot Français : {{quizz.motFrancais}}
+        &nbsp; Mot Anglais : {{quizz.motAnglais}} - Mot Français : {{quizz.motFrancais}}
       </label>
     </div>
   </div>
@@ -80,7 +55,18 @@
 <form [formGroup]="loginForm">
   <label> <b>Recherchez</b> un mot</label>
   <br>
-  <input type="text" formControlName="rechercheMot">
+  <input type="text" formControlName="searchWord">
+  <button (click)="searchWord()">Rechercher</button>
+  <div *ngFor="let word of displaySearchedWord">
+    <div *ngIf="displaySearchedWord != null">
+      <p>Animaux Id      :{{word.animauxId}}</p>
+      <p>Mot Français Id : {{word.motFrancais}}</p>
+      <p>Mot Anglais : {{word.motAnglais}}</p>
+      <p>Categorie Id : {{word.categorieId}}</p>
+      <p>Aide : {{word.aide}}</p>
+      <p>Mot trouve : {{word.motTrouve}}</p>
+    </div>
+  </div>
   <br>
   <br>
 
@@ -135,19 +121,3 @@
 <br>
 <br>
 
-
-
-
-<div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown button
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <!--<a class="dropdown-item" href="#">Action</a>-->
-    <!--<a class="dropdown-item" href="#">Another action</a>-->
-    <!--<a class="dropdown-item" href="#">Something else here</a>-->
-    <button class="btn btn-primary dropdown-item">Bouton 1</button>
-    <button class="btn btn-success dropdown-item">Bouton 2</button>
-    <button class="btn btn-danger dropdown-item">Bouton 3</button>
-  </div>
-</div>

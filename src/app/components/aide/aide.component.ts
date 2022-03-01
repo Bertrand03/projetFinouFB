@@ -9,6 +9,7 @@ export class AideComponent implements OnInit, DoCheck, OnChanges{
 
   @Input () englishWord: string;
   @Input () resetHelpAndPenalty: boolean;
+  @Input () wordFound: string;
   englishWordToFind: string;
   indexEnglishWordToFind = 0;
   penaltyPoints = 0;

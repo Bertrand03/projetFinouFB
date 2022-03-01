@@ -1,5 +1,7 @@
 <div>
-  <button (click)="onDisplayOneLetter(englishWord)">Aide</button>
-  <p>Aide : {{this.englishWordToFind}}</p>
+  <div *ngIf="wordFound == 'non'">
+    <button (click)="onDisplayOneLetter(englishWord)">Aide</button>
+    <p>Aide : {{this.englishWordToFind}}</p>
+  </div>
   <p>Pénalité : {{this.penaltyPoints}}</p>
 </div>
