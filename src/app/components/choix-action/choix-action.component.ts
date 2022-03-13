@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, EventEmitter, Input, OnInit, Output} from '@angular/core';
 
 @Component({
   selector: 'app-choix-action',
@@ -7,6 +7,22 @@ import {Component, OnInit} from '@angular/core';
 })
 export class ChoixActionComponent implements OnInit {
   //
+
+
+  @Output() choice: EventEmitter<string> = new EventEmitter<string>();
   ngOnInit() {
   }
+
+  onContinue(continueOrNew: string) {
+    if (continueOrNew == 'continue') {
+      console.log('passe dans onContinue pour continue');
+      this.choice.emit('continue'); // On envoie dans le composant parent la valeur 'continue'
+    } else {
+      console.log('passe dans onContinue pour stop');
+      this.choice.emit('stop');
+    }
+  }
+
+
+
 }

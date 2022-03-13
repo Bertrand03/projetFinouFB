@@ -5,16 +5,16 @@ export class Quizz {
   public motFrancais: string;
   public motAnglais: string;
   public motTrouve: string;
-  public aide: string;
+  public tentativeMot: number;
 
 
-  constructor(animauxId: number, categorieId: number, motFrancais: string, motAnglais: string, motTrouve: string, aide: string) {
+  constructor(animauxId: number, categorieId: number, motFrancais: string, motAnglais: string, motTrouve: string, tentativeMot: number) {
     this.animauxId = animauxId;
     this.categorieId = categorieId;
     this.motFrancais = motFrancais;
     this.motAnglais = motAnglais;
     this.motTrouve = motTrouve;
-    this.aide = aide;
+    this.tentativeMot = tentativeMot;
   }
 // GETTERS AND SETTERS A DEFINIR SI BESOIN
 }

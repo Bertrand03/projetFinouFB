@@ -95,12 +95,10 @@ export class HttpClientService {
   }
 
   getAllCategorieQuizzService() {
-    console.log('Front-end - getAllCategorieQuizzService()');
     return this.httpClient.get('http://localhost:5366/trouve-anglais/');
   }
 
   getContenuCategorieQuizz(categorieId) {
-    console.log('Front-end - getContenuCategorieQuizz()');
     console.log('categorieId vaut : ' + categorieId);
     this.contenuCategorieQuizz = this.httpClient.get('http://localhost:5366/quizzs/categorie/' + categorieId);
     return this.contenuCategorieQuizz;
@@ -111,8 +109,6 @@ export class HttpClientService {
   }
 
   getScoreTotalByJoueur(joueurId) {
-    console.log('Front-end - getScoreTotalByJoueur()');
-    console.log('joueurId vaut : ' + joueurId);
     return this.httpClient.get('http://localhost:5366/score/scoreTotal/' + joueurId);
   }
 
@@ -129,21 +125,21 @@ export class HttpClientService {
     });
   }
 
-  majAnimalBisService(quizz: Quizz): Observable<Quizz> {
-    // console.log('passe dans majAnimalBisService');
-    // console.log('animal mis à jour vaut :');
-    // console.log(quizz);
-
-    const url = `${this.urlApi}/update/${quizz.animauxId}`;
-    // console.log('quizz.animauxId vaut : ', quizz.animauxId);
-    // console.log('url : ');
-    // console.log(url);
-    return this.httpClient.put<Quizz>(url, quizz, {
-      headers: new HttpHeaders({
-        'Content-type': 'application/json'
-      })
-    });
-  }
+  // majAnimalBisService(quizz: Quizz): Observable<Quizz> {
+  //   // console.log('passe dans majAnimalBisService');
+  //   // console.log('animal mis à jour vaut :');
+  //   // console.log(quizz);
+  //
+  //   const url = `${this.urlApi}/update/${quizz.animauxId}`;
+  //   // console.log('quizz.animauxId vaut : ', quizz.animauxId);
+  //   // console.log('url : ');
+  //   // console.log(url);
+  //   return this.httpClient.put<Quizz>(url, quizz, {
+  //     headers: new HttpHeaders({
+  //       'Content-type': 'application/json'
+  //     })
+  //   });
+  // }
 
   changeMotTrouveByYes(motTrouveRechercheId: Quizz, x: Quizz): Observable<Quizz> {
     if (motTrouveRechercheId != null) {

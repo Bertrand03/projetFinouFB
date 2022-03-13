@@ -23,8 +23,13 @@ export class QuizzService {
     return this.httpClient.get(this.urlQuizz + '/name/' + name);
   }
 
+  getAllTriesNumberByCategoryId(categoryId) {
+    return this.httpClient.get(this.urlQuizz + '/triesByCategoryId/' + categoryId );
+  }
+
   // PUT
   updateQuizzWord(quizz: Quizz): Observable<Quizz> {
+    console.log('passe dans updateQuizzWord');
     const url = `${this.urlQuizz}/update/${quizz.animauxId}`;
     return this.httpClient.put<Quizz>(url, quizz, {
       headers: new HttpHeaders({

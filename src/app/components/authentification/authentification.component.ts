@@ -33,7 +33,6 @@ export class AuthentificationComponent implements OnInit {
               private formBuilder: FormBuilder) { }
 
   ngOnInit() {
-    console.log('init auth');
     this.loginForm = this.formBuilder.group({
       pseudoForm: [],
       mdpForm: []
@@ -99,7 +98,6 @@ export class AuthentificationComponent implements OnInit {
 
   setTotalScoreInScoreService(value) {
     this.testValue = value;
-    console.log('testValue vaut ' + this.testValue);
     this.scoreService.setTotalScoreByPlayer(this.testValue);
 
   }

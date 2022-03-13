@@ -22,7 +22,6 @@ export class AuthService {
     // console.log('joueur qui joue : ');
     // console.log(joueur);
     this.joueur = joueur;
-    console.log('lance getScoreTotalByJoueur() avant le routing');
     if (this.joueur != null) {
       this.httpClientService.getScoreTotalByJoueur(this.joueur.id).subscribe(
         value => this.retourneScoreJoueurQuiJoue(value)

@@ -1,7 +1,7 @@
 <div>
   <div *ngIf="wordFound == 'non'">
     <button (click)="onDisplayOneLetter(englishWord)">Aide</button>
-    <p>Aide : {{this.englishWordToFind}}</p>
+    <p>Aide : {{this.englishWordToFind}} - Pénalité : {{this.penaltyPoints}}</p>
   </div>
-  <p>Pénalité : {{this.penaltyPoints}}</p>
+  <p>Nombre de tentatives : {{nbOfTries}}</p>
 </div>

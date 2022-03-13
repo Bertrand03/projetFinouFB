@@ -5,11 +5,12 @@ import {Component, DoCheck, Input, OnChanges, OnInit, SimpleChanges} from '@angu
   templateUrl: './aide.component.html',
   styleUrls: ['./aide.component.scss']
 })
-export class AideComponent implements OnInit, DoCheck, OnChanges{
+export class AideComponent implements OnInit, DoCheck{
 
   @Input () englishWord: string;
   @Input () resetHelpAndPenalty: boolean;
   @Input () wordFound: string;
+  @Input () nbOfTries: number;
   englishWordToFind: string;
   indexEnglishWordToFind = 0;
   penaltyPoints = 0;
@@ -23,15 +24,15 @@ export class AideComponent implements OnInit, DoCheck, OnChanges{
   ngDoCheck() {
     //
   }
-
-  ngOnChanges(changes: SimpleChanges): void {
-    console.log('LANCE ONCHANGES');
-    if (changes.resetHelpAndPenalty) {
-      this.englishWordToFind = '';
-      this.penaltyPoints = 0;
-      this.indexEnglishWordToFind = 0;
-    }
-  }
+  //
+  // ngOnChanges(changes: SimpleChanges): void {
+  //   console.log('LANCE ONCHANGES QUAND RESET');
+  //   if (changes.resetHelpAndPenalty) {
+  //     this.englishWordToFind = '';
+  //     this.penaltyPoints = 0;
+  //     this.indexEnglishWordToFind = 0;
+  //   }
+  // }
 
   onDisplayOneLetter(englishWordToFind) {
     this.indexEnglishWordToFind++;

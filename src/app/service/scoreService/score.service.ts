@@ -16,7 +16,6 @@ export class ScoreService {
 
   // GET
   getTotalScoreByPlayerService(playerId) {
-    console.log('Entre dans getTotalScoreByPlayerService');
     return this.httpClient.get('http://localhost:5366/score/scoreTotal/' + playerId);
   }
 

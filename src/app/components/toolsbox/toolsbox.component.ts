@@ -254,11 +254,11 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
     this.nouveauMotId = parseInt(this.loginForm.value.motId, 10);
     this.nouveauCategorieMotId = parseInt(this.loginForm.value.motCategorieId, 10);
 
-    this.majAnimal = new Quizz(this.nouveauMotId, this.nouveauCategorieMotId, this.newFrenchWord, this.newEnglishWord, this.nouveauMotTrouve, '');
+    this.majAnimal = new Quizz(this.nouveauMotId, this.nouveauCategorieMotId, this.newFrenchWord, this.newEnglishWord, this.nouveauMotTrouve, null);
     console.log('majAnimal vaut : ');
     console.log(this.majAnimal);
 
-    this.httpClientService.majAnimalBisService(this.majAnimal).subscribe(
+    this.quizzService.updateQuizzWord(this.majAnimal).subscribe(
       (contenuAnimal: Quizz) => {
         console.log('contenuAnimal après modif');
         // console.log(this.majAnimal);
