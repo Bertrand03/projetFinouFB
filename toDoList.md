@@ -23,3 +23,4 @@
   Inclure les pénalités dans le calcul du score
   Quand on propose de continuer une partie il faut rappeler  le score, la date et nb de tentatives. Numéroter les différents quizzs en fonction de l'id 
   croissant.
+  Mettre une zone "Challenge" pour les mots qui ont eu des tentatives : Pousser le joueur a trouvé le mot avec moins de tentatives que la dernière fois

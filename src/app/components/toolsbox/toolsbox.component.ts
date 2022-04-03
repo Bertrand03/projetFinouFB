@@ -8,7 +8,6 @@ import {Score} from "../../models/score.model";
 import {Joueur} from "../../models/joueur.model";
 import {QuizzService} from "../../service/quizzService/quizz.service";
 import {ToolsBoxService} from "../../service/toolsBoxService/tools-box-service";
-import {error} from "selenium-webdriver";
 
 @Component({
   selector: 'app-toolsbox',
@@ -24,7 +23,6 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
 
   quizzSelParId: Quizz;
 
-  monTabBis: Quizz;
   majAnimal: Quizz;
   monTabJoueurs: Joueur;
 
@@ -42,13 +40,10 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
 
   nouveauMotTrouve: string;
 
-  afficheAnimalCree: boolean;
-
   joueurSelectionne: Joueur;
   listCategoriesQuizz: any;
 
   categorieId: number;
-  categorieQuizz: any;
 
   nomCategorieSelectionnee: string;
   quizzRetourne: Quizz;
@@ -57,10 +52,10 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
   previousCategorySelected: string =  null;
 
   nameWordToDelete: string;
-  wordToDelete: Quizz;
   listOfWords: Quizz[];
 
   displaySearchedWord: Quizz[];
+  deserialized: Quizz[];
 
 
   constructor(private fb: FormBuilder,
@@ -378,6 +373,27 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
     );
   }
 
+  // ***** DESERIALISATION *****
+
+  deserialize() {
+    this.quizzService.deserialize().subscribe((value: Quizz[]) => {
+      this.deserialized = value;
+      console.log('subscribe deserialized OK');
+      console.log('value vaut : ');
+      console.log(value);
+    });
+  }
+
+  display() {
+    console.log('*** Fichier désérialisé ***');
+    console.log('deserialized vaut : ' + this.deserialized);
+    for (let quizz of this.deserialized) {
+      console.log('animauxId vaut : ' + quizz.animauxId);
+      console.log('motFrancais vaut : ' + quizz.motFrancais);
+      console.log('motAnglais vaut : ' + quizz.motAnglais);
+      console.log('*****');
+    }
+  }
 
 }
 

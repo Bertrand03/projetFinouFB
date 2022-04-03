@@ -47,10 +47,17 @@
           </ul>
         </form>
         <div>
+          <button (click)="onValiderQuizz()">Valider le Quizz</button>
           <p> Score categ : {{scoreCateg}}</p>
         </div>
         <button (click)="onResetAllCategorieMotTrouve()">RESET MOTS </button>
         <p>Nombre de tentatives pour la catégorie : {{nbTentatives}}</p>
+        <p>Mots en erreur lors de la dernière partie : </p>
+        <div *ngFor=" let word of wordsWithErrors">
+          <ul>
+            <li>{{word.motFrancais}}</li>
+          </ul>
+        </div>
       </div>
     </div>
   </div>

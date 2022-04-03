@@ -74,12 +74,12 @@ export class HttpClientService {
   }
 
   getEmployees() {
-    console.log('passe dans getEmployees()');
+    // console.log('passe dans getEmployees()');
     return this.httpClient.get(this.urlApi);
   }
 
   getScore() {
-    console.log('passe dans getScore()');
+    // console.log('passe dans getScore()');
     return this.httpClient.get('http://localhost:5366/score/');
   }
 

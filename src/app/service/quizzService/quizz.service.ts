@@ -27,6 +27,16 @@ export class QuizzService {
     return this.httpClient.get(this.urlQuizz + '/triesByCategoryId/' + categoryId );
   }
 
+  getAllWordsWithTries() {
+    console.log('passe dans getAllWordsWithTries');
+    return this.httpClient.get(this.urlQuizz + '/wordsError');
+  }
+
+  getAllDatas(playerSelected, categoryQuizzSelected) {
+    console.log('passe dans getAllQuizzData');
+    return this.httpClient.get(this.urlQuizz + '/allQuizzData/' + playerSelected + '/' + categoryQuizzSelected);
+  }
+
   // PUT
   updateQuizzWord(quizz: Quizz): Observable<Quizz> {
     console.log('passe dans updateQuizzWord');
@@ -47,9 +57,24 @@ export class QuizzService {
     });
   }
 
+  savePlayerQuizz(listQuizzWord: Quizz[]): Observable<Quizz[]> {
+    console.log('Dans savePlayerQuizz() listQuizzWorld vaut : ');
+    console.log(listQuizzWord);
+    return this.httpClient.post<Quizz[]>(this.urlQuizz + '/saveQuizz', listQuizzWord, {
+      headers: new HttpHeaders({
+        'Content-type': 'application/json'
+      })
+    });
+  }
+
   // DELETE
   deleteQuizzWord(quizz: Quizz) {
       console.log('url vaut : ' + 'http://localhost:5366/quizzs/delete/' + quizz.animauxId);
-      return this.httpClient.delete('http://localhost:5366/quizzs/delete/' + quizz.animauxId);
+      return this.httpClient.delete(this.urlQuizz + '/delete/' + quizz.animauxId);
     }
+
+  // DESERIALIZE
+  deserialize() {
+    return this.httpClient.get(this.urlQuizz + '/deserialize');
+  }
 }
