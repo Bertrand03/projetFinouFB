@@ -10,6 +10,7 @@ import {Score} from '../../models/score.model';
 import {CategorieQuizz} from '../../models/categorieQuizz.model';
 import {Joueur} from '../../models/joueur.model';
 import {QuizzService} from "../../service/quizzService/quizz.service";
+import {HistoriqueQuizz} from "../../models/historiqueQuizz.model";
 
 @Component({
   selector: 'app-trouve-anglais',
@@ -44,6 +45,9 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   doCheck: boolean = false;
 
   listQuizzToSave: Quizz[];
+  historiqueQuizz: Object[];
+
+  quizzNameSaved: string;
 
   constructor(private httpClientService: HttpClientService,
               private authService: AuthService,
@@ -59,8 +63,10 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       categorieQuizz => this.getAllCategorieQuizz(categorieQuizz),
     );
 
+
     this.loginForm = this.formBuilder.group({
         motAnglaisJoueur: [],
+        quizzNameSaved: []
       }
     );
     this.joueurSelectionne = this.authService.retourneJoueurQuiJoue();
@@ -68,6 +74,8 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     this.categorySelected = null;
 
     this.getWordsWithErrors();
+
+    this.gethisto();
   }
 
   ngDoCheck() {
@@ -90,6 +98,14 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     }
     console.log('nbTentatives =  ' + this.nbTentatives);
 
+  }
+
+  gethisto() {
+    this.httpClientService.getHistoriqueScore(1).subscribe(
+      (value: Object[]) => this.historiqueQuizz = value)
+    console.log(' historiqueQuizz vaut :');
+    console.log(this.historiqueQuizz);
+    ;
   }
 
   getAllTriesNumberByCategoryId(categoryId) {
@@ -137,14 +153,17 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
   // ***** SERIALISATION *****
 
+
   onValiderQuizz() {
     // On sauvegarde le quizz dans un fichier
+    this.quizzNameSaved = this.loginForm.value.quizzNameSaved;
+    console.log('quizzNameSaved vaut : ' + this.quizzNameSaved);
     console.clear();
     console.log('lance onValiderQuizz()');
     this.quizzService.getAllDatas(this.joueurSelectionne.id, this.categorieId).subscribe(
       (value: Quizz[]) => {
         this.listQuizzToSave = value;
-        this.quizzService.savePlayerQuizz(this.listQuizzToSave).subscribe(() => {
+        this.quizzService.savePlayerQuizz(this.listQuizzToSave, this.quizzNameSaved).subscribe(() => {
             console.log('lance savePlayerQuizz()');
             console.log('this.listQuizzToSave vaut : ');
             console.log(this.listQuizzToSave);

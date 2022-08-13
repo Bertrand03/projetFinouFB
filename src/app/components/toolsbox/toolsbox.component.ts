@@ -56,6 +56,7 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
 
   displaySearchedWord: Quizz[];
   deserialized: Quizz[];
+  nameFileToDeserialize: string;
 
 
   constructor(private fb: FormBuilder,
@@ -93,7 +94,8 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
       motCategorieId: [],
       deletePlayer: [],
       formDeleteWord: [],
-      formButtonRadio: []
+      formButtonRadio: [],
+      nameFileToDeserialize: []
 
     });
 
@@ -376,7 +378,8 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
   // ***** DESERIALISATION *****
 
   deserialize() {
-    this.quizzService.deserialize().subscribe((value: Quizz[]) => {
+    this.nameFileToDeserialize = this.loginForm.value.nameFileToDeserialize;
+    this.quizzService.deserialize(this.nameFileToDeserialize).subscribe((value: Quizz[]) => {
       this.deserialized = value;
       console.log('subscribe deserialized OK');
       console.log('value vaut : ');
@@ -391,6 +394,7 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
       console.log('animauxId vaut : ' + quizz.animauxId);
       console.log('motFrancais vaut : ' + quizz.motFrancais);
       console.log('motAnglais vaut : ' + quizz.motAnglais);
+      console.log('motTrouve vaut : ' + quizz.motTrouve);
       console.log('*****');
     }
   }

@@ -83,6 +83,13 @@ export class HttpClientService {
     return this.httpClient.get('http://localhost:5366/score/');
   }
 
+  getHistoriqueScore(joueurId) {
+    console.log('passe dans getHistoriqueScore()');
+    return this.httpClient.get('http://localhost:5366/score/historiqueQuizz/' + joueurId);
+  }
+
+
+
   // getScoreByCategorieIdAndJoueurId(categorieId, joueurId) {
   //   return this.httpClient.get('http://localhost:5366/score/scoreByCategorieId/' + categorieId + '/' + joueurId);
   // }

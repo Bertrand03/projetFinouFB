@@ -57,10 +57,13 @@ export class QuizzService {
     });
   }
 
-  savePlayerQuizz(listQuizzWord: Quizz[]): Observable<Quizz[]> {
+  savePlayerQuizz(listQuizzWord: Quizz[], quizzName): Observable<Quizz[]> {
     console.log('Dans savePlayerQuizz() listQuizzWorld vaut : ');
     console.log(listQuizzWord);
-    return this.httpClient.post<Quizz[]>(this.urlQuizz + '/saveQuizz', listQuizzWord, {
+    console.log(quizzName);
+    return this.httpClient.post<Quizz[]>(this.urlQuizz + '/saveQuizz/' + quizzName,
+      listQuizzWord,
+      {
       headers: new HttpHeaders({
         'Content-type': 'application/json'
       })
@@ -74,7 +77,7 @@ export class QuizzService {
     }
 
   // DESERIALIZE
-  deserialize() {
-    return this.httpClient.get(this.urlQuizz + '/deserialize');
+  deserialize(nameFileToDeserialize) {
+    return this.httpClient.get(this.urlQuizz + '/deserialize/' + nameFileToDeserialize);
   }
 }

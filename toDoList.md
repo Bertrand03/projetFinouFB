@@ -24,3 +24,6 @@
   Quand on propose de continuer une partie il faut rappeler  le score, la date et nb de tentatives. Numéroter les différents quizzs en fonction de l'id 
   croissant.
   Mettre une zone "Challenge" pour les mots qui ont eu des tentatives : Pousser le joueur a trouvé le mot avec moins de tentatives que la dernière fois
+  Créer une table "historique_quizz" avec un id, un nom et une date pour retrouver la partie des joueurs.
+  Comprendre pourquoi le HistoriqueQuizz ressort en un Object[] au lieu d'un HistoriqueQuizz.
+  Ne proposer de continuer une partie que si une partie se trouve bien dans historiqueQuizz

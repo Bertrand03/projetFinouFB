@@ -25,6 +25,7 @@
     <div class="col-xs-12">
       <div class="form-group" *ngIf = "retourMenuQuizz == true">
         <button (click)="retourChoixQuizz()">Retour choix Quizz</button>
+        <button (click)="gethisto()">get histo</button>
         <h3>Bienvenue dans le Quizz : {{categoryChoosed}}</h3>
         <form [formGroup]="loginForm" *ngFor="let ligne of quizz;">
           <ul class="list-group">
@@ -46,10 +47,19 @@
             </li>
           </ul>
         </form>
-        <div>
-          <button (click)="onValiderQuizz()">Valider le Quizz</button>
-          <p> Score categ : {{scoreCateg}}</p>
-        </div>
+        <form [formGroup]="loginForm">
+          <div>
+            <input type="text" formControlName="quizzNameSaved">
+            <button (click)="onValiderQuizz()">Valider le Quizz</button>
+            <div *ngIf="validateQuizz == true">
+              <p>Sauvegarder le quizz</p>
+              <button class="btn btn-success">Oui</button>
+              <button class="btn btn-danger">Non</button>
+            </div>
+          </div>
+        </form>
+
+        <p> Score categ : {{scoreCateg}}</p>
         <button (click)="onResetAllCategorieMotTrouve()">RESET MOTS </button>
         <p>Nombre de tentatives pour la catégorie : {{nbTentatives}}</p>
         <p>Mots en erreur lors de la dernière partie : </p>
@@ -65,5 +75,10 @@
 
 <div *ngIf="startNewQuizzOrContinue == null && categorySelected == true">
   <app-choix-action (choice)="continueOrNot($event)"></app-choix-action>
+  <div>Dernière partie enregistrée :
+    <div *ngFor="let histo of historiqueQuizz">
+      <p><b>id :</b> {{histo[0]}} - <b>nom : </b>{{histo[1]}} - <b>date : </b>{{histo[2]}} - <b>score : </b>{{histo[3]}}</p>
+    </div>
+  </div>
   <!-- Quand on déclenche l'EventEmitter on récupère la valeur émise dans $event et on fait appel à la méthode continueOrNot avec la valeur émise en paramètre -->
 </div>
