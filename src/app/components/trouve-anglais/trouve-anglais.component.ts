@@ -10,6 +10,7 @@ import {Score} from '../../models/score.model';
 import {CategorieQuizz} from '../../models/categorieQuizz.model';
 import {Joueur} from '../../models/joueur.model';
 import {QuizzService} from "../../service/quizzService/quizz.service";
+import {HistoQuizzObs} from "../../models/histoQuizzObs.model";
 import {HistoriqueQuizz} from "../../models/historiqueQuizz.model";
 
 @Component({
@@ -46,8 +47,13 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
   listQuizzToSave: Quizz[];
   historiqueQuizz: Object[];
+  infosHistoriqueQuizzToSave: any[];
+  histoQuizzObs: any[];
+  histoQuizz: HistoriqueQuizz;
 
   quizzNameSaved: string;
+
+  b: Blob;
 
   constructor(private httpClientService: HttpClientService,
               private authService: AuthService,
@@ -101,7 +107,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   }
 
   gethisto() {
-    this.httpClientService.getHistoriqueScore(1).subscribe(
+    this.httpClientService.getHistoriqueQuizz().subscribe(
       (value: Object[]) => this.historiqueQuizz = value)
     console.log(' historiqueQuizz vaut :');
     console.log(this.historiqueQuizz);
@@ -163,10 +169,23 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     this.quizzService.getAllDatas(this.joueurSelectionne.id, this.categorieId).subscribe(
       (value: Quizz[]) => {
         this.listQuizzToSave = value;
-        this.quizzService.savePlayerQuizz(this.listQuizzToSave, this.quizzNameSaved).subscribe(() => {
-            console.log('lance savePlayerQuizz()');
-            console.log('this.listQuizzToSave vaut : ');
-            console.log(this.listQuizzToSave);
+        this.infosHistoriqueQuizzToSave = [this.quizzNameSaved, this.joueurSelectionne.id, this.categorieId];
+        var myArray = [];
+        myArray.push(this.infosHistoriqueQuizzToSave);
+        myArray.push(this.listQuizzToSave);
+        console.log('contenu du tableau myArray : ');
+        console.log(myArray);
+
+        // v1
+        // this.quizzService.savePlayerQuizz(this.listQuizzToSave, this.quizzNameSaved).subscribe(() => {
+        //   console.log('passe dans savePlayerQuizz');
+        // });
+
+        // v2
+        this.histoQuizzObs = [this.listQuizzToSave,this.quizzNameSaved, this.joueurSelectionne.id, this.categorieId];
+        console.log('dans trouve anglais component histoQuizzObs vaut : ');
+        console.log(this.histoQuizzObs);
+        this.quizzService.savePlayerQuizzV2(this.histoQuizzObs).subscribe(() => {
           }
         )
       }
@@ -283,6 +302,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
           resultat => this.resultatGetScoreParJoueurEtCategorieQuizz(resultat)
         );
       }
+      this.gethisto();
     }
 
     returnContenuQuizz(response, categorieId)

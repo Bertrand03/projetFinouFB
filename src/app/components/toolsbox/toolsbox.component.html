@@ -126,9 +126,13 @@
     <input type="text" formControlName="nameFileToDeserialize">
     <button (click)="deserialize()">Deserialiser</button>
     <button (click)="display()">Afficher</button>
-    <!--<p>Animaux id : {{deserialized.animauxId}}</p>-->
-    <!--<p>Mot Francais : {{deserialized.motFrancais}}</p>-->
-    <!--<p>Mot Anglais : {{deserialized.motAnglais}}</p>-->
+    <div *ngIf="displaySerializedHistoQuizz == true">
+      <div *ngFor="let hq of deserializedHistoQuizz">
+        <p> a : {{hq.motAnglais}}</p>
+        <p> b : {{hq.motFrancais}}</p>
+        <p> c : {{hq.motTrouve}}</p>
+      </div>
+    </div>
   </form>
 </div>
 

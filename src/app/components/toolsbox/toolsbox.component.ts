@@ -8,6 +8,7 @@ import {Score} from "../../models/score.model";
 import {Joueur} from "../../models/joueur.model";
 import {QuizzService} from "../../service/quizzService/quizz.service";
 import {ToolsBoxService} from "../../service/toolsBoxService/tools-box-service";
+import {HistoriqueQuizz} from "../../models/historiqueQuizz.model";
 
 @Component({
   selector: 'app-toolsbox',
@@ -56,7 +57,10 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
 
   displaySearchedWord: Quizz[];
   deserialized: Quizz[];
+  deserializedHistoQuizz: Quizz[];
   nameFileToDeserialize: string;
+
+  displaySerializedHistoQuizz: boolean = false;
 
 
   constructor(private fb: FormBuilder,
@@ -379,24 +383,32 @@ export class ToolsboxComponent implements OnInit, DoCheck, OnChanges {
 
   deserialize() {
     this.nameFileToDeserialize = this.loginForm.value.nameFileToDeserialize;
-    this.quizzService.deserialize(this.nameFileToDeserialize).subscribe((value: Quizz[]) => {
+    this.quizzService.deserialize(this.nameFileToDeserialize, this.joueurSelectionne.id).subscribe((value: Quizz[]) => {
       this.deserialized = value;
       console.log('subscribe deserialized OK');
       console.log('value vaut : ');
       console.log(value);
+      this.quizzService.deserializeHistoQuizz(this.nameFileToDeserialize, this.joueurSelectionne.id).subscribe((v: Quizz[]) => {
+        this.deserializedHistoQuizz = v;
+        console.log('subscribe deserializeHistoQuizz OK');
+        console.log('value vaut : ');
+        console.log(v);
+      });
     });
   }
 
   display() {
+    this.displaySerializedHistoQuizz = true;
     console.log('*** Fichier désérialisé ***');
-    console.log('deserialized vaut : ' + this.deserialized);
-    for (let quizz of this.deserialized) {
-      console.log('animauxId vaut : ' + quizz.animauxId);
-      console.log('motFrancais vaut : ' + quizz.motFrancais);
-      console.log('motAnglais vaut : ' + quizz.motAnglais);
-      console.log('motTrouve vaut : ' + quizz.motTrouve);
-      console.log('*****');
-    }
+    console.log('deserialized vaut : ');
+    console.log(this.deserializedHistoQuizz);
+    // for (let quizz of this.deserialized) {
+    //   console.log('animauxId vaut : ' + quizz.animauxId);
+    //   console.log('motFrancais vaut : ' + quizz.motFrancais);
+    //   console.log('motAnglais vaut : ' + quizz.motAnglais);
+    //   console.log('motTrouve vaut : ' + quizz.motTrouve);
+    //   console.log('*****');
+    // }
   }
 
 }

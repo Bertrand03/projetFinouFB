@@ -51,12 +51,10 @@
           <div>
             <input type="text" formControlName="quizzNameSaved">
             <button (click)="onValiderQuizz()">Valider le Quizz</button>
-            <div *ngIf="validateQuizz == true">
               <p>Sauvegarder le quizz</p>
               <button class="btn btn-success">Oui</button>
               <button class="btn btn-danger">Non</button>
             </div>
-          </div>
         </form>
 
         <p> Score categ : {{scoreCateg}}</p>

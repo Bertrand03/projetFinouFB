@@ -3,13 +3,19 @@ export class HistoriqueQuizz {
   private _name: string;
   private _date: Date;
   private _scoreId: number;
+  private _sauvegarde: Blob;
+  private _joueurId: number;
+  private _categorieId: number;
 
 
-  constructor(histoQuizzId: number, name: string, date: Date, scoreId: number) {
+  constructor(histoQuizzId: number, name: string, date: Date, scoreId: number, sauvegarde: Blob, joueurId: number, categorieId: number) {
     this._histoQuizzId = histoQuizzId;
     this._name = name;
     this._date = date;
     this._scoreId = scoreId;
+    this._sauvegarde = sauvegarde;
+    this._joueurId = joueurId;
+    this._categorieId = categorieId;
   }
 
   get histoQuizzId(): number {
@@ -42,5 +48,29 @@ export class HistoriqueQuizz {
 
   set scoreId(value: number) {
     this._scoreId = value;
+  }
+
+  get sauvegarde(): Blob {
+    return this._sauvegarde;
+  }
+
+  set sauvegarde(value: Blob) {
+    this._sauvegarde = value;
+  }
+
+  get joueurId(): number {
+    return this._joueurId;
+  }
+
+  set joueurId(value: number) {
+    this._joueurId = value;
+  }
+
+  get categorieId(): number {
+    return this._categorieId;
+  }
+
+  set categorieId(value: number) {
+    this._categorieId = value;
   }
 }

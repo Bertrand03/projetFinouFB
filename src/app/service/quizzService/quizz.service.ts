@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {Quizz} from "../../models/quizz.model";
 import {Observable} from "rxjs";
-import {Joueur} from "../../models/joueur.model";
+import {HistoQuizzObs} from "../../models/histoQuizzObs.model";
 
 @Injectable({
   providedIn: 'root'
@@ -10,6 +10,7 @@ import {Joueur} from "../../models/joueur.model";
 export class QuizzService {
 
   urlQuizz = 'http://localhost:5366/quizzs';
+  urlHistoQuizz = 'http://localhost:5366/histoquizzs';
 
 
   constructor(private httpClient: HttpClient) { }
@@ -57,6 +58,7 @@ export class QuizzService {
     });
   }
 
+  // Methode 1 :
   savePlayerQuizz(listQuizzWord: Quizz[], quizzName): Observable<Quizz[]> {
     console.log('Dans savePlayerQuizz() listQuizzWorld vaut : ');
     console.log(listQuizzWord);
@@ -70,6 +72,30 @@ export class QuizzService {
     });
   }
 
+  // v2
+  savePlayerQuizzV2(hq: any): Observable<HistoQuizzObs> {
+    console.log('Dans savePlayerQuizzV2() hq vaut : ');
+    console.log(hq);
+    return this.httpClient.post<HistoQuizzObs>(this.urlQuizz + '/saveQuizz',
+      hq,
+      {
+        headers: new HttpHeaders({
+          'Content-type': 'application/json'
+        })
+      });
+  }
+
+  saveHistoQuizz(quizzName) {
+    console.log('Dans saveHistoQuizz() quizzName vaut : ');
+    console.log(quizzName);
+    return this.httpClient.post(this.urlHistoQuizz + '/' + quizzName
+      ,{
+        headers: new HttpHeaders({
+          'Content-type': 'application/json'
+        })
+      });
+  }
+
   // DELETE
   deleteQuizzWord(quizz: Quizz) {
       console.log('url vaut : ' + 'http://localhost:5366/quizzs/delete/' + quizz.animauxId);
@@ -77,7 +103,11 @@ export class QuizzService {
     }
 
   // DESERIALIZE
-  deserialize(nameFileToDeserialize) {
-    return this.httpClient.get(this.urlQuizz + '/deserialize/' + nameFileToDeserialize);
+  deserialize(nameFileToDeserialize, joueurId) {
+    return this.httpClient.get(this.urlQuizz + '/deserialize/' + nameFileToDeserialize+ '/' + joueurId);
+  }
+
+  deserializeHistoQuizz(nameFileToDeserialize, joueurId) {
+    return this.httpClient.get(this.urlQuizz + '/deserializeHistoQuizz/' + nameFileToDeserialize + '/' + joueurId);
   }
 }
