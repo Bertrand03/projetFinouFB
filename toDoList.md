@@ -27,3 +27,7 @@
   Créer une table "historique_quizz" avec un id, un nom et une date pour retrouver la partie des joueurs.
   Comprendre pourquoi le HistoriqueQuizz ressort en un Object[] au lieu d'un HistoriqueQuizz.
   Ne proposer de continuer une partie que si une partie se trouve bien dans historiqueQuizz
+  
+  A FAIRE EN REPRENANT :
+  Faire en sorte que l'on puisse retrouver les 3 dernières parties d'un joueur. La requête se fait bien mais problème de récupération au niveau de 
+  l'Observable.

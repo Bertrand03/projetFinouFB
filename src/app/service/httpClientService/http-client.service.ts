@@ -4,6 +4,8 @@ import {Observable} from 'rxjs';
 import {Quizz} from '../../models/quizz.model';
 import {Score} from '../../models/score.model';
 import {Joueur} from '../../models/joueur.model';
+import {HistoriqueQuizz} from "../../models/historiqueQuizz.model";
+import {Router} from "@angular/router";
 
 
 @Injectable({
@@ -16,10 +18,14 @@ export class HttpClientService {
   urlApi = 'http://localhost:5366/quizzs/';
   urlScore = 'http://localhost:5366/score';
   urlJoueurCategorie: string;
+  categoryId: number;
+  playerId: number;
+  histoQuizzIdSelected: number;
 
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private router : Router
   ) {
   }
 
@@ -44,7 +50,12 @@ export class HttpClientService {
     return this.httpClient.get('http://localhost:5366/score/historiqueQuizz');
   }
 
-
+  getLast3Games(joueurId, categoryId) {
+    console.log('httpClientService passe dans getLast3Games()');
+    console.log('type of httpclient last3Games');
+    console.log(typeof this.httpClient.get('http://localhost:5366/histoquizzs/last3Games/' + joueurId));
+    return this.httpClient.get('http://localhost:5366/histoquizzs/last3Games/' + joueurId + '/' + categoryId);
+  }
 
   // getScoreByCategorieIdAndJoueurId(categorieId, joueurId) {
   //   return this.httpClient.get('http://localhost:5366/score/scoreByCategorieId/' + categorieId + '/' + joueurId);
@@ -147,6 +158,17 @@ export class HttpClientService {
     console.log('animauxId vaut : ' + animauxId);
     console.log('url vaut : ' + 'http://localhost:5366/quizzs/delete/' + animauxId);
     return this.httpClient.delete('http://localhost:5366/quizzs/delete/' + animauxId);
+  }
+
+  // SET VALUES
+  setCategoryChoosed(playerId, categoryId) {
+    this.playerId = playerId;
+    this.categoryId = categoryId;
+    console.log('Dans http.client.service playerId vaut : ' + this.playerId + ' et categoryId vaut ' + this.categoryId);
+  }
+
+  setHistoQuizzIdSelected(histoQuizzIdSelected) {
+    this.histoQuizzIdSelected = histoQuizzIdSelected;
   }
 
 }

@@ -12,6 +12,7 @@ import { TrouveAnglaisComponent } from './components/trouve-anglais/trouve-angla
 import { TrouveFrancaisComponent } from './components/trouve-francais/trouve-francais.component';
 import { ToolsboxComponent } from './components/toolsbox/toolsbox.component';
 import { AideComponent } from './components/aide/aide.component';
+import { ChoixQuizzComponent } from './components/choix-quizz/choix-quizz.component';
 
 @NgModule({
   declarations: [
@@ -22,7 +23,8 @@ import { AideComponent } from './components/aide/aide.component';
     TrouveAnglaisComponent,
     TrouveFrancaisComponent,
     ToolsboxComponent,
-    AideComponent
+    AideComponent,
+    ChoixQuizzComponent
   ],
   imports: [
     BrowserModule,

@@ -12,6 +12,7 @@ import {Joueur} from '../../models/joueur.model';
 import {QuizzService} from "../../service/quizzService/quizz.service";
 import {HistoQuizzObs} from "../../models/histoQuizzObs.model";
 import {HistoriqueQuizz} from "../../models/historiqueQuizz.model";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-trouve-anglais',
@@ -31,6 +32,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   categorieId: number;
   retourMenuQuizz = false;
   nbTentatives: number;
+  deserialized: Quizz[];
 
   joueurSelectionne: Joueur;
   scoreParJoueurEtParCategorie: Score;
@@ -47,13 +49,14 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
   listQuizzToSave: Quizz[];
   historiqueQuizz: Object[];
+  histoQuizz3LastGames: Object [];
   infosHistoriqueQuizzToSave: any[];
   histoQuizzObs: any[];
-  histoQuizz: HistoriqueQuizz;
+
+  histoQuizzIdSelected: number;
 
   quizzNameSaved: string;
 
-  b: Blob;
 
   constructor(private httpClientService: HttpClientService,
               private authService: AuthService,
@@ -61,7 +64,8 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
               private scoreService: ScoreService,
               private quizzService: QuizzService,
               private httpClient: HttpClient,
-              private formBuilder: FormBuilder) {
+              private formBuilder: FormBuilder,
+              private router: Router) {
   }
 
   ngOnInit() {
@@ -69,19 +73,28 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       categorieQuizz => this.getAllCategorieQuizz(categorieQuizz),
     );
 
-
     this.loginForm = this.formBuilder.group({
         motAnglaisJoueur: [],
-        quizzNameSaved: []
+        quizzNameSaved: [],
+        savedGameChoosed: []
       }
     );
     this.joueurSelectionne = this.authService.retourneJoueurQuiJoue();
+    console.log('categoryId et playerId récupérés du http.client.service valent : ' +
+    this.httpClientService.categoryId + ' ' +
+    this.httpClientService.playerId);
+
     this.startNewQuizzOrContinue = null;
     this.categorySelected = null;
 
     this.getWordsWithErrors();
 
-    this.gethisto();
+    // Récupération du histoQuizzId pour afficher le Quizz sauvegardé sélectionné par le joueur
+    this.histoQuizzIdSelected = this.httpClientService.histoQuizzIdSelected;
+    console.log('histoQuizzIdSelected vaut : ' + this.histoQuizzIdSelected);
+
+    this.deserialize();
+    console.log('lance this.deserialize()');
   }
 
   ngDoCheck() {
@@ -98,6 +111,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     console.log('avant test event vaut ' + event);
     event == 'continue' ? this.startNewQuizzOrContinue = true : this.startNewQuizzOrContinue = false;
     console.log('apres test startNewQuizzOrContinue vaut ' + this.startNewQuizzOrContinue);
+    // this.getLast3Games();
     if (this.startNewQuizzOrContinue == false) {
       this.onResetAllCategorieMotTrouve();
       // TODO Inclure la remise à zéro du Score categ
@@ -106,6 +120,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
   }
 
+
   gethisto() {
     this.httpClientService.getHistoriqueQuizz().subscribe(
       (value: Object[]) => this.historiqueQuizz = value)
@@ -113,6 +128,55 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     console.log(this.historiqueQuizz);
     ;
   }
+
+  deserialize() {
+    this.quizzService.deserializeHistoQuizzByHistoQuizzId(this.histoQuizzIdSelected).subscribe((value: Quizz[]) => {
+    this.deserialized = value;
+    console.log('subscribe deserialized OK');
+    console.log('value vaut : ');
+    console.log(value);
+    });
+  }
+
+  // Méthode qui va permettre de lancer le quizz sélectionné par le joueur
+  // getLast3Games() {
+  //   console.log('declenche méthode getLast3Games()');
+  //   console.log('this.joueurSelectionne.id vaut ' + this.joueurSelectionne.id);
+  //   this.httpClientService.getLast3Games(this.joueurSelectionne.id).subscribe(
+  //     (value: HistoriqueQuizz[]) =>
+  //     {
+  //       this.histoQuizz3LastGames = value;
+  //       console.log('value vaut : ');
+  //       console.log(value);
+  //       console.log('type of value vaut : ');
+  //       console.log(typeof value);
+  //       console.log('this.histoQuizz3LastGames');
+  //       console.log(this.histoQuizz3LastGames);
+  //       console.log('type of this.histoQuizz3LastGames vaut : ');
+  //       console.log(typeof this.histoQuizz3LastGames);
+  //       this.histoQuizz3LastGames = <HistoriqueQuizz[]> this.histoQuizz3LastGames;
+  //       console.log('type of this.histoQuizz3LastGames après cast vaut : ');
+  //       console.log(typeof this.histoQuizz3LastGames);
+  //       },
+  //     (error: any) => console.log(error),
+  //     () => {
+  //       console.log('subscribe getLast3Games complete');
+  //       console.log('this.histoQuizz3LastGames');
+  //       console.log(this.histoQuizz3LastGames);
+  //       for (let histo of this.histoQuizz3LastGames) {
+  //         console.log('histo type vaut : ');
+  //         console.log(typeof histo);
+  //         console.log(histo);
+  //         var a = <HistoriqueQuizz> histo;
+  //         console.log('type of a vaut : ');
+  //         console.log(typeof a);
+  //         console.log(a.categorieId);
+  //         console.log(a.date);
+  //         console.log(a.name);
+  //       }
+  //     }
+  //   )
+  // }
 
   getAllTriesNumberByCategoryId(categoryId) {
     console.log('lance getAllTriesNumberByCategoryId()');
@@ -175,11 +239,6 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
         myArray.push(this.listQuizzToSave);
         console.log('contenu du tableau myArray : ');
         console.log(myArray);
-
-        // v1
-        // this.quizzService.savePlayerQuizz(this.listQuizzToSave, this.quizzNameSaved).subscribe(() => {
-        //   console.log('passe dans savePlayerQuizz');
-        // });
 
         // v2
         this.histoQuizzObs = [this.listQuizzToSave,this.quizzNameSaved, this.joueurSelectionne.id, this.categorieId];
@@ -302,7 +361,8 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
           resultat => this.resultatGetScoreParJoueurEtCategorieQuizz(resultat)
         );
       }
-      this.gethisto();
+      // this.gethisto();
+      // this.getLast3Games();
     }
 
     returnContenuQuizz(response, categorieId)
@@ -349,7 +409,8 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       this.startNewQuizzOrContinue = null;
       this.categorySelected = false;
       alert('Etes vous sûr de vouloir quitter le quizz sans l\'enregistrer ?');
-      return this.retourMenuQuizz;
+      // return this.retourMenuQuizz;
+      return this.router.navigate(['choix-quizz']);
     }
 
     getQuizzWord(wordId)

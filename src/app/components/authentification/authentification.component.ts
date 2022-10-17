@@ -80,7 +80,9 @@ export class AuthentificationComponent implements OnInit {
             value => this.setTotalScoreInScoreService(value)
           );
 
-          this.router.navigate(['trouve-anglais']);
+          // this.router.navigate(['trouve-anglais']);
+          // this.router.navigate(['choix-action']);
+          this.router.navigate(['choix-quizz']);
         } else {
           if ((this.pseudoEnBase !== this.pseudo) && (this.mdpEnBase === this.mdp)) {
           }

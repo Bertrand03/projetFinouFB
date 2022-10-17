@@ -5,6 +5,7 @@ import {AuthentificationComponent} from './components/authentification/authentif
 import {TrouveAnglaisComponent} from './components/trouve-anglais/trouve-anglais.component';
 import {TrouveFrancaisComponent} from './components/trouve-francais/trouve-francais.component';
 import {ToolsboxComponent} from './components/toolsbox/toolsbox.component';
+import {ChoixQuizzComponent} from "./components/choix-quizz/choix-quizz.component";
 
 const routes: Routes = [
   { path: 'authentification', component: AuthentificationComponent},
@@ -12,6 +13,7 @@ const routes: Routes = [
   { path: 'trouve-anglais', component: TrouveAnglaisComponent},
   { path: 'trouve-francais', component: TrouveFrancaisComponent},
   { path: 'toolsbox', component: ToolsboxComponent},
+  { path: 'choix-quizz', component: ChoixQuizzComponent},
     {
     path: '**',
     redirectTo: 'authentification'

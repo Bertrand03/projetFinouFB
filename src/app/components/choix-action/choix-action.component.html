@@ -1,3 +1,18 @@
 <p>Voulez-vous continuer un quizz déjà existant ou commencer un nouveau quizz ?</p>
 <button class="btn btn-success" (click)="onContinue('continue')">Continuer</button>
 <button class="btn btn-primary" (click)="onContinue('new')">Nouveau</button>
+
+<div *ngFor="let histo of histoQuizz3LastGames">
+  <div class="form-group">
+    <div class="form-control">
+    <label class="radio-inline">
+      <input type="radio" name="savedQuizzSelected" value="{{histo.histoQuizzId}}" [(ngModel)]="histoQuizzIdSelected">
+      <p><b>id :</b> {{histo.histoQuizzId}} - <b>nom : </b>{{histo.name}} - <b>date : </b>{{histo.date}}</p>
+    </label>
+    </div>
+  </div>
+</div>
+
+<div>
+  <button class=" btn btn-danger" (click)="returnPreviousMenu()">Retour</button>
+</div>

@@ -1,0 +1,7 @@
+<!--<div class="form-group" *ngIf = "retourMenuQuizz == false">-->
+  <ul class="list-group">
+    <li class="list-group-item" *ngFor="let theme of listCategoriesQuizz;">
+      <button (click)="onValiderChoix(theme.categorieId, theme)">Quizz : {{theme.nomCategorie}}</button>
+    </li>
+  </ul>
+<!--</div>-->

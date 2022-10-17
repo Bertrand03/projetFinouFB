@@ -38,6 +38,11 @@ export class QuizzService {
     return this.httpClient.get(this.urlQuizz + '/allQuizzData/' + playerSelected + '/' + categoryQuizzSelected);
   }
 
+  getLastGame() {
+    console.log('passe dans getLastGame');
+    return this.httpClient.get(this.urlQuizz + '/histoQuizz/lastGame');
+  }
+
   // PUT
   updateQuizzWord(quizz: Quizz): Observable<Quizz> {
     console.log('passe dans updateQuizzWord');
@@ -52,20 +57,6 @@ export class QuizzService {
   // POST
   addNewWord(quizzWord: Quizz): Observable<Quizz> {
     return this.httpClient.post<Quizz>(this.urlQuizz + '/addWord', quizzWord, {
-      headers: new HttpHeaders({
-        'Content-type': 'application/json'
-      })
-    });
-  }
-
-  // Methode 1 :
-  savePlayerQuizz(listQuizzWord: Quizz[], quizzName): Observable<Quizz[]> {
-    console.log('Dans savePlayerQuizz() listQuizzWorld vaut : ');
-    console.log(listQuizzWord);
-    console.log(quizzName);
-    return this.httpClient.post<Quizz[]>(this.urlQuizz + '/saveQuizz/' + quizzName,
-      listQuizzWord,
-      {
       headers: new HttpHeaders({
         'Content-type': 'application/json'
       })
@@ -109,5 +100,9 @@ export class QuizzService {
 
   deserializeHistoQuizz(nameFileToDeserialize, joueurId) {
     return this.httpClient.get(this.urlQuizz + '/deserializeHistoQuizz/' + nameFileToDeserialize + '/' + joueurId);
+  }
+
+  deserializeHistoQuizzByHistoQuizzId(histoQuizzId) {
+    return this.httpClient.get(this.urlQuizz + '/deserializeHistoQuizz/' + histoQuizzId);
   }
 }
