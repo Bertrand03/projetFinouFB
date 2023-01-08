@@ -4,6 +4,7 @@ import {Joueur} from "../../models/joueur.model";
 import {AuthService} from "../../service/authService/auth.service";
 import {HttpClientService} from "../../service/httpClientService/http-client.service";
 import {Router} from "@angular/router";
+import {Quizz} from "../../models/quizz.model";
 
 @Component({
   selector: 'app-choix-action',
@@ -43,7 +44,10 @@ export class ChoixActionComponent implements OnInit {
       this.httpClientService.setHistoQuizzIdSelected(this.histoQuizzIdSelected);
       this.router.navigate(['trouve-anglais']);
     } else {
-      console.log('passe dans onContinue pour stop');
+      console.log('passe dans onContinue');
+      this.router.navigate(['trouve-anglais']);
+
+
       // this.choice.emit('stop');
     }
   }

@@ -10,8 +10,6 @@ import {Score} from '../../models/score.model';
 import {CategorieQuizz} from '../../models/categorieQuizz.model';
 import {Joueur} from '../../models/joueur.model';
 import {QuizzService} from "../../service/quizzService/quizz.service";
-import {HistoQuizzObs} from "../../models/histoQuizzObs.model";
-import {HistoriqueQuizz} from "../../models/historiqueQuizz.model";
 import {Router} from "@angular/router";
 
 @Component({
@@ -33,6 +31,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   retourMenuQuizz = false;
   nbTentatives: number;
   deserialized: Quizz[];
+  catId : number;
 
   joueurSelectionne: Joueur;
   scoreParJoueurEtParCategorie: Score;
@@ -93,6 +92,8 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     this.histoQuizzIdSelected = this.httpClientService.histoQuizzIdSelected;
     console.log('histoQuizzIdSelected vaut : ' + this.histoQuizzIdSelected);
 
+    this.catId = this.httpClientService.getCategoryChoosed();
+
     this.deserialize();
     console.log('lance this.deserialize()');
   }
@@ -130,12 +131,24 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   }
 
   deserialize() {
-    this.quizzService.deserializeHistoQuizzByHistoQuizzId(this.histoQuizzIdSelected).subscribe((value: Quizz[]) => {
-    this.deserialized = value;
-    console.log('subscribe deserialized OK');
-    console.log('value vaut : ');
-    console.log(value);
-    });
+    if (this.histoQuizzIdSelected == undefined) {
+      console.log('histoQuizzIdSelected vaut undefined donc nouvelle partie');
+      this.httpClientService.getContenuCategorieQuizz(this.catId).subscribe(
+         (value: Quizz[]) =>
+         {
+           this.deserialized = value;
+           console.log('contenu de la nouvelle partie vaut : ');
+           console.log(value);
+         }
+      )
+    } else {
+      this.quizzService.deserializeHistoQuizzByHistoQuizzId(this.histoQuizzIdSelected).subscribe((value: Quizz[]) => {
+      this.deserialized = value;
+      console.log('subscribe deserialized OK');
+      console.log('value vaut : ');
+      console.log(value);
+      });
+    }
   }
 
   // Méthode qui va permettre de lancer le quizz sélectionné par le joueur
@@ -261,10 +274,14 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       this.motAnglaisSaisi = this.loginForm.value.motAnglaisJoueur;
 
       // Premiere lettre en majuscule
-      this.motAnglaisSaisi = this.toolsBoxService.upcaseFirstLetterOfSentence(this.motAnglaisSaisi);
-
+      if (this.motAnglaisSaisi != null) {
+        this.motAnglaisSaisi = this.toolsBoxService.upcaseFirstLetterOfSentence(this.motAnglaisSaisi);
+      }
+      console.log('this.motAnglaisSaisi vaut : ' + this.motAnglaisSaisi);
+      console.log('ligne.motAnglais vaut : ' + ligne.motAnglais);
       // Si mot a été trouvé
       if (this.motAnglaisSaisi === ligne.motAnglais) {
+        console.log('mot trouvé ');
         ligne.motTrouve = 'oui';
         this.updateScoreByCategory(ligne);
       } else {
@@ -274,7 +291,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       }
       ligne.tentativeMot++;
       // this.getWordsWithErrors();
-      this.quizzService.updateQuizzWord(ligne).subscribe(() => this.getAllTriesNumberByCategoryId(this.categorieId));
+      this.quizzService.updateQuizzWord(ligne).subscribe(() => this.getAllTriesNumberByCategoryId(this.catId));
       // this.updateGlobalScore();
     }
 
