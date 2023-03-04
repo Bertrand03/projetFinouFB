@@ -93,8 +93,13 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     this.histoQuizzIdSelected = this.httpClientService.histoQuizzIdSelected;
     console.log('histoQuizzIdSelected vaut : ' + this.histoQuizzIdSelected);
 
-    this.deserialize();
-    console.log('lance this.deserialize()');
+    if (this.histoQuizzIdSelected) {
+      this.deserialize();
+      console.log('lance this.deserialize()');
+    } else {
+      console.log('histoQuizzIdSelected est undefined, c\'est un new Quizz');
+      this.deserialized = this.httpClientService.newQuizz;
+    }
   }
 
   ngDoCheck() {
@@ -130,7 +135,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   }
 
   deserialize() {
-    this.quizzService.deserializeHistoQuizzByHistoQuizzId(this.histoQuizzIdSelected).subscribe((value: Quizz[]) => {
+    this.quizzService.deserializeHistoQuizzByHistoQuizzId(this.httpClientService.histoQuizzIdSelected).subscribe((value: Quizz[]) => {
     this.deserialized = value;
     console.log('subscribe deserialized OK');
     console.log('value vaut : ');
@@ -230,18 +235,18 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     console.log('quizzNameSaved vaut : ' + this.quizzNameSaved);
     console.clear();
     console.log('lance onValiderQuizz()');
-    this.quizzService.getAllDatas(this.joueurSelectionne.id, this.categorieId).subscribe(
+    this.quizzService.getAllDatas(this.joueurSelectionne.id, this.httpClientService.categoryId).subscribe(
       (value: Quizz[]) => {
-        this.listQuizzToSave = value;
-        this.infosHistoriqueQuizzToSave = [this.quizzNameSaved, this.joueurSelectionne.id, this.categorieId];
-        var myArray = [];
-        myArray.push(this.infosHistoriqueQuizzToSave);
-        myArray.push(this.listQuizzToSave);
-        console.log('contenu du tableau myArray : ');
-        console.log(myArray);
+        // this.listQuizzToSave = value;
+        // this.infosHistoriqueQuizzToSave = [this.quizzNameSaved, this.joueurSelectionne.id, this.categorieId];
+        // var myArray = [];
+        // myArray.push(this.infosHistoriqueQuizzToSave);
+        // myArray.push(this.listQuizzToSave);
+        // console.log('contenu du tableau myArray : ');
+        // console.log(myArray);
 
         // v2
-        this.histoQuizzObs = [this.listQuizzToSave,this.quizzNameSaved, this.joueurSelectionne.id, this.categorieId];
+        this.histoQuizzObs = [this.listQuizzToSave,this.quizzNameSaved, this.joueurSelectionne.id, this.httpClientService.categoryId];
         console.log('dans trouve anglais component histoQuizzObs vaut : ');
         console.log(this.histoQuizzObs);
         this.quizzService.savePlayerQuizzV2(this.histoQuizzObs).subscribe(() => {
@@ -274,7 +279,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       }
       ligne.tentativeMot++;
       // this.getWordsWithErrors();
-      this.quizzService.updateQuizzWord(ligne).subscribe(() => this.getAllTriesNumberByCategoryId(this.categorieId));
+      // this.quizzService.updateQuizzWord(ligne).subscribe(() => this.getAllTriesNumberByCategoryId(this.httpClientService.categoryId));
       // this.updateGlobalScore();
     }
 

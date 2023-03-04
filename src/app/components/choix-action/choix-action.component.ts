@@ -4,6 +4,7 @@ import {Joueur} from "../../models/joueur.model";
 import {AuthService} from "../../service/authService/auth.service";
 import {HttpClientService} from "../../service/httpClientService/http-client.service";
 import {Router} from "@angular/router";
+import {Quizz} from "../../models/quizz.model";
 
 @Component({
   selector: 'app-choix-action',
@@ -18,9 +19,8 @@ export class ChoixActionComponent implements OnInit {
   histoQuizzIdSelected: number;
 
   constructor(
-    private httpClientService : HttpClientService,
-    private router :Router
-  ) {
+    private httpClientService: HttpClientService,
+    private router: Router) {
   }
 
   // @Output() choice: EventEmitter<string> = new EventEmitter<string>();
@@ -37,7 +37,7 @@ export class ChoixActionComponent implements OnInit {
   }
 
   onContinue(continueOrNew: string) {
-    if (continueOrNew == 'continue') {
+    if (continueOrNew === 'continue') {
       console.log('passe dans onContinue pour continue');
       console.log('savedQuizzSelected vaut : ' + this.histoQuizzIdSelected);
       this.httpClientService.setHistoQuizzIdSelected(this.histoQuizzIdSelected);
@@ -45,6 +45,13 @@ export class ChoixActionComponent implements OnInit {
     } else {
       console.log('passe dans onContinue pour stop');
       // this.choice.emit('stop');
+      this.httpClientService.getNewQuizz(this.categoryId).subscribe(
+        (value: Quizz[]) => {
+          this.httpClientService.newQuizz = value;
+          this.router.navigate(['trouve-anglais']);
+        },
+        error => { console.log(error)}
+      )
     }
   }
 
@@ -62,7 +69,7 @@ export class ChoixActionComponent implements OnInit {
       () => {
         console.log('Subscribe getLast3Games() completed');
       }
-    )
+    );
   }
 
   returnPreviousMenu() {

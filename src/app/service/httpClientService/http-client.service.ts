@@ -21,6 +21,7 @@ export class HttpClientService {
   categoryId: number;
   playerId: number;
   histoQuizzIdSelected: number;
+  newQuizz: Quizz[];
 
 
   constructor(
@@ -30,6 +31,7 @@ export class HttpClientService {
   }
 
   // *** METHODE GET ***//
+
 
   getJoueurs() {
     return this.httpClient.get('http://localhost:5366/joueurs/');
@@ -84,6 +86,11 @@ export class HttpClientService {
 
   getScoreTotalByJoueur(joueurId) {
     return this.httpClient.get('http://localhost:5366/score/scoreTotal/' + joueurId);
+  }
+
+  getNewQuizz(categoryId) {
+    console.log('passe dans getNewQuizz');
+    return this.httpClient.get('http://localhost:5366/quizzs/getNewQuizz/' + categoryId);
   }
 
   // *** METHODE PUT ***//
@@ -170,5 +177,7 @@ export class HttpClientService {
   setHistoQuizzIdSelected(histoQuizzIdSelected) {
     this.histoQuizzIdSelected = histoQuizzIdSelected;
   }
+
+
 
 }

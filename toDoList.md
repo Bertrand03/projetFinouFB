@@ -31,3 +31,4 @@
   A FAIRE EN REPRENANT :
   Faire en sorte que l'on puisse retrouver les 3 dernières parties d'un joueur. La requête se fait bien mais problème de récupération au niveau de 
   l'Observable.
+  Regarder pour désactiver TSLint.
