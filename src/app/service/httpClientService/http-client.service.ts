@@ -174,6 +174,10 @@ export class HttpClientService {
     console.log('Dans http.client.service playerId vaut : ' + this.playerId + ' et categoryId vaut ' + this.categoryId);
   }
 
+  getCategoryChoosed() {
+    return this.categoryId;
+  }
+
   setHistoQuizzIdSelected(histoQuizzIdSelected) {
     this.histoQuizzIdSelected = histoQuizzIdSelected;
   }

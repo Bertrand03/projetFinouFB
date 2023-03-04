@@ -43,7 +43,10 @@ export class ChoixActionComponent implements OnInit {
       this.httpClientService.setHistoQuizzIdSelected(this.histoQuizzIdSelected);
       this.router.navigate(['trouve-anglais']);
     } else {
-      console.log('passe dans onContinue pour stop');
+      console.log('passe dans onContinue');
+      this.router.navigate(['trouve-anglais']);
+
+
       // this.choice.emit('stop');
       this.httpClientService.getNewQuizz(this.categoryId).subscribe(
         (value: Quizz[]) => {
