@@ -62,6 +62,7 @@ export class AuthentificationComponent implements OnInit {
   }
 
   verifLdap() {
+    console.log('passe dans verifLdap');
     this.ldap = this.listeJoueurs;
     this.pseudo = this.loginForm.value.pseudoForm;
     this.mdp = this.loginForm.value.mdpForm;
@@ -95,6 +96,7 @@ export class AuthentificationComponent implements OnInit {
   }
 
   getListeJoueurs(listeJoueurs) {
+    console.log('passe dans getListeJoueurs()');
     return this.listeJoueurs = listeJoueurs;
   }
 
