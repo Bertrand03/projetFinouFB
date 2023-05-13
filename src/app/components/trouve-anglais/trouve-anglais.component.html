@@ -26,8 +26,8 @@
       <!--<div class="form-group" *ngIf = "retourMenuQuizz == true">-->
         <button (click)="retourChoixQuizz()">Retour choix Quizz</button>
         <button (click)="gethisto()">get histo</button>
-        <h3>Bienvenue dans le Quizz : {{categoryChoosed}}</h3>
-        <form [formGroup]="loginForm" *ngFor="let ligne of deserialized;">
+        <h3>Bienvenue dans le Quizz : {{categoryChoosed.nomCategorie}}</h3>
+        <form [formGroup]="loginForm" *ngFor="let ligne of quizzAAfficher;">
           <ul class="list-group">
             <li [ngClass]="{'list-group-item' : true,
                     'list-group-item-success': ligne.motTrouve === 'oui',

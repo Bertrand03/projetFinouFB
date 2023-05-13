@@ -6,6 +6,7 @@ import {Score} from '../../models/score.model';
 import {Joueur} from '../../models/joueur.model';
 import {HistoriqueQuizz} from "../../models/historiqueQuizz.model";
 import {Router} from "@angular/router";
+import {CategorieQuizz} from "../../models/categorieQuizz.model";
 
 
 @Injectable({
@@ -19,6 +20,7 @@ export class HttpClientService {
   urlScore = 'http://localhost:5366/score';
   urlJoueurCategorie: string;
   categoryId: number;
+  category: CategorieQuizz;
   playerId: number;
   histoQuizzIdSelected: number;
   newQuizz: Quizz[];
@@ -168,9 +170,10 @@ export class HttpClientService {
   }
 
   // SET VALUES
-  setCategoryChoosed(playerId, categoryId) {
+  setCategoryChoosed(playerId, category) {
     this.playerId = playerId;
-    this.categoryId = categoryId;
+    this.categoryId = category.categorieId;
+    this.category = category;
     console.log('Dans http.client.service playerId vaut : ' + this.playerId + ' et categoryId vaut ' + this.categoryId);
   }
 

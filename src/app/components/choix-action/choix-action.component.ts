@@ -25,9 +25,9 @@ export class ChoixActionComponent implements OnInit {
 
   // @Output() choice: EventEmitter<string> = new EventEmitter<string>();
   ngOnInit() {
-    console.log('categoryId et playerId récupérés du http.client.service valent : ' +
-      this.httpClientService.categoryId + ' - ' +
-      this.httpClientService.playerId);
+    console.log('playerId et categoryId récupérés du http.client.service valent : ' +
+    this.httpClientService.playerId + ' - ' +
+    this.httpClientService.categoryId);
 
     this.categoryId = this.httpClientService.categoryId;
     this.playerId = this.httpClientService.playerId;
@@ -43,7 +43,7 @@ export class ChoixActionComponent implements OnInit {
       this.httpClientService.setHistoQuizzIdSelected(this.histoQuizzIdSelected);
       this.router.navigate(['trouve-anglais']);
     } else {
-      console.log('passe dans onContinue');
+      console.log('passe dans onContinue, nouveau quizz demandé');
       this.router.navigate(['trouve-anglais']);
 
 

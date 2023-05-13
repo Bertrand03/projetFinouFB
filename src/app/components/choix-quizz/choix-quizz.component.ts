@@ -37,7 +37,7 @@ export class ChoixQuizzComponent implements OnInit {
     this.listCategoriesQuizz = categorieQuizz;
   }
 
-  onValiderChoix(categorieId, categorieQuizz) {
+  onValiderChoix(categorieQuizz) {
     console.log('Lancement onValiderChoix() dans choix-quizz component');
     // this.getAllTriesNumberByCategoryId(categorieId);
 
@@ -47,6 +47,8 @@ export class ChoixQuizzComponent implements OnInit {
     // this.loginForm.reset();
 
     this.categorieId = categorieQuizz.categorieId;
+    console.log('categorieQuizz vaut : ');
+    console.log(categorieQuizz);
     // this.categoryChoosed = categorieQuizz.nomCategorie;
 
     // this.getScoreJoueurCategorie(categorieId);
@@ -65,7 +67,7 @@ export class ChoixQuizzComponent implements OnInit {
     // this.gethisto();
     // this.getLast3Games();
 
-    this.httpClientService.setCategoryChoosed(this.joueurSelectionne.id, this.categorieId);
+    this.httpClientService.setCategoryChoosed(this.joueurSelectionne.id, categorieQuizz);
     return this.router.navigate(['choix-action']);
 
   }

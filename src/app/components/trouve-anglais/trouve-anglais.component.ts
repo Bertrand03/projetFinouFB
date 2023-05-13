@@ -26,13 +26,14 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   listCategoriesQuizz: CategorieQuizz[];
   quizz: Quizz[];
   categorieIdChoisie: number;
-  categoryChoosed: string;
+  categoryChoosed: CategorieQuizz;
   loginForm: FormGroup;
   motAnglaisSaisi: string;
   categorieId: number;
   retourMenuQuizz = false;
   nbTentatives: number;
   deserialized: Quizz[];
+  quizzAAfficher: Quizz[];
 
   joueurSelectionne: Joueur;
   scoreParJoueurEtParCategorie: Score;
@@ -69,6 +70,25 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   }
 
   ngOnInit() {
+    this.categoryChoosed = this.httpClientService.category;
+
+    // Récupération du histoQuizzId pour afficher le Quizz sauvegardé sélectionné par le joueur
+    this.histoQuizzIdSelected = this.httpClientService.histoQuizzIdSelected;
+    console.log('histoQuizzIdSelected vaut : ' + this.histoQuizzIdSelected);
+
+    // Regarde si on lance un nouveau quizz ou si on reprend un quizz existant
+    if (this.histoQuizzIdSelected) {
+      this.quizzAAfficher = this.deserialize();
+      console.log('lance this.deserialize()');
+    } else {
+      console.log('histoQuizzIdSelected est undefined, c\'est un new Quizz');
+      this.httpClientService.getNewQuizz(this.httpClientService.categoryId).subscribe(
+        (value: Quizz[]) => this.quizzAAfficher = value
+      );
+      console.log('deserialized vaut : ');
+      console.log(this.deserialized);
+    }
+
     this.httpClientService.getAllCategorieQuizzService().subscribe(
       categorieQuizz => this.getAllCategorieQuizz(categorieQuizz),
     );
@@ -89,17 +109,9 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
     this.getWordsWithErrors();
 
-    // Récupération du histoQuizzId pour afficher le Quizz sauvegardé sélectionné par le joueur
-    this.histoQuizzIdSelected = this.httpClientService.histoQuizzIdSelected;
-    console.log('histoQuizzIdSelected vaut : ' + this.histoQuizzIdSelected);
 
-    if (this.histoQuizzIdSelected) {
-      this.deserialize();
-      console.log('lance this.deserialize()');
-    } else {
-      console.log('histoQuizzIdSelected est undefined, c\'est un new Quizz');
-      this.deserialized = this.httpClientService.newQuizz;
-    }
+
+
   }
 
   ngDoCheck() {
@@ -141,6 +153,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     console.log('value vaut : ');
     console.log(value);
     });
+    return this.deserialized;
   }
 
   // Méthode qui va permettre de lancer le quizz sélectionné par le joueur
@@ -351,7 +364,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       this.loginForm.reset();
 
       this.categorieId = categorieQuizz.categorieId;
-      this.categoryChoosed = categorieQuizz.nomCategorie;
+      // this.categoryChoosed = categorieQuizz.nomCategorie;
 
       // this.getScoreJoueurCategorie(categorieId);
       this.retourneLeContenuDeMaCategorie();
