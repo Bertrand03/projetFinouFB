@@ -82,7 +82,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       console.log('lance this.deserialize()');
     } else {
       console.log('histoQuizzIdSelected est undefined, c\'est un new Quizz');
-      this.httpClientService.getNewQuizz(this.httpClientService.categoryId).subscribe(
+      this.httpClientService.getNewQuizz(this.categoryChoosed.categorieId).subscribe(
         (value: Quizz[]) => this.quizzAAfficher = value
       );
       console.log('deserialized vaut : ');
@@ -250,7 +250,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     console.log('lance onValiderQuizz()');
     this.quizzService.getAllDatas(this.joueurSelectionne.id, this.httpClientService.categoryId).subscribe(
       (value: Quizz[]) => {
-        // this.listQuizzToSave = value;
+        this.listQuizzToSave = value;
         // this.infosHistoriqueQuizzToSave = [this.quizzNameSaved, this.joueurSelectionne.id, this.categorieId];
         // var myArray = [];
         // myArray.push(this.infosHistoriqueQuizzToSave);
