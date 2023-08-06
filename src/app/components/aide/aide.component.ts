@@ -14,6 +14,8 @@ export class AideComponent implements OnInit, DoCheck{
   englishWordToFind: string;
   indexEnglishWordToFind = 0;
   penaltyPoints = 0;
+  maxIndex = 0;
+  displayHelpButton = true;
 
 
   constructor() { }
@@ -35,9 +37,13 @@ export class AideComponent implements OnInit, DoCheck{
   // }
 
   onDisplayOneLetter(englishWordToFind) {
+    this.maxIndex = englishWordToFind.length;
     this.indexEnglishWordToFind++;
-    this.englishWordToFind = englishWordToFind.substring(0, this.indexEnglishWordToFind);
-    this.giveOnePenaltyPoint(englishWordToFind, this.indexEnglishWordToFind);
+    if (this.indexEnglishWordToFind <= this.maxIndex) {
+      this.englishWordToFind = englishWordToFind.substring(0, this.indexEnglishWordToFind);
+      this.giveOnePenaltyPoint(englishWordToFind, this.indexEnglishWordToFind);
+      if (this.indexEnglishWordToFind == this.maxIndex) this.displayHelpButton = false;
+    }
   }
 
   giveOnePenaltyPoint(englishWordToFind, index) {

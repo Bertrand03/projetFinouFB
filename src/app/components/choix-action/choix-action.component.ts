@@ -18,6 +18,11 @@ export class ChoixActionComponent implements OnInit {
   playerId: number;
   histoQuizzIdSelected: number;
 
+  jour : string;
+  mois : string;
+  annee : string;
+  heure : string;
+
   constructor(
     private httpClientService: HttpClientService,
     private router: Router) {
@@ -75,6 +80,14 @@ export class ChoixActionComponent implements OnInit {
 
   returnPreviousMenu() {
     this.router.navigate(['choix-quizz']);
+  }
+
+  getDateToString(date) {
+    date = date.toString();
+    console.log('date vaut : ' + date);
+    this.jour = date.substring(0,2);
+
+    return this.jour;
   }
 
 }

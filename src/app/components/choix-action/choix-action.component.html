@@ -7,7 +7,7 @@
     <div class="form-control">
     <label class="radio-inline">
       <input type="radio" name="savedQuizzSelected" value="{{histo.histoQuizzId}}" [(ngModel)]="histoQuizzIdSelected">
-      <p><b>id :</b> {{histo.histoQuizzId}} - <b>nom : </b>{{histo.name}} - <b>date : </b>{{histo.date}}</p>
+      <p><b>id :</b> {{histo.histoQuizzId}} - <b>nom : </b>{{histo.name}} - <b>date : </b>{{histo.date | date: 'dd/MM/yyyy'}}</p>
     </label>
     </div>
   </div>
