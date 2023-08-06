@@ -27,7 +27,7 @@
         <button (click)="retourChoixQuizz()">Retour choix Quizz</button>
         <button (click)="gethisto()">get histo</button>
         <h3>Bienvenue dans le Quizz : {{categoryChoosed.nomCategorie}}</h3>
-        <form [formGroup]="loginForm" *ngFor="let ligne of quizzAAfficher;">
+        <form [formGroup]="loginForm" *ngFor="let ligne of quizzAAfficher; let index = index;">
           <ul class="list-group">
             <li [ngClass]="{'list-group-item' : true,
                     'list-group-item-success': ligne.motTrouve === 'oui',
@@ -38,7 +38,7 @@
               <p *ngIf = "ligne.motTrouve === 'oui'" style="color: green;">{{ligne.motAnglais}}</p>
               <button *ngIf ="ligne.motTrouve === 'non'"
                       class="button" type="submit"
-                      (click)="onControlFrenchWord(ligne)">VALIDER</button>
+                      (click)="onControlFrenchWord(ligne, index)">VALIDER</button>
               <app-aide
                 [englishWord] = "ligne.motAnglais"
                 [wordFound]="ligne.motTrouve"
@@ -49,11 +49,9 @@
         </form>
         <form [formGroup]="loginForm">
           <div>
+            <p>Donnez un nom de sauvegarde au quizz</p>
             <input type="text" formControlName="quizzNameSaved">
             <button (click)="onValiderQuizz()">Valider le Quizz</button>
-              <p>Sauvegarder le quizz</p>
-              <button class="btn btn-success">Oui</button>
-              <button class="btn btn-danger">Non</button>
             </div>
         </form>
 

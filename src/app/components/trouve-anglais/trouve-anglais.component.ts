@@ -77,8 +77,9 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     console.log('histoQuizzIdSelected vaut : ' + this.histoQuizzIdSelected);
 
     // Regarde si on lance un nouveau quizz ou si on reprend un quizz existant
-    if (this.histoQuizzIdSelected) {
-      this.quizzAAfficher = this.deserialize();
+    if (this.histoQuizzIdSelected != null) {
+      console.log('histoQuizzIdSelected est défini et vaut : ' + this.histoQuizzIdSelected);
+      this.deserialize();
       console.log('lance this.deserialize()');
     } else {
       console.log('histoQuizzIdSelected est undefined, c\'est un new Quizz');
@@ -88,6 +89,7 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       console.log('deserialized vaut : ');
       console.log(this.deserialized);
     }
+    this.listQuizzToSave = this.quizzAAfficher;
 
     this.httpClientService.getAllCategorieQuizzService().subscribe(
       categorieQuizz => this.getAllCategorieQuizz(categorieQuizz),
@@ -148,12 +150,12 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
   deserialize() {
     this.quizzService.deserializeHistoQuizzByHistoQuizzId(this.httpClientService.histoQuizzIdSelected).subscribe((value: Quizz[]) => {
-    this.deserialized = value;
+    // this.quizzService.deserializeHistoQuizz(this.httpClientService.histoQuizzIdSelected).subscribe((value: Quizz[]) => {
+    this.quizzAAfficher = value;
     console.log('subscribe deserialized OK');
     console.log('value vaut : ');
     console.log(value);
     });
-    return this.deserialized;
   }
 
   // Méthode qui va permettre de lancer le quizz sélectionné par le joueur
@@ -246,17 +248,18 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     // On sauvegarde le quizz dans un fichier
     this.quizzNameSaved = this.loginForm.value.quizzNameSaved;
     console.log('quizzNameSaved vaut : ' + this.quizzNameSaved);
-    console.clear();
     console.log('lance onValiderQuizz()');
-    this.quizzService.getAllDatas(this.joueurSelectionne.id, this.httpClientService.categoryId).subscribe(
-      (value: Quizz[]) => {
-        this.listQuizzToSave = value;
+    // this.quizzService.getAllDatas(this.joueurSelectionne.id, this.httpClientService.categoryId).subscribe(
+    //   (value: Quizz[]) => {
+    //     this.listQuizzToSave = value;
         // this.infosHistoriqueQuizzToSave = [this.quizzNameSaved, this.joueurSelectionne.id, this.categorieId];
         // var myArray = [];
         // myArray.push(this.infosHistoriqueQuizzToSave);
         // myArray.push(this.listQuizzToSave);
         // console.log('contenu du tableau myArray : ');
         // console.log(myArray);
+        console.log('this.listQuizzToSave vaut : ');
+        console.log(this.listQuizzToSave);
 
         // v2
         this.histoQuizzObs = [this.listQuizzToSave,this.quizzNameSaved, this.joueurSelectionne.id, this.httpClientService.categoryId];
@@ -264,8 +267,8 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
         console.log(this.histoQuizzObs);
         this.quizzService.savePlayerQuizzV2(this.histoQuizzObs).subscribe(() => {
           }
-        )
-      }
+        // )
+      // }
     );
   }
 
@@ -275,7 +278,11 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   //   });
   // }
 
-    onControlFrenchWord(ligne) {
+    onControlFrenchWord(ligne, index) {
+    this.listQuizzToSave = this.quizzAAfficher;
+    console.log('index vaut : ' + index);
+    console.log('listQuizzToSave vaut : ');
+    console.log(this.listQuizzToSave);
       this.motAnglaisSaisi = this.loginForm.value.motAnglaisJoueur;
 
       // Premiere lettre en majuscule
@@ -291,6 +298,12 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
       }
       ligne.tentativeMot++;
+
+      this.listQuizzToSave[index] = ligne;
+      console.log('On ajoute la ligne');
+      console.log(ligne);
+      console.log(' à listQuizzToSave qui maintenant vaut : ');
+      console.log(this.listQuizzToSave);
       // this.getWordsWithErrors();
       // this.quizzService.updateQuizzWord(ligne).subscribe(() => this.getAllTriesNumberByCategoryId(this.httpClientService.categoryId));
       // this.updateGlobalScore();

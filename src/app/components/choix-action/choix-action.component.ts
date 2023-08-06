@@ -44,9 +44,7 @@ export class ChoixActionComponent implements OnInit {
       this.router.navigate(['trouve-anglais']);
     } else {
       console.log('passe dans onContinue, nouveau quizz demandé');
-      this.router.navigate(['trouve-anglais']);
-
-
+      this.httpClientService.histoQuizzIdSelected = null;
       // this.choice.emit('stop');
       this.httpClientService.getNewQuizz(this.categoryId).subscribe(
         (value: Quizz[]) => {
