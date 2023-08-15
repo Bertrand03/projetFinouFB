@@ -10,8 +10,6 @@ import {Score} from '../../models/score.model';
 import {CategorieQuizz} from '../../models/categorieQuizz.model';
 import {Joueur} from '../../models/joueur.model';
 import {QuizzService} from "../../service/quizzService/quizz.service";
-import {HistoQuizzObs} from "../../models/histoQuizzObs.model";
-import {HistoriqueQuizz} from "../../models/historiqueQuizz.model";
 import {Router} from "@angular/router";
 
 @Component({
@@ -50,8 +48,6 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
   listQuizzToSave: Quizz[];
   historiqueQuizz: Object[];
-  histoQuizz3LastGames: Object [];
-  infosHistoriqueQuizzToSave: any[];
   histoQuizzObs: any[];
 
   histoQuizzIdSelected: number;
@@ -111,9 +107,6 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
     this.getWordsWithErrors();
 
-
-
-
   }
 
   ngDoCheck() {
@@ -150,53 +143,12 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
   deserialize() {
     this.quizzService.deserializeHistoQuizzByHistoQuizzId(this.httpClientService.histoQuizzIdSelected).subscribe((value: Quizz[]) => {
-    // this.quizzService.deserializeHistoQuizz(this.httpClientService.histoQuizzIdSelected).subscribe((value: Quizz[]) => {
     this.quizzAAfficher = value;
     console.log('subscribe deserialized OK');
     console.log('value vaut : ');
     console.log(value);
     });
   }
-
-  // Méthode qui va permettre de lancer le quizz sélectionné par le joueur
-  // getLast3Games() {
-  //   console.log('declenche méthode getLast3Games()');
-  //   console.log('this.joueurSelectionne.id vaut ' + this.joueurSelectionne.id);
-  //   this.httpClientService.getLast3Games(this.joueurSelectionne.id).subscribe(
-  //     (value: HistoriqueQuizz[]) =>
-  //     {
-  //       this.histoQuizz3LastGames = value;
-  //       console.log('value vaut : ');
-  //       console.log(value);
-  //       console.log('type of value vaut : ');
-  //       console.log(typeof value);
-  //       console.log('this.histoQuizz3LastGames');
-  //       console.log(this.histoQuizz3LastGames);
-  //       console.log('type of this.histoQuizz3LastGames vaut : ');
-  //       console.log(typeof this.histoQuizz3LastGames);
-  //       this.histoQuizz3LastGames = <HistoriqueQuizz[]> this.histoQuizz3LastGames;
-  //       console.log('type of this.histoQuizz3LastGames après cast vaut : ');
-  //       console.log(typeof this.histoQuizz3LastGames);
-  //       },
-  //     (error: any) => console.log(error),
-  //     () => {
-  //       console.log('subscribe getLast3Games complete');
-  //       console.log('this.histoQuizz3LastGames');
-  //       console.log(this.histoQuizz3LastGames);
-  //       for (let histo of this.histoQuizz3LastGames) {
-  //         console.log('histo type vaut : ');
-  //         console.log(typeof histo);
-  //         console.log(histo);
-  //         var a = <HistoriqueQuizz> histo;
-  //         console.log('type of a vaut : ');
-  //         console.log(typeof a);
-  //         console.log(a.categorieId);
-  //         console.log(a.date);
-  //         console.log(a.name);
-  //       }
-  //     }
-  //   )
-  // }
 
   getAllTriesNumberByCategoryId(categoryId) {
     console.log('lance getAllTriesNumberByCategoryId()');
@@ -249,34 +201,18 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
     this.quizzNameSaved = this.loginForm.value.quizzNameSaved;
     console.log('quizzNameSaved vaut : ' + this.quizzNameSaved);
     console.log('lance onValiderQuizz()');
-    // this.quizzService.getAllDatas(this.joueurSelectionne.id, this.httpClientService.categoryId).subscribe(
-    //   (value: Quizz[]) => {
-    //     this.listQuizzToSave = value;
-        // this.infosHistoriqueQuizzToSave = [this.quizzNameSaved, this.joueurSelectionne.id, this.categorieId];
-        // var myArray = [];
-        // myArray.push(this.infosHistoriqueQuizzToSave);
-        // myArray.push(this.listQuizzToSave);
-        // console.log('contenu du tableau myArray : ');
-        // console.log(myArray);
-        console.log('this.listQuizzToSave vaut : ');
-        console.log(this.listQuizzToSave);
 
-        // v2
-        this.histoQuizzObs = [this.listQuizzToSave,this.quizzNameSaved, this.joueurSelectionne.id, this.httpClientService.categoryId];
-        console.log('dans trouve anglais component histoQuizzObs vaut : ');
-        console.log(this.histoQuizzObs);
-        this.quizzService.savePlayerQuizzV2(this.histoQuizzObs).subscribe(() => {
-          }
-        // )
-      // }
+    console.log('this.listQuizzToSave vaut : ');
+    console.log(this.listQuizzToSave);
+
+    // v2
+    this.histoQuizzObs = [this.listQuizzToSave,this.quizzNameSaved, this.joueurSelectionne.id, this.httpClientService.categoryId];
+    console.log('dans trouve anglais component histoQuizzObs vaut : ');
+    console.log(this.histoQuizzObs);
+    this.quizzService.savePlayerQuizzV2(this.histoQuizzObs).subscribe(() => {
+      }
     );
   }
-
-  // savePlayerQuizz() {
-  //   this.quizzService.savePlayerQuizz(this.joueurSelectionne.id, this.categorySelected).subscribe(() => {
-  //     console.log('est passé dans onValiderQuizz()')
-  //   });
-  // }
 
     onControlFrenchWord(ligne, index) {
     this.listQuizzToSave = this.quizzAAfficher;
@@ -304,9 +240,6 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       console.log(ligne);
       console.log(' à listQuizzToSave qui maintenant vaut : ');
       console.log(this.listQuizzToSave);
-      // this.getWordsWithErrors();
-      // this.quizzService.updateQuizzWord(ligne).subscribe(() => this.getAllTriesNumberByCategoryId(this.httpClientService.categoryId));
-      // this.updateGlobalScore();
     }
 
     updateScoreByCategory(ligne) {
@@ -314,6 +247,15 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
         resultat => this.incrementOnePointCategoryScore(resultat)
       );
 
+    }
+
+    helpMaxHideBlock(motTrouveOui, ligne, index) {
+      console.log('Passe dans helpMaxHideBlock, motTrouveOui vaut : ' + motTrouveOui);
+      console.log('ligne vaut : ');
+      console.log(ligne);
+      console.log('passe la valeur mot trouve a oui');
+      console.log(ligne.motTrouve = 'oui');
+      this.onControlFrenchWord(ligne, index);
     }
 
     incrementOnePointCategoryScore(scoreParJoueurEtParCategorie) {
@@ -377,14 +319,11 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       this.loginForm.reset();
 
       this.categorieId = categorieQuizz.categorieId;
-      // this.categoryChoosed = categorieQuizz.nomCategorie;
 
-      // this.getScoreJoueurCategorie(categorieId);
       this.retourneLeContenuDeMaCategorie();
       this.retourneToutesLesCategories();
 
       this.joueurSelectionne = this.authService.retourneJoueurQuiJoue();
-      // console.log(this.categorieChoisie = this.listCategoriesQuizz[this.categorieId].nomCategorie);
       this.retourMenuQuizz = true;
       this.nbTentatives = 0;
       if (this.categorieId != null && this.joueurSelectionne.id != null) {
@@ -392,17 +331,9 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
           resultat => this.resultatGetScoreParJoueurEtCategorieQuizz(resultat)
         );
       }
-      // this.gethisto();
-      // this.getLast3Games();
     }
 
-    returnContenuQuizz(response, categorieId)
-    {
-      // console.log('Entre dans returnContenuQuizz : ');
-      // console.log('response Quizz : ');
-      // console.log(response);
-      // console.log('categorieId : ');
-      // console.log(categorieId);
+    returnContenuQuizz(response, categorieId) {
       this.quizz = response;
     }
 
@@ -421,11 +352,8 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
       for (const ligne of this.quizz) {
         ligne.motTrouve = 'non';
         ligne.tentativeMot = 0;
-        // console.log(ligne);
         this.quizzService.updateQuizzWord(ligne).subscribe(
           (contenuAnimal: Quizz) => {
-            // console.log('contenuAnimal après modif');
-            // console.log(contenuAnimal);
             this.quizzService.getAllTriesNumberByCategoryId(ligne.categorieId).subscribe((value: number) =>
               this.nbTentatives = value);
           },

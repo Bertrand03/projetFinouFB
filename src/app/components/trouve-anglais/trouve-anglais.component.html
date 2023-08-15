@@ -1,95 +1,60 @@
 
-<!--<div class="form-group" *ngIf = "retourMenuQuizz == false">-->
-  <!--<ul class="list-group">-->
-    <!--<li class="list-group-item" *ngFor="let theme of listCategoriesQuizz;">-->
-      <!--<button (click)="onValiderChoix(theme.categorieId, theme)">Quizz : {{theme.nomCategorie}}</button>-->
-    <!--</li>-->
-  <!--</ul>-->
-<!--</div>-->
-
-
-<!--<div *ngIf="startNewQuizzOrContinue != null">-->
-  <div class="col-xs-12">
-    <div>
-      <h2>Quizz</h2>
-      <h4>Règles à respecter : </h4>
-      <p>Chaque premier mot commence par une majuscule, s'il y a deux mots ou plus ils seront tous en minuscules.</p>
-      <p>Lorsqu'il y a deux mots à trouver (précisés entre parenthèses) il faut les inscrire par
-        ordre alphabétique.</p>
-      <p>Lorsqu'il y a plusieurs mots demandés : "motFR1, motFR2, motFR3" il faut les traduire dans cet ordre précis donc
-        "motEN1, motEN2, motEN3".</p>
-    </div>
+<div class="col-xs-12">
+  <div>
+    <h2>Quizz</h2>
+    <h4>Règles à respecter : </h4>
+    <p>Chaque premier mot commence par une majuscule, s'il y a deux mots ou plus ils seront tous en minuscules.</p>
+    <p>Lorsqu'il y a deux mots à trouver (précisés entre parenthèses) il faut les inscrire par
+      ordre alphabétique.</p>
+    <p>Lorsqu'il y a plusieurs mots demandés : "motFR1, motFR2, motFR3" il faut les traduire dans cet ordre précis donc
+      "motEN1, motEN2, motEN3".</p>
   </div>
-
-  <div class="row">
-    <div class="col-xs-12">
-      <!--<div class="form-group" *ngIf = "retourMenuQuizz == true">-->
-        <button (click)="retourChoixQuizz()">Retour choix Quizz</button>
-        <button (click)="gethisto()">get histo</button>
-        <h3>Bienvenue dans le Quizz : {{categoryChoosed.nomCategorie}}</h3>
-        <form [formGroup]="loginForm" *ngFor="let ligne of quizzAAfficher; let index = index;">
-          <ul class="list-group">
-            <li [ngClass]="{'list-group-item' : true,
-                    'list-group-item-success': ligne.motTrouve === 'oui',
-                    'list-group-item-danger': ligne.motTrouve === 'non'}">
-              {{ligne.motFrancais}}
-              <br>
-              <input *ngIf = "ligne.motTrouve === 'non'" type="text" formControlName="motAnglaisJoueur">
-              <p *ngIf = "ligne.motTrouve === 'oui'" style="color: green;">{{ligne.motAnglais}}</p>
-              <button *ngIf ="ligne.motTrouve === 'non'"
-                      class="button" type="submit"
-                      (click)="onControlFrenchWord(ligne, index)">VALIDER</button>
-              <app-aide
-                [englishWord] = "ligne.motAnglais"
-                [wordFound]="ligne.motTrouve"
-                [nbOfTries]="ligne.tentativeMot"
-              ></app-aide>
-            </li>
-          </ul>
-        </form>
-        <form [formGroup]="loginForm">
-          <div>
-            <p>Donnez un nom de sauvegarde au quizz</p>
-            <input type="text" formControlName="quizzNameSaved">
-            <button (click)="onValiderQuizz()">Valider le Quizz</button>
-            </div>
-        </form>
-
-        <p> Score categ : {{scoreCateg}}</p>
-        <button (click)="onResetAllCategorieMotTrouve()">RESET MOTS </button>
-        <p>Nombre de tentatives pour la catégorie : {{nbTentatives}}</p>
-        <p>Mots en erreur lors de la dernière partie : </p>
-        <div *ngFor=" let word of wordsWithErrors">
-          <ul>
-            <li>{{word.motFrancais}}</li>
-          </ul>
-        </div>
-      <!--</div>-->
-    </div>
-  </div>
-<!--</div>-->
-
-<div *ngIf="startNewQuizzOrContinue == null && categorySelected == true">
-  <!--<app-choix-action (choice)="continueOrNot($event)"></app-choix-action>-->
-  <!-- Quand on déclenche l'EventEmitter on récupère la valeur émise dans $event et on fait appel à la méthode continueOrNot avec la valeur émise en paramètre -->
-  <!--<div>Dernière partie enregistrée :-->
-    <!--<div *ngFor="let histo of histoQuizz3LastGames; let index = index">-->
-      <!--<div class="form-group">-->
-        <!--<div class="form-control">-->
-          <!--<label class="radio-inline">-->
-            <!--<input type="radio" name="savedQuizzSelected" value="{{histo.histoQuizzId}}" [(ngModel)]="savedQuizzSelected">-->
-            <!--<p><b>id :</b> {{histo.histoQuizzId}} - <b>nom : </b>{{histo.name}} - <b>date : </b>{{histo.date}}</p>-->
-          <!--</label>-->
-        <!--</div>-->
-      <!--</div>-->
-    <!--</div>-->
-    <!--<div>-->
-      <!--<p>Valeur de savedQuizzSelected : </p>-->
-      <!--<p> {{savedQuizzSelected}} </p>-->
-    <!--</div>-->
-
-  <!--</div>-->
-
-
-
 </div>
+
+<div class="row">
+  <div class="col-xs-12">
+      <button (click)="retourChoixQuizz()">Retour choix Quizz</button>
+      <button (click)="gethisto()">get histo</button>
+      <h3>Bienvenue dans le Quizz : {{categoryChoosed.nomCategorie}}</h3>
+      <form [formGroup]="loginForm" *ngFor="let ligne of quizzAAfficher; let index = index;">
+        <ul class="list-group">
+          <li [ngClass]="{'list-group-item' : true,
+                  'list-group-item-success': ligne.motTrouve === 'oui',
+                  'list-group-item-danger': ligne.motTrouve === 'non'}">
+            {{ligne.motFrancais}}
+            <br>
+            <input *ngIf = "ligne.motTrouve === 'non'" type="text" formControlName="motAnglaisJoueur">
+            <p *ngIf = "ligne.motTrouve === 'oui'" style="color: green;">{{ligne.motAnglais}}</p>
+            <button *ngIf ="ligne.motTrouve === 'non'"
+                    class="button" type="submit"
+                    (click)="onControlFrenchWord(ligne, index)">VALIDER</button>
+            <app-aide
+              [englishWord] = "ligne.motAnglais"
+              [wordFound]="ligne.motTrouve"
+              [nbOfTries]="ligne.tentativeMot"
+              (monOutput)="helpMaxHideBlock($event, ligne, index)"
+            ></app-aide>
+          </li>
+        </ul>
+      </form>
+      <form [formGroup]="loginForm">
+        <div>
+          <p>Donnez un nom de sauvegarde au quizz</p>
+          <input type="text" formControlName="quizzNameSaved">
+          <button (click)="onValiderQuizz()">Valider le Quizz</button>
+          </div>
+      </form>
+
+      <p> Score categ : {{scoreCateg}}</p>
+      <button (click)="onResetAllCategorieMotTrouve()">RESET MOTS </button>
+      <p>Nombre de tentatives pour la catégorie : {{nbTentatives}}</p>
+      <p>Mots en erreur lors de la dernière partie : </p>
+      <div *ngFor=" let word of wordsWithErrors">
+        <ul>
+          <li>{{word.motFrancais}}</li>
+        </ul>
+      </div>
+  </div>
+</div>
+
+<div *ngIf="startNewQuizzOrContinue == null && categorySelected == true"></div>

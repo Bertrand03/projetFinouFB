@@ -2,6 +2,8 @@
   <div *ngIf="wordFound == 'non' && displayHelpButton == true">
     <button (click)="onDisplayOneLetter(englishWord)">Aide</button>
   </div>
-  <p>Aide : {{this.englishWordToFind}} - Pénalité : {{this.penaltyPoints}}</p>
+  <p [ngClass]="this.redBoldLine == true ? 'ligneAidePenaliteRouge' : null">
+    Aide : {{this.englishWordToFind}} - Pénalité : {{this.penaltyPoints}}
+  </p>
   <p>Nombre de tentatives : {{nbOfTries}}</p>
 </div>
