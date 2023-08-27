@@ -49,9 +49,13 @@ export class HttpClientService {
     return this.httpClient.get('http://localhost:5366/score/');
   }
 
-  getHistoriqueQuizz() {
-    console.log('passe dans getHistoriqueQuizz()');
-    return this.httpClient.get('http://localhost:5366/score/historiqueQuizz');
+  getHistoriqueQuizzById(histoQuizzId: number): Observable<any>  {
+    console.log('passe dans getHistoriqueQuizzById()');
+    return this.httpClient.get('http://localhost:5366/score/historiqueQuizz/' + histoQuizzId, {
+      headers: new HttpHeaders({
+        'Content-type': 'application/json'
+      })
+    });
   }
 
   getLast3Games(joueurId, categoryId) {

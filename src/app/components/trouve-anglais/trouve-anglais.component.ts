@@ -11,6 +11,7 @@ import {CategorieQuizz} from '../../models/categorieQuizz.model';
 import {Joueur} from '../../models/joueur.model';
 import {QuizzService} from "../../service/quizzService/quizz.service";
 import {Router} from "@angular/router";
+import {HistoriqueQuizz} from "../../models/historiqueQuizz.model";
 
 @Component({
   selector: 'app-trouve-anglais',
@@ -47,7 +48,8 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   doCheck: boolean = false;
 
   listQuizzToSave: Quizz[];
-  historiqueQuizz: Object[];
+  historiqueQuizz: Object;
+  historiqueQuizzBis: HistoriqueQuizz;
   histoQuizzObs: any[];
 
   histoQuizzIdSelected: number;
@@ -68,9 +70,21 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   ngOnInit() {
     this.categoryChoosed = this.httpClientService.category;
 
+
+
     // Récupération du histoQuizzId pour afficher le Quizz sauvegardé sélectionné par le joueur
     this.histoQuizzIdSelected = this.httpClientService.histoQuizzIdSelected;
     console.log('histoQuizzIdSelected vaut : ' + this.histoQuizzIdSelected);
+
+    // Recuperation du histoQuizz pour re-utiliser le nom lors de la sauvegarde d'un quizz deja existant
+    this.httpClientService.getHistoriqueQuizzById(this.histoQuizzIdSelected).subscribe(
+      (value: Object) => {
+        this.historiqueQuizz = value;
+        console.log('historiqueQuizz vaut : ');
+        console.log(this.historiqueQuizz);
+        console.log('nom vaut : ');
+        console.log(this.historiqueQuizz[1]);
+      });
 
     // Regarde si on lance un nouveau quizz ou si on reprend un quizz existant
     if (this.histoQuizzIdSelected != null) {
@@ -133,13 +147,14 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
   }
 
 
-  gethisto() {
-    this.httpClientService.getHistoriqueQuizz().subscribe(
-      (value: Object[]) => this.historiqueQuizz = value)
-    console.log(' historiqueQuizz vaut :');
-    console.log(this.historiqueQuizz);
-    ;
-  }
+  // gethisto(histoQuizzId) {
+  //   this.httpClientService.getHistoriqueQuizzById(histoQuizzId).subscribe(
+  //     (value: HistoriqueQuizz) => this.historiqueQuizz = value)
+  //   console.log(' historiqueQuizz vaut :');
+  //   console.log(this.historiqueQuizz);
+  //   console.log('nom : ');
+  //   console.log(this.historiqueQuizz[0].name);
+  // }
 
   deserialize() {
     this.quizzService.deserializeHistoQuizzByHistoQuizzId(this.httpClientService.histoQuizzIdSelected).subscribe((value: Quizz[]) => {
@@ -197,6 +212,13 @@ export class TrouveAnglaisComponent implements OnInit, DoCheck {
 
 
   onValiderQuizz() {
+    // On controle si on est dans le cas d'un nouveau quizz ou d'un quizz deja existant.
+    // Si le quizz a deja ete sauvegarde une premiere fois on re-utilise le même nom.
+    // @ts-ignore
+
+
+
+
     // On sauvegarde le quizz dans un fichier
     this.quizzNameSaved = this.loginForm.value.quizzNameSaved;
     console.log('quizzNameSaved vaut : ' + this.quizzNameSaved);

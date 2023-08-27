@@ -29,5 +29,7 @@
   Regarder pour désactiver TSLint.
 
   A FAIRE EN REPRENANT :
-  Faire en sorte de masquer l'input et le bouton VALIDER quand on a decouvert le mot entier uniquement en cliquant sur le bouton Aide. On doit garder la couleur rouge Bootstrap.
   Remonter une erreur dans le back quand on essaie de valider un histoQuizz qui a un blob de sauvegarde a NULL.
+  Quand on ouvre un quizz deja existant et qu'on le re-sauvegarde ensuite il faut reprendre le nom de la sauvegarde d'origine. Masquer l'input permettant de donner un nom
+  au quizz si nom deja existant. Modier "Valider le quizz" par "Mettre a jour le quizz".
+  Empecher la validation d'un quizz si aucune reponse n'a ete donnee.
